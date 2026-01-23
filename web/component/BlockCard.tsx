@@ -1,14 +1,19 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
+import { getBlockDefaults } from "./progress/getBlockDefaults";
+import { markBlockComplete, wasBlockCompleted } from "./progress/progressStore";
 
 type Bloque = {
   tipo: string;
+  id?: string;
   titulo?: string;
   texto?: string;
   contenido?: string;
   items?: string[];
   tareas?: string[] | string;
   recompensa?: string;
+  xp?: number;
   fuente?: {
     tipo?: string;
     contenido?: string;
@@ -40,7 +45,13 @@ function prettyType(tipo: string) {
   return tipo.charAt(0).toUpperCase() + tipo.slice(1);
 }
 
-export default function BlockCard({ bloque }: { bloque: Bloque }) {
+export default function BlockCard({
+  bloque,
+  blockId,
+}: {
+  bloque: Bloque;
+  blockId: string;
+}) {
   const style = stylesByType[bloque.tipo] ?? {
     label: prettyType(bloque.tipo),
     border: "border-l-4 border-slate-300",
@@ -50,6 +61,7 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
 
   const [seleccion, setSeleccion] = useState<number | null>(null);
   const [mostrandoFeedback, setMostrandoFeedback] = useState(false);
+  const [completado, setCompletado] = useState(false);
 
   const isEvaluacionQuiz = bloque.tipo === "evaluacion" && !!bloque.quiz;
 
@@ -82,16 +94,12 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
 
   const isMision = bloque.tipo === "mision" && tareas.length > 0;
 
-  // Clave única para guardar progreso (por bloque + url actual)
-  const storageKey =
-    typeof window !== "undefined"
-      ? `historiapp:mision:${window.location.pathname}:${bloque.titulo ?? "mision"}`
-      : "";
+  const { xp, recompensa } = useMemo(() => getBlockDefaults(bloque), [bloque]);
 
   const [checks, setChecks] = useState<boolean[]>(() => {
     if (typeof window === "undefined") return tareas.map(() => false);
     try {
-      const saved = localStorage.getItem(storageKey);
+      const saved = localStorage.getItem(`historiapp:mision:${blockId}`);
       if (saved) return JSON.parse(saved);
     } catch {}
     return tareas.map(() => false);
@@ -105,16 +113,44 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
     const next = checks.map((v, i) => (i === idx ? !v : v));
     setChecks(next);
     try {
-      localStorage.setItem(storageKey, JSON.stringify(next));
+      localStorage.setItem(`historiapp:mision:${blockId}`, JSON.stringify(next));
     } catch {}
   }
 
+  useEffect(() => {
+    setCompletado(wasBlockCompleted(blockId));
+  }, [blockId]);
+
+  useEffect(() => {
+    if (isMision && done === total && total > 0) {
+      markBlockComplete({ blockId, xp });
+      trackEvent("mision_completada", { blockId, xp });
+      setCompletado(true);
+    }
+  }, [done, isMision, total, blockId, xp]);
+
+  useEffect(() => {
+    if (isEvaluacionQuiz && esCorrecta) {
+      markBlockComplete({ blockId, xp });
+      trackEvent("quiz_completado", { blockId, xp });
+      setCompletado(true);
+    }
+  }, [isEvaluacionQuiz, esCorrecta, blockId, xp]);
+
   return (
     <div className={`rounded-xl shadow p-6 ${style.bg} ${style.border}`}>
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
         <p className="text-xs uppercase tracking-wide text-slate-600">
           {style.emoji} {style.label}
         </p>
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+          <span className="rounded-full bg-white/80 px-2.5 py-1">+{xp} XP</span>
+          {completado && (
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-emerald-700">
+              ✅ Completado
+            </span>
+          )}
+        </div>
       </div>
 
       {bloque.titulo && <h2 className="text-2xl font-semibold mb-2">{bloque.titulo}</h2>}
@@ -163,12 +199,13 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
                 <input
                   className="mt-1"
                   type="radio"
-                  name={`quiz-${bloque.titulo ?? "evaluacion"}`}
+                  name={`quiz-${blockId}`}
                   checked={seleccion === idx}
                   onChange={() => {
                     setSeleccion(idx);
                     setMostrandoFeedback(false);
                   }}
+                  aria-label={`Opción ${idx + 1}: ${op}`}
                 />
                 <span className="text-slate-800">{op}</span>
               </label>
@@ -186,6 +223,7 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
                 setMostrandoFeedback(false);
               }
             }}
+            aria-live="polite"
           >
             {!mostrandoFeedback ? "Revisar" : "Reintentar"}
           </button>
@@ -206,6 +244,11 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
                   ? bloque.quiz.feedbackCorrecto ?? "¡Bien!"
                   : bloque.quiz.feedbackIncorrecto ?? "Intenta nuevamente."}
               </p>
+              {esCorrecta && (
+                <p className="text-xs text-emerald-700 mt-2">
+                  Has ganado {xp} XP.
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -239,6 +282,7 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
                   type="checkbox"
                   checked={!!checks[idx]}
                   onChange={() => toggleTask(idx)}
+                  aria-label={`Marcar tarea: ${t}`}
                 />
                 <div>
                   <p className="text-slate-800">{t}</p>
@@ -253,9 +297,8 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
           {done === total && total > 0 && (
             <div className="mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200">
               <p className="font-semibold text-emerald-900">🎉 ¡Misión completada!</p>
-              {bloque.recompensa && (
-                <p className="text-emerald-800 mt-1">{bloque.recompensa}</p>
-              )}
+              {recompensa && <p className="text-emerald-800 mt-1">{recompensa}</p>}
+              <p className="text-xs text-emerald-700 mt-1">Has ganado {xp} XP.</p>
             </div>
           )}
         </div>

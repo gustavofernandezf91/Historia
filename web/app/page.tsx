@@ -1,3 +1,4 @@
+import CourseProgress from "@/component/CourseProgress";
 import Link from "next/link";
 import curriculum from "../content/curriculum.json";
 
@@ -5,6 +6,14 @@ type Unidad = {
   id: string;
   titulo: string;
   descripcion?: string;
+  lecciones: {
+    id: string;
+    bloques?: {
+      id?: string;
+      tipo: string;
+      xp?: number;
+    }[];
+  }[];
 };
 
 export default function Home() {
@@ -59,6 +68,9 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="mt-10">
+            <CourseProgress unidades={unidades} />
           </div>
         </div>
       </section>

@@ -1,5 +1,6 @@
 
-import BlockCard from "@/component/BlockCard";
+import BlockGrid from "@/component/BlockGrid";
+import { buildBlockId } from "@/component/progress/blockId";
 import curriculum from "@/content/curriculum.json";
 import Link from "next/link";
 
@@ -72,6 +73,11 @@ export default async function LeccionPage({
 
   const habilidad = leccion.habilidad_principal ?? leccion.habilidad;
   const contenidos = leccion.contenidos_breves ?? (leccion.contenidos ? [leccion.contenidos] : []);
+  const blocks =
+    leccion.bloques?.map((bloque, index) => ({
+      id: buildBlockId({ unidadId, leccionId, bloqueId: bloque.id, index }),
+      bloque,
+    })) ?? [];
 
   return (
     <main className="min-h-screen bg-slate-50 p-10">
@@ -82,6 +88,9 @@ export default async function LeccionPage({
 
         <header className="mt-6 mb-10">
           <h1 className="text-4xl font-bold mb-3">{leccion.titulo}</h1>
+          <p className="text-slate-600 mb-4">
+            Selecciona una actividad para avanzar en la misión de esta lección.
+          </p>
 
           <div className="bg-white rounded-xl shadow p-6">
             {habilidad && (
@@ -103,14 +112,14 @@ export default async function LeccionPage({
         </header>
 
         <section className="space-y-6">
-          {!leccion.bloques || leccion.bloques.length === 0 ? (
+          {blocks.length === 0 ? (
             <div className="bg-white rounded-xl shadow p-6">
               <p className="text-slate-600">
                 Esta lección todavía no tiene bloques. (Siguiente paso: los agregamos al JSON).
               </p>
             </div>
           ) : (
-            leccion.bloques.map((b, i) => <BlockCard key={i} bloque={b} />)
+            <BlockGrid blocks={blocks} basePath={`/unidad/${unidadId}/leccion/${leccionId}`} />
           )}
         </section>
       </div>

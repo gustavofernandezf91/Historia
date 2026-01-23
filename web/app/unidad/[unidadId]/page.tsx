@@ -1,4 +1,5 @@
 import curriculum from "@/content/curriculum.json";
+import UnitProgress from "@/component/UnitProgress";
 import Link from "next/link";
 
 type Leccion = {
@@ -8,6 +9,11 @@ type Leccion = {
   habilidad_principal?: string;
   contenidos?: string;
   contenidos_breves?: string[];
+  bloques?: {
+    id?: string;
+    tipo: string;
+    xp?: number;
+  }[];
 };
 
 type Unidad = {
@@ -56,6 +62,10 @@ export default async function UnidadPage({
             <p className="text-slate-600 text-lg">{unidad.descripcion}</p>
           )}
         </header>
+
+        <div className="mb-8">
+          <UnitProgress unidad={unidad} />
+        </div>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {unidad.lecciones?.map((l) => {
