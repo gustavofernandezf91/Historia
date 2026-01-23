@@ -5,8 +5,9 @@ type Bloque = {
   tipo: string;
   titulo?: string;
   texto?: string;
+  contenido?: string;
   items?: string[];
-  tareas?: string[];
+  tareas?: string[] | string;
   recompensa?: string;
   fuente?: {
     tipo?: string;
@@ -48,44 +49,51 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
   };
 
   const [seleccion, setSeleccion] = useState<number | null>(null);
-const [mostrandoFeedback, setMostrandoFeedback] = useState(false);
+  const [mostrandoFeedback, setMostrandoFeedback] = useState(false);
 
-const isEvaluacionQuiz = bloque.tipo === "evaluacion" && !!bloque.quiz;
+  const isEvaluacionQuiz = bloque.tipo === "evaluacion" && !!bloque.quiz;
 
-const esCorrecta =
-  mostrandoFeedback &&
-  seleccion !== null &&
-  bloque.quiz &&
-  seleccion === bloque.quiz.correcta;
+  const esCorrecta =
+    mostrandoFeedback &&
+    seleccion !== null &&
+    bloque.quiz &&
+    seleccion === bloque.quiz.correcta;
 
-const isMision = bloque.tipo === "mision" && Array.isArray(bloque.tareas) && bloque.tareas.length > 0;
+  const tareas = Array.isArray(bloque.tareas)
+    ? bloque.tareas
+    : bloque.tareas
+      ? [bloque.tareas]
+      : [];
+  const isMision = bloque.tipo === "mision" && tareas.length > 0;
 
-// Clave única para guardar progreso (por bloque + url actual)
-const storageKey =
-  typeof window !== "undefined"
-    ? `historiapp:mision:${window.location.pathname}:${bloque.titulo ?? "mision"}`
-    : "";
+  // Clave única para guardar progreso (por bloque + url actual)
+  const storageKey =
+    typeof window !== "undefined"
+      ? `historiapp:mision:${window.location.pathname}:${bloque.titulo ?? "mision"}`
+      : "";
 
-const [checks, setChecks] = useState<boolean[]>(() => {
-  if (typeof window === "undefined") return bloque.tareas ? bloque.tareas.map(() => false) : [];
-  try {
-    const saved = localStorage.getItem(storageKey);
-    if (saved) return JSON.parse(saved);
-  } catch {}
-  return bloque.tareas ? bloque.tareas.map(() => false) : [];
-});
+  const [checks, setChecks] = useState<boolean[]>(() => {
+    if (typeof window === "undefined") return tareas.map(() => false);
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return tareas.map(() => false);
+  });
 
-const total = bloque.tareas?.length ?? 0;
-const done = checks.filter(Boolean).length;
-const percent = total > 0 ? Math.round((done / total) * 100) : 0;
+  const total = tareas.length;
+  const done = checks.filter(Boolean).length;
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0;
 
-function toggleTask(idx: number) {
-  const next = checks.map((v, i) => (i === idx ? !v : v));
-  setChecks(next);
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(next));
-  } catch {}
-}
+  function toggleTask(idx: number) {
+    const next = checks.map((v, i) => (i === idx ? !v : v));
+    setChecks(next);
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(next));
+    } catch {}
+  }
+
+  const texto = bloque.texto ?? bloque.contenido;
 
   return (
     <div className={`rounded-xl shadow p-6 ${style.bg} ${style.border}`}>
@@ -96,7 +104,7 @@ function toggleTask(idx: number) {
       </div>
 
       {bloque.titulo && <h2 className="text-2xl font-semibold mb-2">{bloque.titulo}</h2>}
-      {bloque.texto && <p className="text-slate-800 leading-relaxed whitespace-pre-wrap">{bloque.texto}</p>}
+      {texto && <p className="text-slate-800 leading-relaxed whitespace-pre-wrap">{texto}</p>}
 
       {bloque.items && bloque.items.length > 0 && (
         <ul className="list-disc pl-6 mt-4 text-slate-800">
@@ -129,116 +137,115 @@ function toggleTask(idx: number) {
         </div>
       )}
       {isEvaluacionQuiz && bloque.quiz && (
-  <div className="mt-4">
-    <p className="font-semibold mb-3">{bloque.quiz.pregunta}</p>
+        <div className="mt-4">
+          <p className="font-semibold mb-3">{bloque.quiz.pregunta}</p>
 
-    <div className="space-y-2 mt-2">
-      {bloque.quiz.opciones.map((op, idx) => (
-        <label
-          key={idx}
-          className="flex items-start gap-3 p-3 rounded-lg bg-white/80 hover:bg-white cursor-pointer border border-slate-200"
-        >
-          <input
-            className="mt-1"
-            type="radio"
-            name={`quiz-${bloque.titulo ?? "evaluacion"}`}
-            checked={seleccion === idx}
-            onChange={() => {
-              setSeleccion(idx);
-              setMostrandoFeedback(false);
-            }}
-          />
-          <span className="text-slate-800">{op}</span>
-        </label>
-      ))}
-    </div>
-
-    <button
-  className="mt-4 px-4 py-2 rounded-lg bg-slate-900 text-white disabled:opacity-50"
-  disabled={seleccion === null && !mostrandoFeedback}
-  onClick={() => {
-    if (!mostrandoFeedback) {
-      setMostrandoFeedback(true);
-    } else {
-      setSeleccion(null);
-      setMostrandoFeedback(false);
-    }
-  }}
->
-  {!mostrandoFeedback ? "Revisar" : "Reintentar"}
-</button>
-
-
-    {mostrandoFeedback && (
-      <div
-  className={`mt-4 p-4 rounded-lg border ${
-    esCorrecta
-      ? "bg-emerald-50 border-emerald-200"
-      : "bg-rose-50 border-rose-200"
-  }`}
->
-        <p className="font-semibold mb-1">
-          {esCorrecta ? "✅ Correcto" : "❌ Aún no"}
-        </p>
-        <p className="text-slate-800">
-          {esCorrecta
-            ? bloque.quiz.feedbackCorrecto ?? "¡Bien!"
-            : bloque.quiz.feedbackIncorrecto ?? "Intenta nuevamente."}
-        </p>
-      </div>
-    )}
-  </div>
-)}
-{isMision && bloque.tareas && (
-  <div className="mt-4">
-    <div className="flex items-center justify-between mb-2">
-      <p className="text-sm font-semibold text-slate-800">
-        Progreso: {done}/{total}
-      </p>
-      <p className="text-sm text-slate-600">{percent}%</p>
-    </div>
-
-    <div className="h-2 w-full bg-white/70 rounded-full overflow-hidden border border-slate-200">
-      <div
-        className="h-2 bg-slate-900"
-        style={{ width: `${percent}%` }}
-      />
-    </div>
-
-    <div className="mt-4 space-y-2">
-      {bloque.tareas.map((t, idx) => (
-        <label
-          key={idx}
-          className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer bg-white/80 hover:bg-white ${
-            checks[idx] ? "border-emerald-200" : "border-slate-200"
-          }`}
-        >
-          <input
-            className="mt-1"
-            type="checkbox"
-            checked={!!checks[idx]}
-            onChange={() => toggleTask(idx)}
-          />
-          <div>
-            <p className="text-slate-800">{t}</p>
-            {checks[idx] && (
-              <p className="text-xs text-emerald-700 mt-1">✅ Completada</p>
-            )}
+          <div className="space-y-2 mt-2">
+            {bloque.quiz.opciones.map((op, idx) => (
+              <label
+                key={idx}
+                className="flex items-start gap-3 p-3 rounded-lg bg-white/80 hover:bg-white cursor-pointer border border-slate-200"
+              >
+                <input
+                  className="mt-1"
+                  type="radio"
+                  name={`quiz-${bloque.titulo ?? "evaluacion"}`}
+                  checked={seleccion === idx}
+                  onChange={() => {
+                    setSeleccion(idx);
+                    setMostrandoFeedback(false);
+                  }}
+                />
+                <span className="text-slate-800">{op}</span>
+              </label>
+            ))}
           </div>
-        </label>
-      ))}
-    </div>
 
-    {done === total && total > 0 && (
-      <div className="mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200">
-        <p className="font-semibold text-emerald-900">🎉 ¡Misión completada!</p>
-        {bloque.recompensa && (
-          <p className="text-emerald-800 mt-1">{bloque.recompensa}</p>
-        )}
-      </div>
-    )}
-  </div>
-)}
+          <button
+            className="mt-4 px-4 py-2 rounded-lg bg-slate-900 text-white disabled:opacity-50"
+            disabled={seleccion === null && !mostrandoFeedback}
+            onClick={() => {
+              if (!mostrandoFeedback) {
+                setMostrandoFeedback(true);
+              } else {
+                setSeleccion(null);
+                setMostrandoFeedback(false);
+              }
+            }}
+          >
+            {!mostrandoFeedback ? "Revisar" : "Reintentar"}
+          </button>
+
+          {mostrandoFeedback && (
+            <div
+              className={`mt-4 p-4 rounded-lg border ${
+                esCorrecta
+                  ? "bg-emerald-50 border-emerald-200"
+                  : "bg-rose-50 border-rose-200"
+              }`}
+            >
+              <p className="font-semibold mb-1">
+                {esCorrecta ? "✅ Correcto" : "❌ Aún no"}
+              </p>
+              <p className="text-slate-800">
+                {esCorrecta
+                  ? bloque.quiz.feedbackCorrecto ?? "¡Bien!"
+                  : bloque.quiz.feedbackIncorrecto ?? "Intenta nuevamente."}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+      {isMision && (
+        <div className="mt-4">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-semibold text-slate-800">
+              Progreso: {done}/{total}
+            </p>
+            <p className="text-sm text-slate-600">{percent}%</p>
+          </div>
+
+          <div className="h-2 w-full bg-white/70 rounded-full overflow-hidden border border-slate-200">
+            <div
+              className="h-2 bg-slate-900"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+
+          <div className="mt-4 space-y-2">
+            {tareas.map((t, idx) => (
+              <label
+                key={idx}
+                className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer bg-white/80 hover:bg-white ${
+                  checks[idx] ? "border-emerald-200" : "border-slate-200"
+                }`}
+              >
+                <input
+                  className="mt-1"
+                  type="checkbox"
+                  checked={!!checks[idx]}
+                  onChange={() => toggleTask(idx)}
+                />
+                <div>
+                  <p className="text-slate-800">{t}</p>
+                  {checks[idx] && (
+                    <p className="text-xs text-emerald-700 mt-1">✅ Completada</p>
+                  )}
+                </div>
+              </label>
+            ))}
+          </div>
+
+          {done === total && total > 0 && (
+            <div className="mt-4 p-4 rounded-lg bg-emerald-50 border border-emerald-200">
+              <p className="font-semibold text-emerald-900">🎉 ¡Misión completada!</p>
+              {bloque.recompensa && (
+                <p className="text-emerald-800 mt-1">{bloque.recompensa}</p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
 
     </div>
   );

@@ -5,7 +5,9 @@ type Leccion = {
   id: string;
   titulo: string;
   habilidad?: string;
+  habilidad_principal?: string;
   contenidos?: string;
+  contenidos_breves?: string[];
 };
 
 type Unidad = {
@@ -56,34 +58,43 @@ export default async function UnidadPage({
         </header>
 
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {unidad.lecciones?.map((l) => (
-            <div
-              key={l.id}
-              className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition"
-            >
-              <h2 className="text-xl font-semibold mb-2">{l.titulo}</h2>
+          {unidad.lecciones?.map((l) => {
+            const habilidad = l.habilidad_principal ?? l.habilidad;
+            const contenidos = l.contenidos_breves ?? (l.contenidos ? [l.contenidos] : []);
 
-              {l.habilidad && (
-                <p className="text-slate-700 mb-2">
-                  <b>Habilidad:</b> {l.habilidad}
-                </p>
-              )}
-
-              {l.contenidos && (
-                <p className="text-slate-600">
-                  <b>Contenidos:</b> {l.contenidos}
-                </p>
-              )}
-
-              <Link
-                href={`/unidad/${unidad.id}/leccion/${l.id}`}
-                className="inline-block mt-4 text-blue-600 underline text-sm"
+            return (
+              <div
+                key={l.id}
+                className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition"
               >
-                Entrar a la lección →
-                </Link>
+                <h2 className="text-xl font-semibold mb-2">{l.titulo}</h2>
 
-            </div>
-          ))}
+                {habilidad && (
+                  <p className="text-slate-700 mb-2">
+                    <b>Habilidad:</b> {habilidad}
+                  </p>
+                )}
+
+                {contenidos.length > 0 && (
+                  <div className="text-slate-600">
+                    <b>Contenidos:</b>
+                    <ul className="list-disc pl-5 mt-1">
+                      {contenidos.map((contenido) => (
+                        <li key={contenido}>{contenido}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <Link
+                  href={`/unidad/${unidad.id}/leccion/${l.id}`}
+                  className="inline-block mt-4 text-blue-600 underline text-sm"
+                >
+                  Entrar a la lección →
+                </Link>
+              </div>
+            );
+          })}
         </section>
       </div>
     </main>

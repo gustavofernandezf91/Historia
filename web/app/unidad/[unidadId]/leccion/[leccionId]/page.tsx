@@ -1,4 +1,5 @@
 
+import BlockCard from "@/component/BlockCard";
 import curriculum from "@/content/curriculum.json";
 import Link from "next/link";
 
@@ -6,11 +7,21 @@ type Bloque = {
   tipo: string;            // ej: "enganche", "mision", "fuente", "actividad", "cierre"
   titulo?: string;
   texto?: string;
+  contenido?: string;
   items?: string[];
+  tareas?: string[] | string;
+  recompensa?: string;
   fuente?: {
     tipo?: string;         // "texto", "imagen", "video", etc.
     contenido?: string;    // url o texto
     preguntas?: string[];
+  };
+  quiz?: {
+    pregunta: string;
+    opciones: string[];
+    correcta: number;
+    feedbackCorrecto?: string;
+    feedbackIncorrecto?: string;
   };
 };
 
@@ -18,7 +29,9 @@ type Leccion = {
   id: string;
   titulo: string;
   habilidad?: string;
+  habilidad_principal?: string;
   contenidos?: string;
+  contenidos_breves?: string[];
   bloques?: Bloque[];
 };
 
@@ -57,6 +70,9 @@ export default async function LeccionPage({
     );
   }
 
+  const habilidad = leccion.habilidad_principal ?? leccion.habilidad;
+  const contenidos = leccion.contenidos_breves ?? (leccion.contenidos ? [leccion.contenidos] : []);
+
   return (
     <main className="min-h-screen bg-slate-50 p-10">
       <div className="max-w-5xl mx-auto">
@@ -68,15 +84,20 @@ export default async function LeccionPage({
           <h1 className="text-4xl font-bold mb-3">{leccion.titulo}</h1>
 
           <div className="bg-white rounded-xl shadow p-6">
-            {leccion.habilidad && (
+            {habilidad && (
               <p className="text-slate-800 mb-2">
-                <b>Habilidad:</b> {leccion.habilidad}
+                <b>Habilidad:</b> {habilidad}
               </p>
             )}
-            {leccion.contenidos && (
-              <p className="text-slate-600">
-                <b>Contenidos:</b> {leccion.contenidos}
-              </p>
+            {contenidos.length > 0 && (
+              <div className="text-slate-600">
+                <b>Contenidos:</b>
+                <ul className="list-disc pl-5 mt-1">
+                  {contenidos.map((contenido) => (
+                    <li key={contenido}>{contenido}</li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
         </header>
@@ -89,47 +110,7 @@ export default async function LeccionPage({
               </p>
             </div>
           ) : (
-            leccion.bloques.map((b, i) => (
-              <div key={i} className="bg-white rounded-xl shadow p-6">
-                <p className="text-xs uppercase tracking-wide text-slate-500 mb-2">
-                  {b.tipo}
-                </p>
-
-                {b.titulo && <h2 className="text-2xl font-semibold mb-2">{b.titulo}</h2>}
-                {b.texto && <p className="text-slate-700 leading-relaxed">{b.texto}</p>}
-
-                {b.items && b.items.length > 0 && (
-                  <ul className="list-disc pl-6 mt-4 text-slate-700">
-                    {b.items.map((it, idx) => (
-                      <li key={idx}>{it}</li>
-                    ))}
-                  </ul>
-                )}
-
-                {b.fuente && (
-                  <div className="mt-4 p-4 rounded-lg bg-slate-50">
-                    <p className="font-semibold mb-2">Fuente</p>
-                    {b.fuente.tipo && (
-                      <p className="text-slate-600 text-sm mb-2">Tipo: {b.fuente.tipo}</p>
-                    )}
-                    {b.fuente.contenido && (
-                      <p className="text-slate-700 whitespace-pre-wrap">{b.fuente.contenido}</p>
-                    )}
-
-                    {b.fuente.preguntas && b.fuente.preguntas.length > 0 && (
-                      <>
-                        <p className="font-semibold mt-4 mb-2">Preguntas</p>
-                        <ul className="list-disc pl-6 text-slate-700">
-                          {b.fuente.preguntas.map((q, qi) => (
-                            <li key={qi}>{q}</li>
-                          ))}
-                        </ul>
-                      </>
-                    )}
-                  </div>
-                )}
-              </div>
-            ))
+            leccion.bloques.map((b, i) => <BlockCard key={i} bloque={b} />)
           )}
         </section>
       </div>
