@@ -1,8 +1,18 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 import { getBlockDefaults } from "./progress/getBlockDefaults";
 import { markBlockComplete, wasBlockCompleted } from "./progress/progressStore";
+import DragAndOrder from "./blocks/DragAndOrder";
+import QuizWithFeedback from "./blocks/QuizWithFeedback";
+import QuizConFeedback from "./blocks/QuizConFeedback";
+import SimpleQuiz from "./blocks/SimpleQuiz";
+import Classification from "./blocks/Classification";
+import Comparison from "./blocks/Comparison";
+import Matching from "./blocks/Matching";
+import RubricSimple from "./blocks/RubricSimple";
+import InteractiveMap from "./blocks/InteractiveMap";
+import FinalEvaluation from "./blocks/FinalEvaluation";
 
 type Bloque = {
   tipo: string;
@@ -14,6 +24,8 @@ type Bloque = {
   tareas?: string[] | string;
   recompensa?: string;
   xp?: number;
+  formato?: string;
+  ordenCorrecto?: string[];
   fuente?: {
     tipo?: string;
     contenido?: string;
@@ -59,17 +71,7 @@ export default function BlockCard({
     emoji: "📌",
   };
 
-  const [seleccion, setSeleccion] = useState<number | null>(null);
-  const [mostrandoFeedback, setMostrandoFeedback] = useState(false);
   const [completado, setCompletado] = useState(false);
-
-  const isEvaluacionQuiz = bloque.tipo === "evaluacion" && !!bloque.quiz;
-
-  const esCorrecta =
-    mostrandoFeedback &&
-    seleccion !== null &&
-    bloque.quiz &&
-    seleccion === bloque.quiz.correcta;
 
   const texto = bloque.texto ?? bloque.contenido;
 
@@ -129,13 +131,67 @@ export default function BlockCard({
     }
   }, [done, isMision, total, blockId, xp]);
 
-  useEffect(() => {
-    if (isEvaluacionQuiz && esCorrecta) {
-      markBlockComplete({ blockId, xp });
-      trackEvent("quiz_completado", { blockId, xp });
-      setCompletado(true);
+  const handleEvaluacionCompleta = useCallback(() => {
+    if (completado) return;
+    markBlockComplete({ blockId, xp });
+    trackEvent("evaluacion_completada", {
+      blockId,
+      xp,
+      formato: bloque.formato ?? (bloque.quiz ? "quiz" : "desconocido"),
+    });
+    setCompletado(true);
+  }, [blockId, bloque.formato, bloque.quiz, completado, xp]);
+
+  const evaluacionContent = (() => {
+    if (bloque.tipo !== "evaluacion") return null;
+
+    if (bloque.quiz) {
+      return (
+        <QuizWithFeedback
+          quiz={bloque.quiz}
+          blockId={blockId}
+          onComplete={handleEvaluacionCompleta}
+          xp={xp}
+        />
+      );
     }
-  }, [isEvaluacionQuiz, esCorrecta, blockId, xp]);
+
+    const items = bloque.items ?? [];
+
+    switch (bloque.formato) {
+      case "arrastrar_y_ordenar":
+        return (
+          <DragAndOrder
+            items={items}
+            expectedOrder={bloque.ordenCorrecto}
+            onComplete={handleEvaluacionCompleta}
+            xp={xp}
+          />
+        );
+      case "quiz_con_feedback":
+        return <QuizConFeedback items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "quiz":
+        return <SimpleQuiz items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "clasificacion":
+        return <Classification items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "comparacion":
+        return <Comparison items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "emparejar":
+        return <Matching items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "rubrica_simple":
+        return <RubricSimple items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "mapa_interactivo":
+        return <InteractiveMap items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      case "evaluacion_final":
+        return <FinalEvaluation items={items} onComplete={handleEvaluacionCompleta} xp={xp} />;
+      default:
+        return (
+          <div className="mt-4 rounded-lg border border-slate-200 bg-white/80 p-4 text-sm text-slate-600">
+            Formato de evaluación no reconocido.
+          </div>
+        );
+    }
+  })();
 
   return (
     <div className={`rounded-xl shadow p-6 ${style.bg} ${style.border}`}>
@@ -156,7 +212,9 @@ export default function BlockCard({
       {bloque.titulo && <h2 className="text-2xl font-semibold mb-2">{bloque.titulo}</h2>}
       {texto && <p className="text-slate-800 leading-relaxed whitespace-pre-wrap">{texto}</p>}
 
-      {bloque.items && bloque.items.length > 0 && (
+      {bloque.items &&
+        bloque.items.length > 0 &&
+        !(bloque.tipo === "evaluacion" && bloque.formato) && (
         <ul className="list-disc pl-6 mt-4 text-slate-800">
           {bloque.items.map((it, idx) => (
             <li key={idx}>{it}</li>
@@ -186,73 +244,7 @@ export default function BlockCard({
           )}
         </div>
       )}
-      {isEvaluacionQuiz && bloque.quiz && (
-        <div className="mt-4">
-          <p className="font-semibold mb-3">{bloque.quiz.pregunta}</p>
-
-          <div className="space-y-2 mt-2">
-            {bloque.quiz.opciones.map((op, idx) => (
-              <label
-                key={idx}
-                className="flex items-start gap-3 p-3 rounded-lg bg-white/80 hover:bg-white cursor-pointer border border-slate-200"
-              >
-                <input
-                  className="mt-1"
-                  type="radio"
-                  name={`quiz-${blockId}`}
-                  checked={seleccion === idx}
-                  onChange={() => {
-                    setSeleccion(idx);
-                    setMostrandoFeedback(false);
-                  }}
-                  aria-label={`Opción ${idx + 1}: ${op}`}
-                />
-                <span className="text-slate-800">{op}</span>
-              </label>
-            ))}
-          </div>
-
-          <button
-            className="mt-4 px-4 py-2 rounded-lg bg-slate-900 text-white disabled:opacity-50"
-            disabled={seleccion === null && !mostrandoFeedback}
-            onClick={() => {
-              if (!mostrandoFeedback) {
-                setMostrandoFeedback(true);
-              } else {
-                setSeleccion(null);
-                setMostrandoFeedback(false);
-              }
-            }}
-            aria-live="polite"
-          >
-            {!mostrandoFeedback ? "Revisar" : "Reintentar"}
-          </button>
-
-          {mostrandoFeedback && (
-            <div
-              className={`mt-4 p-4 rounded-lg border ${
-                esCorrecta
-                  ? "bg-emerald-50 border-emerald-200"
-                  : "bg-rose-50 border-rose-200"
-              }`}
-            >
-              <p className="font-semibold mb-1">
-                {esCorrecta ? "✅ Correcto" : "❌ Aún no"}
-              </p>
-              <p className="text-slate-800">
-                {esCorrecta
-                  ? bloque.quiz.feedbackCorrecto ?? "¡Bien!"
-                  : bloque.quiz.feedbackIncorrecto ?? "Intenta nuevamente."}
-              </p>
-              {esCorrecta && (
-                <p className="text-xs text-emerald-700 mt-2">
-                  Has ganado {xp} XP.
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+      {evaluacionContent}
       {isMision && (
         <div className="mt-4">
           <div className="flex items-center justify-between mb-2">
