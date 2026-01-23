@@ -59,11 +59,27 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
     bloque.quiz &&
     seleccion === bloque.quiz.correcta;
 
-  const tareas = Array.isArray(bloque.tareas)
-    ? bloque.tareas
-    : bloque.tareas
-      ? [bloque.tareas]
-      : [];
+  const texto = bloque.texto ?? bloque.contenido;
+
+  const tareas = (() => {
+    const normalizar = (entrada: string) =>
+      entrada
+        .split(/\s*(?:\.|;|\?|!)\s*/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+    if (Array.isArray(bloque.tareas)) return bloque.tareas.filter(Boolean);
+    if (typeof bloque.tareas === "string" && bloque.tareas.trim()) {
+      const tareasDesdeTexto = normalizar(bloque.tareas);
+      return tareasDesdeTexto.length > 0 ? tareasDesdeTexto : [bloque.tareas.trim()];
+    }
+    if (bloque.tipo === "mision" && typeof texto === "string" && texto.trim()) {
+      const tareasDesdeTexto = normalizar(texto);
+      return tareasDesdeTexto.length > 0 ? tareasDesdeTexto : [texto.trim()];
+    }
+    return [];
+  })();
+
   const isMision = bloque.tipo === "mision" && tareas.length > 0;
 
   // Clave única para guardar progreso (por bloque + url actual)
@@ -92,8 +108,6 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
       localStorage.setItem(storageKey, JSON.stringify(next));
     } catch {}
   }
-
-  const texto = bloque.texto ?? bloque.contenido;
 
   return (
     <div className={`rounded-xl shadow p-6 ${style.bg} ${style.border}`}>
@@ -200,7 +214,7 @@ export default function BlockCard({ bloque }: { bloque: Bloque }) {
         <div className="mt-4">
           <div className="flex items-center justify-between mb-2">
             <p className="text-sm font-semibold text-slate-800">
-              Progreso: {done}/{total}
+              Progreso: {done} de {total} completadas
             </p>
             <p className="text-sm text-slate-600">{percent}%</p>
           </div>
