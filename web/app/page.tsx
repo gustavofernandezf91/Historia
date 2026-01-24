@@ -62,9 +62,9 @@ export default function Home() {
     <main className="min-h-screen">
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 text-white">
         <div className="pointer-events-none absolute inset-0 opacity-70">
-          <div className="absolute left-10 top-10 h-40 w-40 rounded-full bg-sky-500/20 blur-3xl" />
-          <div className="absolute right-10 top-24 h-52 w-52 rounded-full bg-purple-500/20 blur-3xl" />
-          <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-indigo-400/10 blur-[120px]" />
+          <div className="animate-float-slow absolute left-10 top-10 h-40 w-40 rounded-full bg-sky-500/20 blur-3xl" />
+          <div className="animate-float-slower absolute right-10 top-24 h-52 w-52 rounded-full bg-purple-500/20 blur-3xl" />
+          <div className="animate-float-slow absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-indigo-400/10 blur-[120px]" />
         </div>
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
@@ -155,7 +155,7 @@ export default function Home() {
               {misionesDestacadas.map((mision) => (
                 <div
                   key={mision.titulo}
-                  className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm"
+                  className="rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                     {mision.titulo}
@@ -181,7 +181,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-6">
-            <div className="rounded-3xl border border-slate-200/70 bg-gradient-to-br from-indigo-600 via-sky-500 to-emerald-400 p-6 text-white shadow-xl shadow-slate-200/60">
+            <div className="animate-shimmer rounded-3xl border border-slate-200/70 bg-gradient-to-br from-indigo-600 via-sky-500 to-emerald-400 p-6 text-white shadow-xl shadow-slate-200/60">
               <p className="text-xs uppercase tracking-wide text-white/70">
                 Centro de recompensas
               </p>
