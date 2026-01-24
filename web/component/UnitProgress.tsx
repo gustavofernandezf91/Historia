@@ -48,7 +48,7 @@ export default function UnitProgress({ unidad }: { unidad: Unidad }) {
   if (blocks.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <div className="rounded-2xl border border-sky-100/80 bg-white/90 p-6 shadow-lg shadow-slate-900/10 backdrop-blur">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="text-sm font-semibold text-slate-500">Progreso de la unidad</p>
@@ -61,9 +61,9 @@ export default function UnitProgress({ unidad }: { unidad: Unidad }) {
           <p className="text-2xl font-semibold text-slate-900">{stats.xpEarned} XP</p>
         </div>
       </div>
-      <div className="mt-4 h-2 w-full rounded-full bg-slate-100">
+      <div className="mt-4 h-2 w-full rounded-full bg-slate-100/80">
         <div
-          className="h-2 rounded-full bg-slate-900 transition-all"
+          className="h-2 rounded-full bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 transition-all"
           style={{ width: `${stats.percent}%` }}
         />
       </div>

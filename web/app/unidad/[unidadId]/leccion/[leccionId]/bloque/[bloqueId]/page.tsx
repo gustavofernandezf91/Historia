@@ -66,7 +66,7 @@ export default async function BloquePage({
 
   if (!unidad || !leccion || !selected) {
     return (
-      <main className="min-h-screen bg-slate-50">
+      <main className="min-h-screen bg-slate-950">
         <section className="bg-gradient-to-br from-indigo-50 via-white to-rose-50 p-10">
           <div className="max-w-4xl mx-auto">
             <div className="bg-white rounded-2xl shadow p-8">
@@ -124,7 +124,7 @@ export default async function BloquePage({
   ];
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-slate-950">
       <section className="bg-gradient-to-br from-indigo-50 via-white to-emerald-50 p-10">
         <div className="max-w-5xl mx-auto">
           <Link
@@ -168,13 +168,14 @@ export default async function BloquePage({
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-10 pb-12 -mt-10">
-        <div className="grid gap-6 lg:grid-cols-[2.2fr,1fr]">
+      <section className="-mt-10 bg-gradient-to-b from-white via-slate-50 to-sky-50/70">
+        <div className="mx-auto max-w-5xl px-10 pb-12">
+          <div className="grid gap-6 lg:grid-cols-[2.2fr,1fr]">
           <div className="space-y-6">
             <BlockCard bloque={selected.bloque} blockId={selected.id} />
 
             <div className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-6 shadow-lg shadow-slate-900/10">
                 <h3 className="text-lg font-semibold text-slate-900 mb-3">Conexión con la lección</h3>
                 {habilidad && (
                   <p className="text-sm text-slate-600 mb-4">
@@ -197,7 +198,7 @@ export default async function BloquePage({
                 )}
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-6 shadow-lg shadow-slate-900/10">
                 <h3 className="text-lg font-semibold text-slate-900 mb-3">Guía dinámica</h3>
                 {pistas.length > 0 ? (
                   <ul className="space-y-3 text-sm text-slate-700">
@@ -220,7 +221,7 @@ export default async function BloquePage({
           </div>
 
           <aside className="space-y-4">
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-5 shadow-lg shadow-slate-900/10">
               <p className="text-sm font-semibold text-slate-500">Ruta de avance</p>
               <p className="text-2xl font-semibold text-slate-900 mt-2">
                 {bloqueIndex + 1} / {blocks.length}
@@ -237,7 +238,7 @@ export default async function BloquePage({
               </div>
             )}
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
+            <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-5 shadow-lg shadow-slate-900/10 space-y-3">
               <div className="flex items-center justify-between text-sm text-slate-600">
                 <span>XP disponible</span>
                 <span className="font-semibold text-slate-900">{xp}</span>
@@ -248,7 +249,7 @@ export default async function BloquePage({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
+            <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-5 shadow-lg shadow-slate-900/10 space-y-3">
               {previous ? (
                 <Link
                   className="flex w-full items-center justify-between rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
@@ -280,6 +281,7 @@ export default async function BloquePage({
               )}
             </div>
           </aside>
+          </div>
         </div>
       </section>
     </main>
