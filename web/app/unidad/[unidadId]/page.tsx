@@ -35,10 +35,10 @@ export default async function UnidadPage({
 
   if (!unidad) {
     return (
-      <main className="min-h-screen bg-slate-50 p-10">
-        <div className="max-w-4xl mx-auto bg-white rounded-xl shadow p-6">
-          <h1 className="text-2xl font-bold mb-2">Unidad no encontrada</h1>
-          <p className="text-slate-600 mb-6">
+      <main className="min-h-screen px-6 py-12">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-slate-200/70 bg-white/90 p-8 shadow-xl shadow-slate-200/60 backdrop-blur">
+          <h1 className="mb-2 text-2xl font-bold">Unidad no encontrada</h1>
+          <p className="mb-6 text-slate-600">
             No existe una unidad con el id: <b>{unidadId}</b>
           </p>
           <Link className="text-blue-600 underline" href="/">
@@ -50,16 +50,16 @@ export default async function UnidadPage({
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 p-10">
-      <div className="max-w-5xl mx-auto">
+    <main className="min-h-screen px-6 py-12">
+      <div className="mx-auto max-w-5xl rounded-3xl border border-slate-200/70 bg-white/90 p-10 shadow-xl shadow-slate-200/60 backdrop-blur">
         <Link className="text-blue-600 underline" href="/">
           ← Volver a unidades
         </Link>
 
-        <header className="mt-6 mb-10">
-          <h1 className="text-4xl font-bold mb-3">{unidad.titulo}</h1>
+        <header className="mb-10 mt-6">
+          <h1 className="mb-3 text-4xl font-bold text-slate-900">{unidad.titulo}</h1>
           {unidad.descripcion && (
-            <p className="text-slate-600 text-lg">{unidad.descripcion}</p>
+            <p className="text-lg text-slate-600">{unidad.descripcion}</p>
           )}
         </header>
 
@@ -67,7 +67,7 @@ export default async function UnidadPage({
           <UnitProgress unidad={unidad} />
         </div>
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {unidad.lecciones?.map((l) => {
             const habilidad = l.habilidad_principal ?? l.habilidad;
             const contenidos = l.contenidos_breves ?? (l.contenidos ? [l.contenidos] : []);
@@ -75,12 +75,12 @@ export default async function UnidadPage({
             return (
               <div
                 key={l.id}
-                className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition"
+                className="rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
               >
-                <h2 className="text-xl font-semibold mb-2">{l.titulo}</h2>
+                <h2 className="mb-2 text-xl font-semibold text-slate-900">{l.titulo}</h2>
 
                 {habilidad && (
-                  <p className="text-slate-700 mb-2">
+                  <p className="mb-2 text-slate-700">
                     <b>Habilidad:</b> {habilidad}
                   </p>
                 )}
@@ -88,7 +88,7 @@ export default async function UnidadPage({
                 {contenidos.length > 0 && (
                   <div className="text-slate-600">
                     <b>Contenidos:</b>
-                    <ul className="list-disc pl-5 mt-1">
+                    <ul className="mt-1 list-disc pl-5">
                       {contenidos.map((contenido) => (
                         <li key={contenido}>{contenido}</li>
                       ))}
@@ -98,7 +98,7 @@ export default async function UnidadPage({
 
                 <Link
                   href={`/unidad/${unidad.id}/leccion/${l.id}`}
-                  className="inline-block mt-4 text-blue-600 underline text-sm"
+                  className="mt-4 inline-block text-sm text-blue-600 underline"
                 >
                   Entrar a la lección →
                 </Link>

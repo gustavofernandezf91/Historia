@@ -25,7 +25,7 @@ export default function Home() {
   }));
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen">
       <section className="bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950 text-white">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
@@ -75,48 +75,50 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="unidades" className="max-w-6xl mx-auto px-6 py-12">
-        <header className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-3xl font-bold text-slate-900">Tus unidades de aventura</h2>
-            <p className="text-slate-600">
-              Elige una misión, desbloquea logros y gana puntos por cada desafío.
-            </p>
-          </div>
-          <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-700">
-            ⭐ 4.8/5 diversión garantizada
-          </span>
-        </header>
+      <section id="unidades" className="mx-auto max-w-6xl px-6 pb-16 pt-12">
+        <div className="rounded-3xl border border-slate-200/70 bg-white/90 p-8 shadow-xl shadow-slate-200/60 backdrop-blur">
+          <header className="mb-8 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-3xl font-bold text-slate-900">Tus unidades de aventura</h2>
+              <p className="text-slate-600">
+                Elige una misión, desbloquea logros y gana puntos por cada desafío.
+              </p>
+            </div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-indigo-100/80 px-4 py-2 text-sm font-semibold text-indigo-700">
+              ⭐ 4.8/5 diversión garantizada
+            </span>
+          </header>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {tarjetas.map((unidad) => (
-            <Link
-              key={unidad.id}
-              href={`/unidad/${unidad.id}`}
-              className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${unidad.color} text-xl shadow-lg shadow-slate-200`}
-                >
-                  {unidad.icono}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {tarjetas.map((unidad) => (
+              <Link
+                key={unidad.id}
+                href={`/unidad/${unidad.id}`}
+                className="group rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              >
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${unidad.color} text-xl shadow-lg shadow-slate-200`}
+                  >
+                    {unidad.icono}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-slate-900">{unidad.titulo}</h3>
+                    <p className="mt-2 text-slate-600">{unidad.descripcion ?? ""}</p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-slate-900">{unidad.titulo}</h3>
-                  <p className="mt-2 text-slate-600">{unidad.descripcion ?? ""}</p>
+                <div className="mt-5 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
+                  <span className="rounded-full bg-slate-100/80 px-3 py-1">Misiones cortas</span>
+                  <span className="rounded-full bg-slate-100/80 px-3 py-1">Puntos extra</span>
+                  <span className="rounded-full bg-slate-100/80 px-3 py-1">Co-op</span>
                 </div>
-              </div>
-              <div className="mt-5 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
-                <span className="rounded-full bg-slate-100 px-3 py-1">Misiones cortas</span>
-                <span className="rounded-full bg-slate-100 px-3 py-1">Puntos extra</span>
-                <span className="rounded-full bg-slate-100 px-3 py-1">Co-op</span>
-              </div>
-              <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
-                Ver desafíos
-                <span className="transition group-hover:translate-x-1">→</span>
-              </div>
-            </Link>
-          ))}
+                <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
+                  Ver desafíos
+                  <span className="transition group-hover:translate-x-1">→</span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
     </main>
