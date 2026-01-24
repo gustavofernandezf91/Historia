@@ -6,6 +6,17 @@ type StoredProgress = Record<
   }
 >;
 
+type DayStats = {
+  completedCount: number;
+  xpEarned: number;
+};
+
+type StreakStats = {
+  current: number;
+  best: number;
+  lastActiveDate: string | null;
+};
+
 const STORAGE_KEY = "historiapp:completedBlocks";
 const PROGRESS_EVENT = "historiapp:progress:update";
 
@@ -54,10 +65,95 @@ export function getProgressStats(blocks: { id: string; xp: number }[]) {
   return { completedCount, totalCount, percent, xpEarned };
 }
 
+function getDayKeyFromTimestamp(timestamp: number) {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getDayKeyFromDate(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function parseDayKey(dayKey: string) {
+  const [year, month, day] = dayKey.split("-").map(Number);
+  return new Date(year, (month ?? 1) - 1, day ?? 1).getTime();
+}
+
+export function getDailyProgressStats(date = new Date()): DayStats {
+  const store = readStore();
+  const targetDayKey = getDayKeyFromDate(date);
+  const entries = Object.values(store).filter(
+    (entry) => getDayKeyFromTimestamp(entry.completedAt) === targetDayKey
+  );
+  const completedCount = entries.length;
+  const xpEarned = entries.reduce((total, entry) => total + entry.xp, 0);
+  return { completedCount, xpEarned };
+}
+
 export function getWeeklyCompletions() {
   const store = readStore();
   const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   return Object.values(store).filter((entry) => entry.completedAt >= oneWeekAgo).length;
+}
+
+export function getStreakStats(): StreakStats {
+  const store = readStore();
+  const dayKeys = new Set(
+    Object.values(store).map((entry) => getDayKeyFromTimestamp(entry.completedAt))
+  );
+
+  if (dayKeys.size === 0) {
+    return { current: 0, best: 0, lastActiveDate: null };
+  }
+
+  const today = new Date();
+  const todayKey = getDayKeyFromDate(today);
+  let current = 0;
+  if (dayKeys.has(todayKey)) {
+    let cursor = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    while (dayKeys.has(getDayKeyFromDate(cursor))) {
+      current += 1;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+  }
+
+  const sortedDays = Array.from(dayKeys)
+    .map((key) => parseDayKey(key))
+    .sort((a, b) => a - b);
+  let best = 0;
+  let streak = 0;
+  for (let index = 0; index < sortedDays.length; index += 1) {
+    if (index === 0) {
+      streak = 1;
+    } else {
+      const previous = sortedDays[index - 1];
+      const currentDay = sortedDays[index];
+      if (currentDay - previous === 24 * 60 * 60 * 1000) {
+        streak += 1;
+      } else {
+        streak = 1;
+      }
+    }
+    if (streak > best) {
+      best = streak;
+    }
+  }
+
+  const lastActiveTimestamp = sortedDays[sortedDays.length - 1] ?? null;
+  const lastActiveDate = lastActiveTimestamp
+    ? new Date(lastActiveTimestamp).toLocaleDateString("es-CL", {
+        day: "numeric",
+        month: "short",
+      })
+    : null;
+
+  return { current, best, lastActiveDate };
 }
 
 export function subscribeToProgressUpdates(callback: () => void) {
