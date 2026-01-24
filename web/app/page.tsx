@@ -68,17 +68,17 @@ export default function Home() {
         </div>
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
           <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl relative">
+            <div className="max-w-2xl relative flex flex-col items-center text-center lg:items-start lg:text-left lg:pl-8">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold text-sky-200">
                 ⚡ Aprende con misiones y desafíos
               </span>
-              <h1 className="mt-5 text-4xl font-bold leading-tight md:text-5xl">
-                HistoriAPP: explora el pasado como si fuera un videojuego.
-              </h1>
-              <p className="mt-4 text-lg text-slate-200">
-                Plataforma educativa para Historia, Geografía y Ciencias Sociales con
-                niveles, retos y logros que ayudan a desarrollar el pensamiento histórico.
-              </p>
+              <div className="mt-6 flex items-center justify-center lg:justify-start">
+                <img
+                  src="/historiapp-logo.svg"
+                  alt="Logo de HistoriAPP"
+                  className="w-56 sm:w-72 md:w-80 drop-shadow-[0_20px_45px_rgba(15,23,42,0.45)]"
+                />
+              </div>
               <div className="mt-6 flex flex-wrap items-center gap-4">
                 <Link
                   href="#unidades"
@@ -86,9 +86,6 @@ export default function Home() {
                 >
                   Empezar misión
                 </Link>
-                <span className="text-sm text-slate-300">
-                  +20 misiones • progreso personalizado • insignias desbloqueables
-                </span>
               </div>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
