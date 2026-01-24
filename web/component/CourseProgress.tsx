@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { buildBlockId } from "./progress/blockId";
 import { getBlockDefaults } from "./progress/getBlockDefaults";
 import { getProgressStats, getWeeklyCompletions } from "./progress/progressStore";
@@ -22,9 +22,6 @@ type Unidad = {
 };
 
 export default function CourseProgress({ unidades }: { unidades: Unidad[] }) {
-  const [stats, setStats] = useState({ completedCount: 0, totalCount: 0, percent: 0, xpEarned: 0 });
-  const [weeklyCount, setWeeklyCount] = useState(0);
-
   const blocks = useMemo(
     () =>
       unidades.flatMap((unidad) =>
@@ -43,10 +40,8 @@ export default function CourseProgress({ unidades }: { unidades: Unidad[] }) {
     [unidades]
   );
 
-  useEffect(() => {
-    setStats(getProgressStats(blocks));
-    setWeeklyCount(getWeeklyCompletions());
-  }, [blocks]);
+  const stats = useMemo(() => getProgressStats(blocks), [blocks]);
+  const weeklyCount = useMemo(() => getWeeklyCompletions(), []);
 
   if (blocks.length === 0) return null;
 

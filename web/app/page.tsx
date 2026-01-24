@@ -17,7 +17,7 @@ type Unidad = {
 };
 
 export default function Home() {
-  const unidades = (curriculum as any).unidades as Unidad[];
+  const { unidades } = curriculum as { unidades: Unidad[] };
   const tarjetas = unidades.map((unidad, index) => ({
     ...unidad,
     icono: ["🧭", "🏛️", "🌎", "📜"][index % 4],

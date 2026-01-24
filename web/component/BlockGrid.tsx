@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { getBlockDefaults } from "./progress/getBlockDefaults";
 import { getProgressStats, wasBlockCompleted } from "./progress/progressStore";
 
@@ -24,14 +24,6 @@ type BlockGridProps = {
 };
 
 export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
-  const [stats, setStats] = useState(() => ({
-    completedCount: 0,
-    totalCount: blocks.length,
-    percent: 0,
-    xpEarned: 0,
-  }));
-  const [completedIds, setCompletedIds] = useState<string[]>([]);
-
   const blockSummaries = useMemo(
     () =>
       blocks.map(({ id, bloque }) => ({
@@ -42,17 +34,21 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
     [blocks]
   );
 
-  useEffect(() => {
-    setStats(
+  const stats = useMemo(
+    () =>
       getProgressStats(
         blocks.map((block) => ({
           id: block.id,
           xp: getBlockDefaults(block.bloque).xp,
         }))
-      )
-    );
-    setCompletedIds(blocks.filter((block) => wasBlockCompleted(block.id)).map((block) => block.id));
-  }, [blocks]);
+      ),
+    [blocks]
+  );
+
+  const completedIds = useMemo(
+    () => blocks.filter((block) => wasBlockCompleted(block.id)).map((block) => block.id),
+    [blocks]
+  );
 
   return (
     <div className="space-y-6">
