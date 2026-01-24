@@ -15,7 +15,12 @@
           "id": "u0l1",
           "titulo": "Lección 0.1: ¿Qué son las Ciencias Sociales y por qué importan?",
           "habilidad_principal": "Conexión pasado–presente (pensamiento crítico)",
-          "contenidos_breves": ["Sociedad", "Ciencias Sociales", "Individuo y comunidad", "Vida cotidiana y decisiones"],
+          "contenidos_breves": [
+            "Sociedad",
+            "Ciencias Sociales",
+            "Individuo y comunidad",
+            "Vida cotidiana y decisiones"
+          ],
           "bloques": [
             {
               "tipo": "enganche",
@@ -47,33 +52,53 @@
               "contenido": "¿Qué decisiones ciudadanas de hoy (votar, informarse, convivir) requieren comprender la sociedad y su historia?"
             },
             {
-  "tipo": "evaluacion",
-  "titulo": "Chequeo rápido",
-  "quiz": {
-    "pregunta": "¿Cuál es un ejemplo de fenómeno social?",
-    "opciones": [
-      "Que la luna tenga fases",
-      "Que muchas personas migren a una ciudad por trabajo",
-      "Que el agua hierva a 100°C",
-      "Que una piedra caiga por gravedad"
-    ],
-    "correcta": 1,
-    "feedbackCorrecto": "Correcto: la migración es un fenómeno social porque involucra decisiones humanas y contexto histórico-social.",
-    "feedbackIncorrecto": "No del todo: piensa en algo que dependa de la vida en sociedad (personas, normas, cultura, economía)."
-  }
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "quiz": {
+                "pregunta": "¿Cuál es un ejemplo de fenómeno social?",
+                "opciones": [
+                  "Que la luna tenga fases",
+                  "Que muchas personas migren a una ciudad por trabajo",
+                  "Que el agua hierva a 100°C",
+                  "Que una piedra caiga por gravedad"
+                ],
+                "correcta": 1,
+                "feedbackCorrecto": "Correcto: la migración es un fenómeno social porque involucra decisiones humanas y contexto histórico-social.",
+                "feedbackIncorrecto": "No del todo: piensa en algo que dependa de la vida en sociedad (personas, normas, cultura, economía)."
+              }
             },
             {
               "tipo": "reflexion",
               "titulo": "Cierre",
               "contenido": "¿Qué cosa de tu vida diaria entendiste distinto después de esta lección?"
             }
+          ],
+          "actividades_sugeridas": [
+            "Mapa de objetos con historia: estudiantes traen una foto de un objeto cotidiano y explican su origen histórico en un mural colaborativo.",
+            "Entrevista breve en casa: preguntar a un adulto por un cambio social vivido (tecnología, trabajo, migración) y registrarlo en una ficha.",
+            "Mini debate guiado: ¿qué decisiones ciudadanas requieren comprender la sociedad?"
+          ],
+          "guias_sugeridas": [
+            "Guía de observación de vida cotidiana (qué, quiénes, cuándo, por qué importa).",
+            "Ficha de mini-investigación del objeto (origen, cambios, actores).",
+            "Guía de discusión sobre ciudadanía y participación."
+          ],
+          "recursos_sugeridos": [
+            "Galería de fotos históricas de vida cotidiana en Chile (escuela, transporte, comercio).",
+            "Infografía breve sobre migraciones internas y urbanización en Chile.",
+            "Testimonios orales cortos (audio o texto) sobre cambios sociales recientes."
           ]
         },
         {
           "id": "u0l2",
           "titulo": "Lección 0.2: El tiempo histórico y la periodización",
           "habilidad_principal": "Pensamiento cronológico (ordenar, periodizar)",
-          "contenidos_breves": ["Tiempo histórico", "Prehistoria/Historia", "Paleolítico/Neolítico", "Edades históricas"],
+          "contenidos_breves": [
+            "Tiempo histórico",
+            "Prehistoria/Historia",
+            "Paleolítico/Neolítico",
+            "Edades históricas"
+          ],
           "bloques": [
             {
               "tipo": "enganche",
@@ -119,13 +144,34 @@
               "titulo": "Cierre",
               "contenido": "¿Qué ganamos y qué perdemos cuando dividimos la historia en etapas?"
             }
+          ],
+          "actividades_sugeridas": [
+            "Ordenar tarjetas de hitos y justificar el criterio de ordenamiento.",
+            "Crear una línea de tiempo personal con eventos propios y luego compararla con hitos históricos.",
+            "Debate: ¿dónde empieza la Historia? discutir límites de la periodización."
+          ],
+          "guias_sugeridas": [
+            "Plantilla de línea de tiempo con eje y escala temporal.",
+            "Guía de criterios de periodización (cambios tecnológicos, políticos, culturales).",
+            "Ficha para comparar periodizaciones alternativas."
+          ],
+          "recursos_sugeridos": [
+            "Infografía de periodos prehistóricos e históricos.",
+            "Mapa de sitios arqueológicos clave del Paleolítico y Neolítico.",
+            "Tarjetas con hitos (fuego, agricultura, escritura, ciudades)."
           ]
         },
         {
           "id": "u0l3",
           "titulo": "Lección 0.3: Las fuentes históricas",
           "habilidad_principal": "Análisis de fuentes (evidencia y confiabilidad)",
-          "contenidos_breves": ["Fuentes primarias/secundarias", "Materiales", "Escritas", "Visuales", "Orales"],
+          "contenidos_breves": [
+            "Fuentes primarias/secundarias",
+            "Materiales",
+            "Escritas",
+            "Visuales",
+            "Orales"
+          ],
           "bloques": [
             {
               "tipo": "enganche",
@@ -170,13 +216,34 @@
               "titulo": "Cierre",
               "contenido": "¿Qué harías si dos fuentes se contradicen?"
             }
+          ],
+          "actividades_sugeridas": [
+            "Estaciones de fuentes: rotar por 4 tipos de fuentes y completar una ficha por estación.",
+            "Desafío de confiabilidad: comparar dos fuentes sobre el mismo hecho y decidir cuál es más útil.",
+            "Taller de preguntas: formular 3 preguntas históricas para una fuente dada."
+          ],
+          "guias_sugeridas": [
+            "Guía de análisis de fuentes (quién, cuándo, para qué, qué dice y qué omite).",
+            "Tabla primaria/ secundaria con ejemplos y criterios.",
+            "Checklist de confiabilidad y sesgo."
+          ],
+          "recursos_sugeridos": [
+            "Fotografía histórica con contexto mínimo para análisis.",
+            "Carta o noticia breve como fuente escrita.",
+            "Objeto o imagen de artefacto (museo virtual)."
           ]
         },
         {
           "id": "u0l4",
           "titulo": "Lección 0.4: El trabajo del historiador",
           "habilidad_principal": "Construcción de explicación histórica (argumentar con evidencia)",
-          "contenidos_breves": ["Preguntas históricas", "Hipótesis", "Interpretación", "Evidencias", "Conclusiones"],
+          "contenidos_breves": [
+            "Preguntas históricas",
+            "Hipótesis",
+            "Interpretación",
+            "Evidencias",
+            "Conclusiones"
+          ],
           "bloques": [
             {
               "tipo": "enganche",
@@ -223,11 +290,25 @@
               "titulo": "Cierre",
               "contenido": "¿Qué cambia cuando explicas con evidencia en vez de solo decir lo que crees?"
             }
+          ],
+          "actividades_sugeridas": [
+            "Taller de preguntas históricas: convertir una curiosidad en una pregunta investigable.",
+            "Hipótesis y evidencia: entregar 2 fuentes y pedir una explicación breve sustentada.",
+            "Mini exposición: presentar una explicación de 1 minuto con evidencia."
+          ],
+          "guias_sugeridas": [
+            "Guía para formular preguntas históricas (qué, por qué, cómo, impacto).",
+            "Rúbrica breve para explicación histórica (evidencia, causalidad, claridad).",
+            "Plantilla de argumento (afirmación-evidencia-razonamiento)."
+          ],
+          "recursos_sugeridos": [
+            "Recorte de prensa histórica o actual para comparar explicaciones.",
+            "Datos censales simples en tabla para argumentar cambios poblacionales.",
+            "Imagen de un objeto histórico con ficha básica."
           ]
         }
       ]
     },
-
     {
       "id": "u1",
       "titulo": "Unidad 1: Origen humano y primeras civilizaciones",
@@ -237,7 +318,12 @@
           "id": "u1l1",
           "titulo": "Lección 1.1: Evolución humana y migraciones",
           "habilidad_principal": "Pensamiento temporal + interpretación de evidencia (líneas de tiempo)",
-          "contenidos_breves": ["Hominización", "Homo sapiens", "Migraciones", "Poblamiento de América"],
+          "contenidos_breves": [
+            "Hominización",
+            "Homo sapiens",
+            "Migraciones",
+            "Poblamiento de América"
+          ],
           "bloques": [
             {
               "tipo": "enganche",
@@ -283,63 +369,244 @@
               "titulo": "Cierre",
               "contenido": "¿Qué te dice esta historia sobre la idea de ‘fronteras’?"
             }
+          ],
+          "actividades_sugeridas": [
+            "Mapa de rutas migratorias con notas sobre clima, tecnología y recursos.",
+            "Comparación de evidencias: fósiles, herramientas y ADN como pistas.",
+            "Debate guiado sobre hipótesis de poblamiento de América."
+          ],
+          "guias_sugeridas": [
+            "Ficha de lectura de mapas (símbolos, rutas, escalas).",
+            "Organizador de factores de migración (ambientales, tecnológicos, sociales).",
+            "Guía de comparación de hipótesis con evidencia."
+          ],
+          "recursos_sugeridos": [
+            "Mapa de migraciones humanas fuera de África.",
+            "Imágenes de fósiles y herramientas líticas.",
+            "Gráfico simple sobre evidencia genética del poblamiento."
           ]
         },
-
         {
           "id": "u1l2",
           "titulo": "Lección 1.2: Cultura y entorno en las primeras sociedades",
           "habilidad_principal": "Análisis de fuentes materiales + continuidad y cambio",
-          "contenidos_breves": ["Paleolítico", "Tecnología lítica", "Nomadismo", "Relación con el entorno"],
+          "contenidos_breves": [
+            "Paleolítico",
+            "Tecnología lítica",
+            "Nomadismo",
+            "Relación con el entorno"
+          ],
           "bloques": [
             {
               "tipo": "enganche",
               "titulo": "Desafío inicial",
               "contenido": "Te encuentras una punta de flecha. ¿Qué puede decirte sobre alimentación, territorio y organización social?"
             },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Inferir prácticas humanas desde evidencias materiales y comparar cambios culturales." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Vida nómada", "Caza y recolección", "Herramientas y fuego", "Arte rupestre y sentido cultural"] },
-            { "tipo": "mision", "titulo": "Misión: Museo de 3 objetos", "contenido": "Elige 3 evidencias (herramienta, pintura rupestre, resto óseo). Crea fichas: qué es, para qué sirve, qué nos enseña." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué prácticas actuales muestran dependencia del entorno (agua, clima, recursos) igual que antes?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "clasificacion", "items": ["Clasificar evidencias según lo que revelan", "Elegir interpretación más sólida"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué parte de nuestra cultura actual crees que sobrevivirá 10.000 años como evidencia?" }
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Inferir prácticas humanas desde evidencias materiales y comparar cambios culturales."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Vida nómada",
+                "Caza y recolección",
+                "Herramientas y fuego",
+                "Arte rupestre y sentido cultural"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Museo de 3 objetos",
+              "contenido": "Elige 3 evidencias (herramienta, pintura rupestre, resto óseo). Crea fichas: qué es, para qué sirve, qué nos enseña."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué prácticas actuales muestran dependencia del entorno (agua, clima, recursos) igual que antes?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "clasificacion",
+              "items": [
+                "Clasificar evidencias según lo que revelan",
+                "Elegir interpretación más sólida"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué parte de nuestra cultura actual crees que sobrevivirá 10.000 años como evidencia?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Análisis de arte rupestre: interpretar mensajes posibles y límites.",
+            "Recreación de campamento nómada en un plano simple.",
+            "Debate sobre impacto ambiental de caza y recolección."
+          ],
+          "guias_sugeridas": [
+            "Ficha de análisis de evidencia material (forma, función, contexto).",
+            "Tabla entorno-prácticas (clima/recursos → formas de vida).",
+            "Guía de comparación entre vida nómada y sedentaria."
+          ],
+          "recursos_sugeridos": [
+            "Fotos de herramientas líticas y puntas de flecha.",
+            "Imágenes de pinturas rupestres (con ubicación).",
+            "Video corto sobre uso del fuego y tecnología lítica."
           ]
         },
-
         {
           "id": "u1l3",
           "titulo": "Lección 1.3: La Revolución Neolítica",
           "habilidad_principal": "Causa y consecuencia (multicausalidad)",
-          "contenidos_breves": ["Agricultura", "Sedentarización", "Domesticación", "Aldeas", "Intercambio"],
+          "contenidos_breves": [
+            "Agricultura",
+            "Sedentarización",
+            "Domesticación",
+            "Aldeas",
+            "Intercambio"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Decisión: seguir nómada o asentarte. ¿Qué ganas y qué pierdes? Elige y justifica." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Explicar cambios históricos con múltiples causas y consecuencias." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Por qué surge la agricultura", "Cambios en alimentación", "Propiedad y desigualdad", "Crecimiento de aldeas"] },
-            { "tipo": "mision", "titulo": "Misión: Árbol de causas y efectos", "contenido": "Construye un diagrama con 3 causas y 4 consecuencias del Neolítico (sociales, económicas, ambientales)." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué revolución reciente cambió la vida humana como la agricultura? (internet/IA). Compara." },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz_con_feedback", "items": ["Causas vs consecuencias", "Elegir explicación multicausal correcta"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Crees que el Neolítico fue un 'progreso'? Argumenta con un ejemplo." }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Decisión: seguir nómada o asentarte. ¿Qué ganas y qué pierdes? Elige y justifica."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Explicar cambios históricos con múltiples causas y consecuencias."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Por qué surge la agricultura",
+                "Cambios en alimentación",
+                "Propiedad y desigualdad",
+                "Crecimiento de aldeas"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Árbol de causas y efectos",
+              "contenido": "Construye un diagrama con 3 causas y 4 consecuencias del Neolítico (sociales, económicas, ambientales)."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué revolución reciente cambió la vida humana como la agricultura? (internet/IA). Compara."
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz_con_feedback",
+              "items": [
+                "Causas vs consecuencias",
+                "Elegir explicación multicausal correcta"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Crees que el Neolítico fue un 'progreso'? Argumenta con un ejemplo."
+            }
+          ],
+          "actividades_sugeridas": [
+            "Role-play: decidir asentarse o seguir nómada con argumentos.",
+            "Diagrama de causa y consecuencia del Neolítico.",
+            "Comparación de dietas antes y después de la agricultura."
+          ],
+          "guias_sugeridas": [
+            "Plantilla de árbol de causas y efectos.",
+            "Rúbrica breve para argumentar si fue 'progreso'.",
+            "Guía de multicausalidad (económica, social, ambiental)."
+          ],
+          "recursos_sugeridos": [
+            "Mapa de zonas tempranas de agricultura.",
+            "Imágenes de aldeas neolíticas y domesticación.",
+            "Tabla simple de cambios demográficos."
           ]
         },
-
         {
           "id": "u1l4",
           "titulo": "Lección 1.4: El surgimiento de las primeras civilizaciones",
           "habilidad_principal": "Comparación de sociedades + organización política",
-          "contenidos_breves": ["Civilización", "Ciudad", "Estado", "Escritura", "Jerarquías", "Religión"],
+          "contenidos_breves": [
+            "Civilización",
+            "Ciudad",
+            "Estado",
+            "Escritura",
+            "Jerarquías",
+            "Religión"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Tienes dos lugares: una aldea y una ciudad. ¿Qué debe existir para que sea civilización? Lista 5 criterios." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Comparar formas de organización social y explicar por qué surgen instituciones (Estado, escritura, leyes)." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Ciudades y trabajo especializado", "Escritura y administración", "Religión y poder", "Desigualdad y jerarquías"] },
-            { "tipo": "mision", "titulo": "Misión: Diseña tu primera ciudad", "contenido": "Crea un plano simple: templo, mercado, áreas de cultivo, administración. Explica qué función cumple cada parte." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué instituciones de hoy cumplen funciones similares a la escritura y la administración antigua?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "comparacion", "items": ["Aldea vs ciudad: identificar diferencias", "Seleccionar definición de civilización"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué costo social puede tener el ‘avance’ de una civilización?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Tienes dos lugares: una aldea y una ciudad. ¿Qué debe existir para que sea civilización? Lista 5 criterios."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Comparar formas de organización social y explicar por qué surgen instituciones (Estado, escritura, leyes)."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Ciudades y trabajo especializado",
+                "Escritura y administración",
+                "Religión y poder",
+                "Desigualdad y jerarquías"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Diseña tu primera ciudad",
+              "contenido": "Crea un plano simple: templo, mercado, áreas de cultivo, administración. Explica qué función cumple cada parte."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué instituciones de hoy cumplen funciones similares a la escritura y la administración antigua?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "comparacion",
+              "items": [
+                "Aldea vs ciudad: identificar diferencias",
+                "Seleccionar definición de civilización"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué costo social puede tener el ‘avance’ de una civilización?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Maqueta o plano de ciudad antigua con funciones básicas.",
+            "Lectura de una tablilla/inscripción simulada y su función administrativa.",
+            "Comparación de jerarquías sociales en civilizaciones tempranas."
+          ],
+          "guias_sugeridas": [
+            "Guía de criterios de civilización (ciudad, escritura, Estado, especialización).",
+            "Ficha de roles sociales (gobernantes, sacerdotes, artesanos).",
+            "Plantilla de comparación de aldeas y ciudades."
+          ],
+          "recursos_sugeridos": [
+            "Imágenes de tablillas y sellos antiguos.",
+            "Planos simplificados de ciudades antiguas.",
+            "Extracto breve de código legal antiguo (adaptado)."
           ]
         }
       ]
     },
-
     {
       "id": "u2",
       "titulo": "Unidad 2: Civilizaciones clásicas y su legado",
@@ -349,65 +616,294 @@
           "id": "u2l1",
           "titulo": "Lección 2.1: La democracia ateniense",
           "habilidad_principal": "Argumentación + comparación de sistemas políticos",
-          "contenidos_breves": ["Polis", "Democracia directa", "Ciudadanía", "Exclusiones", "Instituciones"],
+          "contenidos_breves": [
+            "Polis",
+            "Democracia directa",
+            "Ciudadanía",
+            "Exclusiones",
+            "Instituciones"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Eres ciudadano ateniense. Debes votar una ley. ¿Quiénes pueden votar y quiénes no? ¿Te parece justo?" },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Argumentar comparando sistemas políticos: qué incluye y qué excluye cada modelo." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Cómo funcionaba la democracia ateniense", "Instituciones principales", "Quiénes quedaban fuera", "Ventajas y límites"] },
-            { "tipo": "mision", "titulo": "Misión: Debate corto", "contenido": "Escribe 6 líneas: ¿la democracia ateniense fue democrática? Usa 2 evidencias (ciudadanía/exclusión)." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "Compara con Chile hoy: ¿qué significa ciudadanía y participación actual?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz_con_feedback", "items": ["Conceptos (polis, ciudadanía)", "Comparación democracia directa vs representativa"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué harías para que un sistema político sea más justo?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Eres ciudadano ateniense. Debes votar una ley. ¿Quiénes pueden votar y quiénes no? ¿Te parece justo?"
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Argumentar comparando sistemas políticos: qué incluye y qué excluye cada modelo."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Cómo funcionaba la democracia ateniense",
+                "Instituciones principales",
+                "Quiénes quedaban fuera",
+                "Ventajas y límites"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Debate corto",
+              "contenido": "Escribe 6 líneas: ¿la democracia ateniense fue democrática? Usa 2 evidencias (ciudadanía/exclusión)."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "Compara con Chile hoy: ¿qué significa ciudadanía y participación actual?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz_con_feedback",
+              "items": [
+                "Conceptos (polis, ciudadanía)",
+                "Comparación democracia directa vs representativa"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué harías para que un sistema político sea más justo?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Simulación de asamblea: votar una ley con roles asignados.",
+            "Análisis de fuente: fragmento de discurso ciudadano y sus límites.",
+            "Cuadro de inclusión/exclusión de la ciudadanía ateniense."
+          ],
+          "guias_sugeridas": [
+            "Guía para debate con evidencias (argumento y contraargumento).",
+            "Tabla de ciudadanía (quiénes participan y por qué).",
+            "Ficha comparativa democracia directa vs representativa."
+          ],
+          "recursos_sugeridos": [
+            "Plano del Ágora y instituciones de Atenas.",
+            "Fragmento adaptado de discurso o decreto ateniense.",
+            "Infografía sobre ciudadanía y exclusiones."
           ]
         },
         {
           "id": "u2l2",
           "titulo": "Lección 2.2: La Roma antigua",
           "habilidad_principal": "Causa y consecuencia + continuidad y cambio",
-          "contenidos_breves": ["República", "Imperio", "Expansión", "Romanización", "Cristianismo"],
+          "contenidos_breves": [
+            "República",
+            "Imperio",
+            "Expansión",
+            "Romanización",
+            "Cristianismo"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Roma pasa de República a Imperio. ¿Qué problemas podrían empujar ese cambio? Elige 2." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Explicar transformaciones políticas con causas múltiples y observar continuidades." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Instituciones republicanas", "Expansión y conflictos internos", "Nacimiento del Imperio", "Romanización y cultura común"] },
-            { "tipo": "mision", "titulo": "Misión: Carta desde una provincia", "contenido": "Eres habitante de una provincia. Escribe una carta: ¿qué cambia con Roma? (leyes, lengua, caminos, impuestos)." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué elementos de ‘integración cultural’ existen hoy (globalización, idiomas, leyes)?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz", "items": ["República vs Imperio", "Romanización: ejemplos"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Cuándo un Estado fuerte protege y cuándo controla?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Roma pasa de República a Imperio. ¿Qué problemas podrían empujar ese cambio? Elige 2."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Explicar transformaciones políticas con causas múltiples y observar continuidades."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Instituciones republicanas",
+                "Expansión y conflictos internos",
+                "Nacimiento del Imperio",
+                "Romanización y cultura común"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Carta desde una provincia",
+              "contenido": "Eres habitante de una provincia. Escribe una carta: ¿qué cambia con Roma? (leyes, lengua, caminos, impuestos)."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué elementos de ‘integración cultural’ existen hoy (globalización, idiomas, leyes)?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz",
+              "items": [
+                "República vs Imperio",
+                "Romanización: ejemplos"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Cuándo un Estado fuerte protege y cuándo controla?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Línea de tiempo República → Imperio con causas clave.",
+            "Carta desde una provincia sobre romanización.",
+            "Mapa de expansión con rutas y conflictos internos."
+          ],
+          "guias_sugeridas": [
+            "Guía de causas políticas (conflictos, expansión, crisis).",
+            "Ficha de comparación de instituciones republicanas e imperiales.",
+            "Tabla de continuidad/cambio en Roma."
+          ],
+          "recursos_sugeridos": [
+            "Mapa de expansión romana por siglos.",
+            "Imagen de calzada o acueducto con función.",
+            "Texto breve sobre romanización y ciudadanía."
           ]
         },
         {
           "id": "u2l3",
           "titulo": "Lección 2.3: Legado del mundo clásico",
           "habilidad_principal": "Conexión pasado–presente + pensamiento crítico",
-          "contenidos_breves": ["Derecho", "Arquitectura", "Filosofía", "Lengua", "Política"],
+          "contenidos_breves": [
+            "Derecho",
+            "Arquitectura",
+            "Filosofía",
+            "Lengua",
+            "Política"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Mira tu ciudad: ¿qué cosas te parecen ‘romanas’ o ‘griegas’ sin que lo notes? Elige 3." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Reconocer legados: rastrear elementos culturales/políticos del pasado en el presente." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Derecho y ciudadanía", "Arquitectura y urbanismo", "Ideas filosóficas", "Lenguas y conceptos"] },
-            { "tipo": "mision", "titulo": "Misión: Mapa del legado", "contenido": "Crea un 'mapa mental' con 5 legados y un ejemplo actual por cada uno (Chile o mundo)." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué legado te parece positivo y cuál problemático? Justifica." },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "emparejar", "items": ["Legado → ejemplo actual"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué ‘legado’ crees que dejará nuestra época?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Mira tu ciudad: ¿qué cosas te parecen ‘romanas’ o ‘griegas’ sin que lo notes? Elige 3."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Reconocer legados: rastrear elementos culturales/políticos del pasado en el presente."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Derecho y ciudadanía",
+                "Arquitectura y urbanismo",
+                "Ideas filosóficas",
+                "Lenguas y conceptos"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Mapa del legado",
+              "contenido": "Crea un 'mapa mental' con 5 legados y un ejemplo actual por cada uno (Chile o mundo)."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué legado te parece positivo y cuál problemático? Justifica."
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "emparejar",
+              "items": [
+                "Legado → ejemplo actual"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué ‘legado’ crees que dejará nuestra época?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Ruta fotográfica por la ciudad: identificar legados clásicos.",
+            "Glosario de términos de origen griego/latino en uso actual.",
+            "Debate: legado positivo vs problemático con ejemplos."
+          ],
+          "guias_sugeridas": [
+            "Plantilla de mapa mental del legado (área → ejemplo actual).",
+            "Guía de observación de entorno urbano.",
+            "Ficha de reflexión crítica sobre herencias culturales."
+          ],
+          "recursos_sugeridos": [
+            "Fotos de arquitectura neoclásica en Chile.",
+            "Extracto adaptado de derecho romano.",
+            "Infografía de legado filosófico/político."
           ]
         },
         {
           "id": "u2l4",
           "titulo": "Lección 2.4: Síntesis del mundo clásico",
           "habilidad_principal": "Síntesis y explicación histórica",
-          "contenidos_breves": ["Comparación Grecia/Roma", "Instituciones", "Cultura", "Legado"],
+          "contenidos_breves": [
+            "Comparación Grecia/Roma",
+            "Instituciones",
+            "Cultura",
+            "Legado"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Elige: ¿Grecia o Roma influyó más en el mundo actual? Defiende tu postura con 2 razones." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Sintetizar: organizar ideas, comparar y construir una explicación breve y clara." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Qué aportó Grecia", "Qué aportó Roma", "Similitudes y diferencias", "Impacto actual"] },
-            { "tipo": "mision", "titulo": "Misión: Infografía final", "contenido": "Crea un resumen visual con 4 bloques: política, sociedad, cultura, legado. Incluye 1 ejemplo actual en cada uno." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué aspectos del mundo clásico deberíamos cuestionar hoy?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz_con_feedback", "items": ["Comparaciones clave", "Conceptos centrales"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué idea del mundo clásico te sirve para entender tu vida hoy?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Elige: ¿Grecia o Roma influyó más en el mundo actual? Defiende tu postura con 2 razones."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Sintetizar: organizar ideas, comparar y construir una explicación breve y clara."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Qué aportó Grecia",
+                "Qué aportó Roma",
+                "Similitudes y diferencias",
+                "Impacto actual"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Infografía final",
+              "contenido": "Crea un resumen visual con 4 bloques: política, sociedad, cultura, legado. Incluye 1 ejemplo actual en cada uno."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué aspectos del mundo clásico deberíamos cuestionar hoy?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz_con_feedback",
+              "items": [
+                "Comparaciones clave",
+                "Conceptos centrales"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué idea del mundo clásico te sirve para entender tu vida hoy?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Infografía comparativa Grecia/Roma con ejemplos actuales.",
+            "Debate breve: ¿quién influyó más en el presente?",
+            "Evaluación integradora con preguntas de síntesis."
+          ],
+          "guias_sugeridas": [
+            "Checklist de síntesis (ideas clave, ejemplos, comparación).",
+            "Rúbrica de infografía (claridad, evidencia, diseño).",
+            "Guía de preparación para evaluación final."
+          ],
+          "recursos_sugeridos": [
+            "Tabla comparativa de instituciones y legados.",
+            "Líneas de tiempo paralelas Grecia/Roma.",
+            "Mapa conceptual base para completar."
           ]
         }
       ]
     },
-
     {
       "id": "u3",
       "titulo": "Unidad 3: Orígenes de la civilización europea occidental",
@@ -417,65 +913,292 @@
           "id": "u3l1",
           "titulo": "Lección 3.1: Civilización europea medieval",
           "habilidad_principal": "Interpretación de fuentes + empatía histórica",
-          "contenidos_breves": ["Feudalismo", "Iglesia", "Estamentos", "Vida cotidiana"],
+          "contenidos_breves": [
+            "Feudalismo",
+            "Iglesia",
+            "Estamentos",
+            "Vida cotidiana"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Eres un campesino medieval. ¿Qué obligaciones tienes y qué protección recibes? Completa un 'contrato feudal'." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Empatía histórica: comprender decisiones y vidas del pasado según su contexto (sin juzgar con estándares actuales)." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Cómo funcionaba el feudalismo", "Poder de la Iglesia", "Estamentos", "Vida cotidiana y trabajo"] },
-            { "tipo": "mision", "titulo": "Misión: Diario medieval", "contenido": "Escribe una entrada de diario desde un rol (campesino, noble o monje) describiendo 1 día y 2 preocupaciones reales." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "Compara con hoy: ¿qué formas de dependencia existen actualmente (trabajo, deudas, acceso a servicios)?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz", "items": ["Conceptos del feudalismo", "Roles sociales"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué te costó más entender del mundo medieval y por qué?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Eres un campesino medieval. ¿Qué obligaciones tienes y qué protección recibes? Completa un 'contrato feudal'."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Empatía histórica: comprender decisiones y vidas del pasado según su contexto (sin juzgar con estándares actuales)."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Cómo funcionaba el feudalismo",
+                "Poder de la Iglesia",
+                "Estamentos",
+                "Vida cotidiana y trabajo"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Diario medieval",
+              "contenido": "Escribe una entrada de diario desde un rol (campesino, noble o monje) describiendo 1 día y 2 preocupaciones reales."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "Compara con hoy: ¿qué formas de dependencia existen actualmente (trabajo, deudas, acceso a servicios)?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz",
+              "items": [
+                "Conceptos del feudalismo",
+                "Roles sociales"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué te costó más entender del mundo medieval y por qué?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Role-play de estamentos con un 'contrato feudal'.",
+            "Análisis de una miniatura medieval para inferir vida cotidiana.",
+            "Diario medieval desde un rol asignado."
+          ],
+          "guias_sugeridas": [
+            "Guía de empatía histórica (contexto, límites, mentalidades).",
+            "Glosario de feudalismo y estamentos.",
+            "Ficha de análisis de imagen histórica."
+          ],
+          "recursos_sugeridos": [
+            "Imagen de miniatura feudal con roles visibles.",
+            "Texto adaptado de juramento feudal.",
+            "Mapa de feudos y rutas locales."
           ]
         },
         {
           "id": "u3l2",
           "titulo": "Lección 3.2: Bizancio y el mundo islámico",
           "habilidad_principal": "Comparación cultural + análisis de causa",
-          "contenidos_breves": ["Bizancio", "Islam", "Mediterráneo", "Cruzadas", "Intercambios culturales"],
+          "contenidos_breves": [
+            "Bizancio",
+            "Islam",
+            "Mediterráneo",
+            "Cruzadas",
+            "Intercambios culturales"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Mapa del Mediterráneo: marca 3 lugares clave y predice por qué serían importantes para comercio y poder." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Comparar civilizaciones y explicar conflictos e intercambios con múltiples causas." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Bizancio: continuidad romana", "Origen y expansión del Islam", "Comercio y conocimientos", "Cruzadas: conflicto e intercambio"] },
-            { "tipo": "mision", "titulo": "Misión: Ruta del saber", "contenido": "Crea una ruta con 4 aportes (medicina, matemáticas, navegación, textos) y explica cómo circularon entre culturas." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Cómo influyen hoy los intercambios culturales (música, comida, ciencia) en tu vida?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "emparejar", "items": ["Aporte → civilización → impacto"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué prejuicio común sobre la Edad Media o el Islam deberíamos corregir?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Mapa del Mediterráneo: marca 3 lugares clave y predice por qué serían importantes para comercio y poder."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Comparar civilizaciones y explicar conflictos e intercambios con múltiples causas."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Bizancio: continuidad romana",
+                "Origen y expansión del Islam",
+                "Comercio y conocimientos",
+                "Cruzadas: conflicto e intercambio"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Ruta del saber",
+              "contenido": "Crea una ruta con 4 aportes (medicina, matemáticas, navegación, textos) y explica cómo circularon entre culturas."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Cómo influyen hoy los intercambios culturales (música, comida, ciencia) en tu vida?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "emparejar",
+              "items": [
+                "Aporte → civilización → impacto"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué prejuicio común sobre la Edad Media o el Islam deberíamos corregir?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Mapa del Mediterráneo con rutas de intercambio cultural.",
+            "Estaciones de aportes científicos (medicina, matemáticas, navegación).",
+            "Comparación de arquitectura religiosa (mosaico/mezquita)."
+          ],
+          "guias_sugeridas": [
+            "Guía de ruta del saber (origen, circulación, impacto).",
+            "Tabla de comparación cultural Bizancio/Islam.",
+            "Ficha para explicar causas de cruzadas e intercambios."
+          ],
+          "recursos_sugeridos": [
+            "Mapa de rutas comerciales mediterráneas.",
+            "Imágenes de mosaicos bizantinos y mezquitas.",
+            "Extractos breves de textos científicos medievales."
           ]
         },
         {
           "id": "u3l3",
           "titulo": "Lección 3.3: Transformaciones de la Europa medieval",
           "habilidad_principal": "Continuidad y cambio",
-          "contenidos_breves": ["Crecimiento urbano", "Comercio", "Crisis medieval", "Cambios sociales"],
+          "contenidos_breves": [
+            "Crecimiento urbano",
+            "Comercio",
+            "Crisis medieval",
+            "Cambios sociales"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Antes/después: feudo aislado vs ciudad comercial. ¿Qué cambia en trabajo, movilidad y poder?" },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Identificar continuidades y cambios: qué se transforma, qué permanece, y por qué." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Nuevas rutas comerciales", "Auge de ciudades", "Gremios", "Crisis: guerras, peste, hambrunas"] },
-            { "tipo": "mision", "titulo": "Misión: Reporte de un cronista", "contenido": "Eres cronista de una ciudad. Describe 3 cambios y 1 continuidad en la vida urbana." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "Compara con transformaciones actuales (teletrabajo, comercio online). ¿Qué cambia y qué sigue igual?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "clasificacion", "items": ["Cambio vs continuidad", "Elegir explicación"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué cambio medieval te parece más decisivo para el mundo actual?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Antes/después: feudo aislado vs ciudad comercial. ¿Qué cambia en trabajo, movilidad y poder?"
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Identificar continuidades y cambios: qué se transforma, qué permanece, y por qué."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Nuevas rutas comerciales",
+                "Auge de ciudades",
+                "Gremios",
+                "Crisis: guerras, peste, hambrunas"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Reporte de un cronista",
+              "contenido": "Eres cronista de una ciudad. Describe 3 cambios y 1 continuidad en la vida urbana."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "Compara con transformaciones actuales (teletrabajo, comercio online). ¿Qué cambia y qué sigue igual?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "clasificacion",
+              "items": [
+                "Cambio vs continuidad",
+                "Elegir explicación"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué cambio medieval te parece más decisivo para el mundo actual?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Comparar feudo vs ciudad comercial con un cuadro de cambios.",
+            "Análisis de gráfico simple de crecimiento urbano.",
+            "Reporte de cronista sobre transformaciones y continuidades."
+          ],
+          "guias_sugeridas": [
+            "Guía continuidad/cambio con ejemplos.",
+            "Plantilla de reporte de cronista.",
+            "Ficha de análisis de gráfico histórico."
+          ],
+          "recursos_sugeridos": [
+            "Gráfico simple de población urbana medieval.",
+            "Imagen de gremios y comercio en ciudades.",
+            "Texto breve sobre la peste o crisis agrícola."
           ]
         },
         {
           "id": "u3l4",
           "titulo": "Lección 3.4: Síntesis de la Europa medieval",
           "habilidad_principal": "Síntesis + explicación multicausal",
-          "contenidos_breves": ["Feudalismo", "Iglesia", "Ciudades", "Intercambios", "Crisis"],
+          "contenidos_breves": [
+            "Feudalismo",
+            "Iglesia",
+            "Ciudades",
+            "Intercambios",
+            "Crisis"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Elige un título para la Edad Media: ¿‘oscuridad’ o ‘transformación’? Defiende tu elección." },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Sintetizar y explicar procesos con varias causas (economía, sociedad, religión, política)." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Ideas centrales de la unidad", "Procesos conectados", "Cambios a largo plazo", "Conexiones con el mundo moderno"] },
-            { "tipo": "mision", "titulo": "Misión: Mapa de procesos", "contenido": "Conecta 6 conceptos con flechas (feudo, Iglesia, comercio, ciudad, cruzadas, crisis) y explica 3 relaciones." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué institución actual se parece a la influencia social que tenía la Iglesia medieval? (sin juzgar, comparando funciones)." },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz", "items": ["Conceptos y relaciones"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué te hace ver la Edad Media como algo más cercano de lo que parece?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Elige un título para la Edad Media: ¿‘oscuridad’ o ‘transformación’? Defiende tu elección."
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Sintetizar y explicar procesos con varias causas (economía, sociedad, religión, política)."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Ideas centrales de la unidad",
+                "Procesos conectados",
+                "Cambios a largo plazo",
+                "Conexiones con el mundo moderno"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Mapa de procesos",
+              "contenido": "Conecta 6 conceptos con flechas (feudo, Iglesia, comercio, ciudad, cruzadas, crisis) y explica 3 relaciones."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué institución actual se parece a la influencia social que tenía la Iglesia medieval? (sin juzgar, comparando funciones)."
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz",
+              "items": [
+                "Conceptos y relaciones"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué te hace ver la Edad Media como algo más cercano de lo que parece?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Mapa de procesos conectando conceptos clave.",
+            "Debate: ¿oscuridad o transformación? con evidencia.",
+            "Síntesis escrita de 8-10 líneas con causas múltiples."
+          ],
+          "guias_sugeridas": [
+            "Plantilla de mapa conceptual con relaciones.",
+            "Rúbrica de explicación multicausal.",
+            "Checklist de conceptos clave de la unidad."
+          ],
+          "recursos_sugeridos": [
+            "Esquema de relaciones feudalismo-iglesia-comercio.",
+            "Línea de tiempo resumida de la Edad Media.",
+            "Glosario de conceptos centrales."
           ]
         }
       ]
     },
-
     {
       "id": "u4",
       "titulo": "Unidad 4: Civilizaciones americanas y su legado",
@@ -485,62 +1208,292 @@
           "id": "u4l1",
           "titulo": "Lección 4.1: Civilizaciones maya y azteca",
           "habilidad_principal": "Comparación de sociedades + análisis cultural",
-          "contenidos_breves": ["Mesoamérica", "Agricultura", "Ciudades", "Política", "Religión"],
+          "contenidos_breves": [
+            "Mesoamérica",
+            "Agricultura",
+            "Ciudades",
+            "Política",
+            "Religión"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Tienes dos ciudades: Tenochtitlán y una ciudad maya. ¿Qué necesitarías saber para compararlas bien?" },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Comparar civilizaciones usando criterios (economía, política, cultura) sin caer en estereotipos." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Entorno mesoamericano", "Organización social y política", "Religión y cosmovisión", "Tecnologías y ciudades"] },
-            { "tipo": "mision", "titulo": "Misión: Tabla comparativa", "contenido": "Completa una tabla con 4 criterios (ciudad, poder, economía, religión) y agrega 1 conclusión final." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Qué herencias culturales mesoamericanas persisten hoy (comida, lengua, identidad)?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "comparacion", "items": ["Preguntas por criterio", "Conclusión argumentada"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Por qué es importante estudiar estas civilizaciones sin mirarlas como ‘atrasadas’?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Tienes dos ciudades: Tenochtitlán y una ciudad maya. ¿Qué necesitarías saber para compararlas bien?"
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Comparar civilizaciones usando criterios (economía, política, cultura) sin caer en estereotipos."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Entorno mesoamericano",
+                "Organización social y política",
+                "Religión y cosmovisión",
+                "Tecnologías y ciudades"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Tabla comparativa",
+              "contenido": "Completa una tabla con 4 criterios (ciudad, poder, economía, religión) y agrega 1 conclusión final."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Qué herencias culturales mesoamericanas persisten hoy (comida, lengua, identidad)?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "comparacion",
+              "items": [
+                "Preguntas por criterio",
+                "Conclusión argumentada"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Por qué es importante estudiar estas civilizaciones sin mirarlas como ‘atrasadas’?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Tabla comparativa maya/azteca con criterios fijos.",
+            "Análisis de imagen de códice o estela para inferir cultura.",
+            "Debate sobre estereotipos y miradas eurocéntricas."
+          ],
+          "guias_sugeridas": [
+            "Guía de comparación con criterios (política, economía, religión, ciudad).",
+            "Ficha de análisis de fuente visual mesoamericana.",
+            "Plantilla de conclusión argumentada."
+          ],
+          "recursos_sugeridos": [
+            "Mapa de Mesoamérica con ubicaciones clave.",
+            "Imágenes de Tenochtitlán y estelas mayas.",
+            "Infografía sobre cosmovisión mesoamericana."
           ]
         },
         {
           "id": "u4l2",
           "titulo": "Lección 4.2: Civilización inca",
           "habilidad_principal": "Interpretación de mapas + organización territorial",
-          "contenidos_breves": ["Tawantinsuyu", "Red vial", "Economía", "Sociedad", "Ritualidad"],
+          "contenidos_breves": [
+            "Tawantinsuyu",
+            "Red vial",
+            "Economía",
+            "Sociedad",
+            "Ritualidad"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Eres ingeniero inca. Debes conectar un territorio enorme sin caballos ni ruedas. ¿Cómo lo harías?" },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Interpretar mapas y entender cómo el territorio condiciona economía, transporte y poder." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Extensión del Imperio", "Caminos y control", "Ayllu y organización social", "Economía y redistribución"] },
-            { "tipo": "mision", "titulo": "Misión: Plan de control territorial", "contenido": "Dibuja una ruta entre 3 zonas (costa, sierra, altiplano). Agrega 3 decisiones: alimentos, transporte, control." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "Compara con Chile actual: ¿qué obras conectan territorios (carreteras, metro, internet) y qué efectos tienen?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "mapa_interactivo",
-              "items": ["Ubicar regiones incas", "Reconocer función de red vial"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué te impresiona más del modo inca de organizar un territorio difícil?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Eres ingeniero inca. Debes conectar un territorio enorme sin caballos ni ruedas. ¿Cómo lo harías?"
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Interpretar mapas y entender cómo el territorio condiciona economía, transporte y poder."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Extensión del Imperio",
+                "Caminos y control",
+                "Ayllu y organización social",
+                "Economía y redistribución"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Plan de control territorial",
+              "contenido": "Dibuja una ruta entre 3 zonas (costa, sierra, altiplano). Agrega 3 decisiones: alimentos, transporte, control."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "Compara con Chile actual: ¿qué obras conectan territorios (carreteras, metro, internet) y qué efectos tienen?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "mapa_interactivo",
+              "items": [
+                "Ubicar regiones incas",
+                "Reconocer función de red vial"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué te impresiona más del modo inca de organizar un territorio difícil?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Diseño de ruta de control territorial con obstáculos geográficos.",
+            "Análisis de un quipu (representación simbólica) y sus usos.",
+            "Plan de obras para conectar territorios (caminos, tambos)."
+          ],
+          "guias_sugeridas": [
+            "Guía de lectura de mapas y altitudes.",
+            "Ficha sobre organización del ayllu y roles.",
+            "Plantilla de planificación territorial."
+          ],
+          "recursos_sugeridos": [
+            "Mapa del Tawantinsuyu.",
+            "Imágenes de quipus y sistema de caminos.",
+            "Esquema de terrazas agrícolas."
           ]
         },
         {
           "id": "u4l3",
           "titulo": "Lección 4.3: Legado de las civilizaciones americanas",
           "habilidad_principal": "Conexión pasado–presente + análisis cultural",
-          "contenidos_breves": ["Lenguas", "Cosmovisión", "Técnicas", "Arquitectura", "Cultivos"],
+          "contenidos_breves": [
+            "Lenguas",
+            "Cosmovisión",
+            "Técnicas",
+            "Arquitectura",
+            "Cultivos"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Elige 1 elemento de hoy: papa/maíz, palabra indígena, técnica agrícola, fiesta, arquitectura. ¿De dónde viene?" },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Rastrear herencias culturales y reconocer continuidad histórica en la identidad actual." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Legado lingüístico", "Cultivos y alimentación", "Cosmovisión", "Arte, arquitectura, técnicas"] },
-            { "tipo": "mision", "titulo": "Misión: Galería de herencias", "contenido": "Crea una galería con 5 legados: imagen/ejemplo + breve explicación + dónde se ve hoy." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Cómo se relaciona esto con debates actuales sobre identidad, pueblos originarios y patrimonio?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "quiz_con_feedback", "items": ["Legado → ejemplo", "Pregunta abierta breve"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué legado te gustaría que se valorara más en Chile y por qué?" }
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Elige 1 elemento de hoy: papa/maíz, palabra indígena, técnica agrícola, fiesta, arquitectura. ¿De dónde viene?"
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Rastrear herencias culturales y reconocer continuidad histórica en la identidad actual."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Legado lingüístico",
+                "Cultivos y alimentación",
+                "Cosmovisión",
+                "Arte, arquitectura, técnicas"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Galería de herencias",
+              "contenido": "Crea una galería con 5 legados: imagen/ejemplo + breve explicación + dónde se ve hoy."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Cómo se relaciona esto con debates actuales sobre identidad, pueblos originarios y patrimonio?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "quiz_con_feedback",
+              "items": [
+                "Legado → ejemplo",
+                "Pregunta abierta breve"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué legado te gustaría que se valorara más en Chile y por qué?"
+            }
+          ],
+          "actividades_sugeridas": [
+            "Galería de herencias con ejemplos actuales en Chile.",
+            "Entrevista familiar sobre palabras o prácticas de origen indígena.",
+            "Recetario histórico con cultivos originarios."
+          ],
+          "guias_sugeridas": [
+            "Guía de patrimonio cultural e identidad.",
+            "Plantilla de ficha de legado (origen, uso actual, valor).",
+            "Rúbrica breve para presentación de galería."
+          ],
+          "recursos_sugeridos": [
+            "Listado de palabras de origen indígena en uso en Chile.",
+            "Imágenes de cultivos andinos y mesoamericanos.",
+            "Mapa de pueblos originarios y lenguas."
           ]
         },
         {
           "id": "u4l4",
           "titulo": "Lección 4.4: Síntesis del mundo precolombino",
           "habilidad_principal": "Síntesis + comparación + valoración crítica",
-          "contenidos_breves": ["Comparación civilizaciones", "Territorio", "Organización", "Legado"],
+          "contenidos_breves": [
+            "Comparación civilizaciones",
+            "Territorio",
+            "Organización",
+            "Legado"
+          ],
           "bloques": [
-            { "tipo": "enganche", "titulo": "Desafío inicial", "contenido": "Si tuvieras que explicar estas civilizaciones en 30 segundos a un amigo: ¿qué 4 ideas dirías?" },
-            { "tipo": "habilidad", "titulo": "Habilidad a entrenar", "contenido": "Sintetizar y comparar: construir una explicación clara, breve y con ejemplos." },
-            { "tipo": "exploracion", "titulo": "Explora en cápsulas", "items": ["Mayas", "Aztecas", "Incas", "Semejanzas/diferencias", "Legados actuales"] },
-            { "tipo": "mision", "titulo": "Misión: Mapa final de ideas", "contenido": "Crea un mapa con 3 civilizaciones y 3 criterios. Termina con una conclusión sobre su importancia histórica." },
-            { "tipo": "presente", "titulo": "Conexión con el presente", "contenido": "¿Cómo cambiaría nuestra visión de América si estas civilizaciones fueran enseñadas como ‘clásicas’ al nivel de Grecia y Roma?" },
-            { "tipo": "evaluacion", "titulo": "Chequeo rápido", "formato": "evaluacion_final", "items": ["Comparación guiada", "Conclusión argumentada"] },
-            { "tipo": "reflexion", "titulo": "Cierre", "contenido": "¿Qué significa para ti ser ‘sujeto histórico’ después de este curso?"
+            {
+              "tipo": "enganche",
+              "titulo": "Desafío inicial",
+              "contenido": "Si tuvieras que explicar estas civilizaciones en 30 segundos a un amigo: ¿qué 4 ideas dirías?"
+            },
+            {
+              "tipo": "habilidad",
+              "titulo": "Habilidad a entrenar",
+              "contenido": "Sintetizar y comparar: construir una explicación clara, breve y con ejemplos."
+            },
+            {
+              "tipo": "exploracion",
+              "titulo": "Explora en cápsulas",
+              "items": [
+                "Mayas",
+                "Aztecas",
+                "Incas",
+                "Semejanzas/diferencias",
+                "Legados actuales"
+              ]
+            },
+            {
+              "tipo": "mision",
+              "titulo": "Misión: Mapa final de ideas",
+              "contenido": "Crea un mapa con 3 civilizaciones y 3 criterios. Termina con una conclusión sobre su importancia histórica."
+            },
+            {
+              "tipo": "presente",
+              "titulo": "Conexión con el presente",
+              "contenido": "¿Cómo cambiaría nuestra visión de América si estas civilizaciones fueran enseñadas como ‘clásicas’ al nivel de Grecia y Roma?"
+            },
+            {
+              "tipo": "evaluacion",
+              "titulo": "Chequeo rápido",
+              "formato": "evaluacion_final",
+              "items": [
+                "Comparación guiada",
+                "Conclusión argumentada"
+              ]
+            },
+            {
+              "tipo": "reflexion",
+              "titulo": "Cierre",
+              "contenido": "¿Qué significa para ti ser ‘sujeto histórico’ después de este curso?"
             }
+          ],
+          "actividades_sugeridas": [
+            "Mapa final de ideas con 3 civilizaciones y criterios comunes.",
+            "Debate: ¿por qué no se enseñan como 'clásicas' al nivel de Grecia/Roma?",
+            "Ensayo breve de síntesis con postura argumentada."
+          ],
+          "guias_sugeridas": [
+            "Checklist de comparación y síntesis.",
+            "Rúbrica de conclusión argumentada.",
+            "Guía para preparar mapa de ideas final."
+          ],
+          "recursos_sugeridos": [
+            "Cuadro comparativo de civilizaciones americanas.",
+            "Mapas de Mesoamérica y Andes.",
+            "Infografía sobre legados contemporáneos."
           ]
         }
       ]

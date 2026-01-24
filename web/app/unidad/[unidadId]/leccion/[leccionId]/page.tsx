@@ -33,6 +33,9 @@ type Leccion = {
   habilidad_principal?: string;
   contenidos?: string;
   contenidos_breves?: string[];
+  actividades_sugeridas?: string[];
+  guias_sugeridas?: string[];
+  recursos_sugeridos?: string[];
   bloques?: Bloque[];
 };
 
@@ -73,6 +76,9 @@ export default async function LeccionPage({
 
   const habilidad = leccion.habilidad_principal ?? leccion.habilidad;
   const contenidos = leccion.contenidos_breves ?? (leccion.contenidos ? [leccion.contenidos] : []);
+  const actividades = leccion.actividades_sugeridas ?? [];
+  const guias = leccion.guias_sugeridas ?? [];
+  const recursos = leccion.recursos_sugeridos ?? [];
   const blocks =
     leccion.bloques?.map((bloque, index) => ({
       id: buildBlockId({ unidadId, leccionId, bloqueId: bloque.id, index }),
@@ -106,6 +112,40 @@ export default async function LeccionPage({
                     <li key={contenido}>{contenido}</li>
                   ))}
                 </ul>
+              </div>
+            )}
+            {(actividades.length > 0 || guias.length > 0 || recursos.length > 0) && (
+              <div className="mt-5 grid gap-4 md:grid-cols-3">
+                {actividades.length > 0 && (
+                  <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
+                    <h2 className="text-sm font-semibold text-slate-800">Actividades sugeridas</h2>
+                    <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+                      {actividades.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {guias.length > 0 && (
+                  <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
+                    <h2 className="text-sm font-semibold text-slate-800">Guías sugeridas</h2>
+                    <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+                      {guias.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {recursos.length > 0 && (
+                  <div className="rounded-lg border border-slate-100 bg-slate-50 p-4">
+                    <h2 className="text-sm font-semibold text-slate-800">Recursos sugeridos</h2>
+                    <ul className="mt-2 list-disc pl-5 text-sm text-slate-600">
+                      {recursos.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </div>
