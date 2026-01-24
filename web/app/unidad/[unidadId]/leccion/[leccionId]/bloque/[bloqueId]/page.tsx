@@ -48,7 +48,7 @@ export default async function BloquePage({
   const { unidadId, leccionId, bloqueId } = await params;
   const decodedBlockId = decodeURIComponent(bloqueId);
 
-  const unidades = (curriculum as any).unidades as Unidad[];
+  const { unidades } = curriculum as { unidades: Unidad[] };
   const unidad = unidades.find((u) => u.id === unidadId);
   const leccion = unidad?.lecciones?.find((l) => l.id === leccionId);
 

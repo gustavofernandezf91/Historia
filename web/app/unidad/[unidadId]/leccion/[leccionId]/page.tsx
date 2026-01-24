@@ -53,7 +53,7 @@ export default async function LeccionPage({
 }) {
   const { unidadId, leccionId } = await params;
 
-  const unidades = (curriculum as any).unidades as Unidad[];
+  const { unidades } = curriculum as { unidades: Unidad[] };
   const unidad = unidades.find((u) => u.id === unidadId);
 
   const leccion = unidad?.lecciones?.find((l) => l.id === leccionId);

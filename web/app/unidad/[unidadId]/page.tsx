@@ -30,7 +30,7 @@ export default async function UnidadPage({
 }) {
   const { unidadId } = await params;
 
-  const unidades = (curriculum as any).unidades as Unidad[];
+  const { unidades } = curriculum as { unidades: Unidad[] };
   const unidad = unidades.find((u) => u.id === unidadId);
 
   if (!unidad) {

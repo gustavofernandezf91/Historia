@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type QuizData = {
   pregunta: string;
@@ -24,13 +24,6 @@ export default function QuizWithFeedback({ quiz, blockId, onComplete, xp }: Quiz
 
   const esCorrecta =
     mostrandoFeedback && seleccion !== null && seleccion === quiz.correcta;
-
-  useEffect(() => {
-    if (esCorrecta && !completed) {
-      setCompleted(true);
-      onComplete();
-    }
-  }, [completed, esCorrecta, onComplete]);
 
   return (
     <div className="mt-4">
@@ -64,6 +57,10 @@ export default function QuizWithFeedback({ quiz, blockId, onComplete, xp }: Quiz
         onClick={() => {
           if (!mostrandoFeedback) {
             setMostrandoFeedback(true);
+            if (!completed && seleccion === quiz.correcta) {
+              setCompleted(true);
+              onComplete();
+            }
           } else {
             setSeleccion(null);
             setMostrandoFeedback(false);
