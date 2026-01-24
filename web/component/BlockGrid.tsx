@@ -52,7 +52,7 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-5 shadow-lg shadow-slate-900/10 backdrop-blur">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-slate-500">Progreso de la lección</p>
@@ -65,9 +65,9 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
             <p className="text-2xl font-semibold text-slate-900">{stats.xpEarned} XP</p>
           </div>
         </div>
-        <div className="mt-4 h-2 w-full rounded-full bg-slate-100">
+        <div className="mt-4 h-2 w-full rounded-full bg-slate-100/80">
           <div
-            className="h-2 rounded-full bg-slate-900 transition-all"
+            className="h-2 rounded-full bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 transition-all"
             style={{ width: `${stats.percent}%` }}
           />
         </div>
@@ -80,10 +80,11 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
           <Link
             key={id}
             href={`${basePath}/bloque/${encodeURIComponent(id)}`}
-            className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+            className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-sky-500/10"
           >
+            <div className="absolute inset-0 bg-gradient-to-br from-sky-50/70 via-transparent to-indigo-50/60 opacity-0 transition-opacity group-hover:opacity-100" />
             <div className="flex items-start justify-between gap-4">
-              <div>
+              <div className="relative">
                 <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                   {bloque.tipo}
                 </p>
@@ -95,7 +96,7 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
                 </p>
               </div>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                className={`relative rounded-full px-3 py-1 text-xs font-semibold ${
                   completed
                     ? "bg-emerald-100 text-emerald-700"
                     : "bg-slate-100 text-slate-600"
@@ -104,7 +105,7 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
                 {completed ? "✅ Completado" : `+${defaults.xp} XP`}
               </span>
             </div>
-            <div className="mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
+            <div className="relative mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
               Entrar a la actividad
               <span className="transition group-hover:translate-x-1">→</span>
             </div>
