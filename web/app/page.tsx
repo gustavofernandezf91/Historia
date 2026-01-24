@@ -74,7 +74,7 @@ export default function Home() {
               </span>
               <div className="mt-6 flex items-center justify-center lg:justify-start">
                 <img
-                  src="/historiapp-logo.svg"
+                  src="https://drive.google.com/uc?export=view&id=10o967e8v1Qgsg993-M-qHyzwXcD6KJT6"
                   alt="Logo de HistoriAPP"
                   className="w-56 sm:w-72 md:w-80 drop-shadow-[0_20px_45px_rgba(15,23,42,0.45)]"
                 />
