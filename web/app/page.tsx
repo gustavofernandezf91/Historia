@@ -23,6 +23,8 @@ export default function Home() {
     icono: ["🧭", "🏛️", "🌎", "📜"][index % 4],
     color: ["from-indigo-500 to-sky-500", "from-emerald-500 to-lime-500", "from-pink-500 to-orange-500", "from-violet-500 to-fuchsia-500"][index % 4],
   }));
+  const primeraUnidad = unidades[0];
+  const primeraUnidadHref = primeraUnidad ? `/unidad/${primeraUnidad.id}` : "#";
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -135,7 +137,7 @@ export default function Home() {
                     Tu última misión está lista para continuar.
                   </p>
                 </div>
-                <Link className="text-sm font-semibold text-indigo-600" href="/unidad/1">
+                <Link className="text-sm font-semibold text-indigo-600" href={primeraUnidadHref}>
                   Ver todas →
                 </Link>
               </div>
@@ -143,17 +145,18 @@ export default function Home() {
                 <div className="h-20 w-28 rounded-xl bg-gradient-to-br from-slate-700 to-slate-900" />
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-slate-900">
-                    Aprendiendo Historia y Ciencias Sociales
+                    {primeraUnidad?.titulo ?? "Aprendiendo Historia y Ciencias Sociales"}
                   </p>
                   <p className="text-xs text-slate-500">
-                    Introducción a las ciencias sociales, el tiempo histórico y las fuentes.
+                    {primeraUnidad?.descripcion ??
+                      "Introducción a las ciencias sociales, el tiempo histórico y las fuentes."}
                   </p>
                   <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-200">
                     <div className="h-full w-1/5 rounded-full bg-indigo-500" />
                   </div>
                 </div>
                 <Link
-                  href="/unidad/1"
+                  href={primeraUnidadHref}
                   className="rounded-full bg-indigo-600 px-4 py-2 text-sm font-semibold text-white"
                 >
                   Continuar
@@ -169,7 +172,7 @@ export default function Home() {
                     Explora los contenidos de Historia de Chile para 7° Básico.
                   </p>
                 </div>
-                <Link className="text-sm font-semibold text-indigo-600" href="/unidad/1">
+                <Link className="text-sm font-semibold text-indigo-600" href={primeraUnidadHref}>
                   Ver todos →
                 </Link>
               </div>
@@ -185,7 +188,7 @@ export default function Home() {
                       className={`relative mb-4 h-36 w-full overflow-hidden rounded-2xl bg-gradient-to-br ${unidad.color}`}
                     >
                       <span className="absolute left-4 top-4 rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-slate-800">
-                        {unidad.titulo.split(" ")[0]}
+                        {unidad.titulo.split(":")[0]}
                       </span>
                     </div>
                     <h4 className="text-base font-semibold text-slate-900">{unidad.titulo}</h4>
