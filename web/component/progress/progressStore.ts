@@ -7,6 +7,7 @@ type StoredProgress = Record<
 >;
 
 const STORAGE_KEY = "historiapp:completedBlocks";
+const PROGRESS_EVENT = "historiapp:progress:update";
 
 function readStore(): StoredProgress {
   if (typeof window === "undefined") return {};
@@ -23,6 +24,7 @@ function writeStore(store: StoredProgress) {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+    window.dispatchEvent(new Event(PROGRESS_EVENT));
   } catch {}
 }
 
@@ -56,4 +58,14 @@ export function getWeeklyCompletions() {
   const store = readStore();
   const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   return Object.values(store).filter((entry) => entry.completedAt >= oneWeekAgo).length;
+}
+
+export function subscribeToProgressUpdates(callback: () => void) {
+  if (typeof window === "undefined") return () => {};
+  window.addEventListener("storage", callback);
+  window.addEventListener(PROGRESS_EVENT, callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener(PROGRESS_EVENT, callback);
+  };
 }
