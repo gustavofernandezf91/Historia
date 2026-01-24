@@ -1,9 +1,13 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { buildBlockId } from "./progress/blockId";
 import { getBlockDefaults } from "./progress/getBlockDefaults";
-import { getProgressStats, getWeeklyCompletions } from "./progress/progressStore";
+import {
+  getProgressStats,
+  getWeeklyCompletions,
+  subscribeToProgressUpdates,
+} from "./progress/progressStore";
 
 type Bloque = {
   id?: string;
@@ -40,8 +44,21 @@ export default function CourseProgress({ unidades }: { unidades: Unidad[] }) {
     [unidades]
   );
 
-  const stats = useMemo(() => getProgressStats(blocks), [blocks]);
-  const weeklyCount = useMemo(() => getWeeklyCompletions(), []);
+  const [stats, setStats] = useState(() => getProgressStats(blocks));
+  const [weeklyCount, setWeeklyCount] = useState(() => getWeeklyCompletions());
+
+  useEffect(() => {
+    setStats(getProgressStats(blocks));
+    setWeeklyCount(getWeeklyCompletions());
+  }, [blocks]);
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setStats(getProgressStats(blocks));
+      setWeeklyCount(getWeeklyCompletions());
+    };
+    return subscribeToProgressUpdates(handleUpdate);
+  }, [blocks]);
 
   if (blocks.length === 0) return null;
 

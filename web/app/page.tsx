@@ -33,7 +33,7 @@ export default function Home() {
               <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold text-sky-200">
                 ⚡ Aprende con misiones y desafíos
               </span>
-              <h1 className="mt-5 text-4xl md:text-5xl font-bold leading-tight">
+              <h1 className="mt-5 text-4xl font-bold leading-tight md:text-5xl">
                 HistoriAPP: explora el pasado como si fuera un videojuego.
               </h1>
               <p className="mt-4 text-lg text-slate-200">
@@ -94,7 +94,7 @@ export default function Home() {
               <Link
                 key={unidad.id}
                 href={`/unidad/${unidad.id}`}
-                className="group rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                className="group rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="flex items-start gap-4">
                   <div
@@ -104,7 +104,13 @@ export default function Home() {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-slate-900">{unidad.titulo}</h3>
-                    <p className="mt-2 text-slate-600">{unidad.descripcion ?? ""}</p>
+                    {unidad.descripcion ? (
+                      <p className="mt-2 text-slate-600">{unidad.descripcion}</p>
+                    ) : (
+                      <p className="mt-2 text-sm text-slate-400">
+                        Descubre desafíos y recompensas especiales en esta unidad.
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="mt-5 flex flex-wrap items-center gap-3 text-xs font-semibold text-slate-500">
