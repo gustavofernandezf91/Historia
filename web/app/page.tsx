@@ -67,26 +67,16 @@ export default function Home() {
           <div className="animate-float-slow absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-indigo-400/10 blur-[120px]" />
         </div>
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-20">
-          <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-14 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl relative flex flex-col items-center text-center lg:items-start lg:text-left lg:pl-8">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-sm font-semibold text-sky-200">
-                ⚡ Aprende con misiones y desafíos
-              </span>
               <div className="mt-6 flex items-center justify-center lg:justify-start">
                 <img
-                  src="https://drive.google.com/uc?export=view&id=10o967e8v1Qgsg993-M-qHyzwXcD6KJT6"
+                  src="https://drive.google.com/thumbnail?id=1GRBf7R3Dj1wDrJya6T9X9Lkkzx9Hbx-s&sz=w1200"
                   alt="Logo de HistoriAPP"
-                  className="w-56 sm:w-72 md:w-80 drop-shadow-[0_20px_45px_rgba(15,23,42,0.45)]"
+                  className="w-full max-w-[42rem] sm:max-w-[50rem] md:max-w-[60rem] drop-shadow-[0_20px_45px_rgba(15,23,42,0.45)]"
                 />
               </div>
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <Link
-                  href="#unidades"
-                  className="rounded-full bg-sky-400 px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-sky-500/30 transition hover:bg-sky-300"
-                >
-                  Empezar misión
-                </Link>
-              </div>
+              <div className="mt-6 flex flex-wrap items-center gap-4" />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm">
