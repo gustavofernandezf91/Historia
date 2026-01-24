@@ -57,6 +57,42 @@ function prettyType(tipo: string) {
   return tipo.charAt(0).toUpperCase() + tipo.slice(1);
 }
 
+function extractDriveFileId(input: string) {
+  if (!input) return null;
+  const matchers = [
+    /drive\.google\.com\/file\/d\/([^/]+)/i,
+    /drive\.google\.com\/open\?id=([^&]+)/i,
+    /drive\.google\.com\/uc\?id=([^&]+)/i,
+    /docs\.google\.com\/(?:document|presentation|spreadsheets)\/d\/([^/]+)/i,
+  ];
+  for (const matcher of matchers) {
+    const match = input.match(matcher);
+    if (match?.[1]) return match[1];
+  }
+  return null;
+}
+
+function buildDrivePreviewUrl(rawUrl: string, fileId: string) {
+  if (rawUrl.includes("docs.google.com/document")) {
+    return `https://docs.google.com/document/d/${fileId}/preview`;
+  }
+  if (rawUrl.includes("docs.google.com/presentation")) {
+    return `https://docs.google.com/presentation/d/${fileId}/preview`;
+  }
+  if (rawUrl.includes("docs.google.com/spreadsheets")) {
+    return `https://docs.google.com/spreadsheets/d/${fileId}/preview`;
+  }
+  return `https://drive.google.com/file/d/${fileId}/preview`;
+}
+
+function buildDriveImageUrl(fileId: string) {
+  return `https://drive.google.com/uc?export=view&id=${fileId}`;
+}
+
+function isProbablyUrl(input: string) {
+  return /^https?:\/\//i.test(input);
+}
+
 export default function BlockCard({
   bloque,
   blockId,
@@ -228,9 +264,65 @@ export default function BlockCard({
           {bloque.fuente.tipo && (
             <p className="text-slate-600 text-sm mb-2">Tipo: {bloque.fuente.tipo}</p>
           )}
-          {bloque.fuente.contenido && (
-            <p className="text-slate-800 whitespace-pre-wrap">{bloque.fuente.contenido}</p>
-          )}
+          {bloque.fuente.contenido && (() => {
+            const contenido = bloque.fuente.contenido;
+            const driveId = extractDriveFileId(contenido);
+            if (driveId && bloque.fuente.tipo === "imagen") {
+              const imageUrl = buildDriveImageUrl(driveId);
+              return (
+                <figure className="space-y-2">
+                  <img
+                    className="w-full max-w-2xl rounded-lg border border-slate-200 bg-white"
+                    src={imageUrl}
+                    alt={bloque.titulo ?? "Imagen de Google Drive"}
+                    loading="lazy"
+                  />
+                  <figcaption className="text-xs text-slate-500">
+                    Vista previa desde Google Drive.
+                  </figcaption>
+                </figure>
+              );
+            }
+
+            if (driveId) {
+              const previewUrl = buildDrivePreviewUrl(contenido, driveId);
+              return (
+                <div className="space-y-3">
+                  <iframe
+                    className="w-full min-h-[360px] rounded-lg border border-slate-200 bg-white"
+                    src={previewUrl}
+                    allow="autoplay"
+                    title="Vista previa de Google Drive"
+                  />
+                  <a
+                    className="text-sm font-semibold text-indigo-600 underline"
+                    href={contenido}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Abrir archivo en Google Drive
+                  </a>
+                </div>
+              );
+            }
+
+            if (bloque.fuente.tipo === "imagen" && isProbablyUrl(contenido)) {
+              return (
+                <img
+                  className="w-full max-w-2xl rounded-lg border border-slate-200 bg-white"
+                  src={contenido}
+                  alt={bloque.titulo ?? "Imagen de referencia"}
+                  loading="lazy"
+                />
+              );
+            }
+
+            return (
+              <p className="text-slate-800 whitespace-pre-wrap">
+                {contenido}
+              </p>
+            );
+          })()}
 
           {bloque.fuente.preguntas && bloque.fuente.preguntas.length > 0 && (
             <>
