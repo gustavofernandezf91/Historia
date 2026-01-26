@@ -50,68 +50,94 @@ export default function BlockGrid({ basePath, blocks }: BlockGridProps) {
     [blocks]
   );
 
+  const typeStyles: Record<string, { badge: string; glow: string }> = {
+    enganche: {
+      badge: "bg-amber-100 text-amber-700",
+      glow: "from-amber-50 via-transparent to-orange-100",
+    },
+    habilidad: {
+      badge: "bg-sky-100 text-sky-700",
+      glow: "from-sky-50 via-transparent to-indigo-100",
+    },
+    exploracion: {
+      badge: "bg-violet-100 text-violet-700",
+      glow: "from-violet-50 via-transparent to-fuchsia-100",
+    },
+    mision: {
+      badge: "bg-emerald-100 text-emerald-700",
+      glow: "from-emerald-50 via-transparent to-teal-100",
+    },
+    presente: {
+      badge: "bg-cyan-100 text-cyan-700",
+      glow: "from-cyan-50 via-transparent to-blue-100",
+    },
+    evaluacion: {
+      badge: "bg-rose-100 text-rose-700",
+      glow: "from-rose-50 via-transparent to-orange-100",
+    },
+    reflexion: {
+      badge: "bg-purple-100 text-purple-700",
+      glow: "from-purple-50 via-transparent to-pink-100",
+    },
+  };
+
+  const typeIcons: Record<string, string> = {
+    enganche: "⚡",
+    habilidad: "🧠",
+    exploracion: "🔎",
+    mision: "🧭",
+    presente: "🌎",
+    evaluacion: "✅",
+    reflexion: "💭",
+  };
+
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-sky-100/70 bg-white/90 p-5 shadow-lg shadow-slate-900/10 backdrop-blur">
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-lg shadow-slate-900/5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold text-slate-500">Progreso de la lección</p>
+            <p className="text-sm font-semibold text-slate-500">Tu progreso</p>
             <p className="text-2xl font-semibold text-slate-900">
               {stats.completedCount} de {stats.totalCount} actividades completadas
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-slate-600">XP ganado</p>
-            <p className="text-2xl font-semibold text-slate-900">{stats.xpEarned} XP</p>
+          <div className="rounded-xl border border-slate-100 bg-slate-50 px-4 py-2 text-right">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">XP ganado</p>
+            <p className="text-lg font-semibold text-slate-900">{stats.xpEarned} XP</p>
           </div>
         </div>
-        <div className="mt-4 h-2 w-full rounded-full bg-slate-100/80">
+        <div className="mt-4 h-2.5 w-full rounded-full bg-slate-100">
           <div
-            className="h-2 rounded-full bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 transition-all"
+            className="h-2.5 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all"
             style={{ width: `${stats.percent}%` }}
           />
         </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {blockSummaries.map(({ id, bloque, defaults }) => {
-          const completed = completedIds.includes(id);
-          return (
-          <Link
-            key={id}
-            href={`${basePath}/bloque/${encodeURIComponent(id)}`}
-            className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-xl hover:shadow-sky-500/10"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-sky-50/70 via-transparent to-indigo-50/60 opacity-0 transition-opacity group-hover:opacity-100" />
-            <div className="flex items-start justify-between gap-4">
-              <div className="relative">
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  {bloque.tipo}
-                </p>
-                <h3 className="mt-2 text-lg font-semibold text-slate-900">
-                  {bloque.titulo ?? "Actividad"}
-                </h3>
-                <p className="mt-2 text-sm text-slate-600 line-clamp-3">
-                  {bloque.texto ?? bloque.contenido ?? "Explora este desafío."}
-                </p>
-              </div>
-              <span
-                className={`relative rounded-full px-3 py-1 text-xs font-semibold ${
+        <div className="mt-4 grid grid-cols-[repeat(auto-fit,minmax(90px,1fr))] items-center gap-2 text-[10px] font-semibold text-slate-500">
+          {blockSummaries.map(({ id, bloque }) => {
+            const completed = completedIds.includes(id);
+            const typeStyle = typeStyles[bloque.tipo] ?? {
+              badge: "bg-slate-100 text-slate-600",
+              glow: "from-slate-50 via-transparent to-slate-100",
+            };
+            const icon = typeIcons[bloque.tipo] ?? "📘";
+            return (
+              <Link
+                key={id}
+                href={`${basePath}/bloque/${encodeURIComponent(id)}`}
+                className={`flex items-center justify-center gap-2 rounded-full border px-2 py-1 transition hover:-translate-y-0.5 hover:shadow-sm ${
                   completed
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "bg-slate-100 text-slate-600"
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                    : `border-slate-200 ${typeStyle.badge}`
                 }`}
               >
-                {completed ? "✅ Completado" : `+${defaults.xp} XP`}
-              </span>
-            </div>
-            <div className="relative mt-4 flex items-center gap-2 text-sm font-semibold text-indigo-600">
-              Entrar a la actividad
-              <span className="transition group-hover:translate-x-1">→</span>
-            </div>
-          </Link>
-          );
-        })}
+                <span className="text-xs">{icon}</span>
+                <span className="truncate uppercase tracking-wide">
+                  {(bloque.titulo ?? "Actividad").split(" ")[0]}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
