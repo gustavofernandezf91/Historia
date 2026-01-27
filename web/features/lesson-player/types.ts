@@ -9,6 +9,7 @@ export type BlockCompletion = {
   earnedXp?: number;
   analyticsEvent?: string;
   isCorrect?: boolean;
+  attemptPayload?: Record<string, unknown>;
 };
 
 export type IntroHeroBlock = LessonBlockBase & {
