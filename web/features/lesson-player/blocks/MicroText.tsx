@@ -1,23 +1,26 @@
 "use client";
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { BlockCompletion, MicroTextBlock } from "@/features/lesson-player/types";
 import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type MicroTextProps = {
   block: MicroTextBlock;
+  theme: LessonTheme;
   onComplete: (result: BlockCompletion) => void;
 };
 
-export default function MicroText({ block, onComplete }: MicroTextProps) {
+export default function MicroText({ block, theme, onComplete }: MicroTextProps) {
   const visual = getBlockVisualStyle(block.tipo);
-  const classes = getVisualClasses(visual);
+  const classes = getVisualClasses(visual, theme);
 
   return (
     <BlockFrame
-      eyebrow="Idea rápida"
+      eyebrow="Idea clave"
       title={block.title}
       visual={visual}
+      theme={theme}
       footer={
         <button
           className={classes.buttonPrimary}

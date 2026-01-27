@@ -6,6 +6,8 @@ import { useParams } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
+import { getUnitTheme } from "@/features/lesson-player/theme";
+import { accentTokens } from "@/features/lesson-player/tokens";
 import { useProgress } from "@/features/progress/hooks";
 import { getCheckpointById } from "@/utils/checkpoints";
 
@@ -25,6 +27,8 @@ export default function CheckpointPreviewPage() {
   const unidadId = params?.unidadId as string;
   const checkpointId = params?.checkpointId as string;
   const { progress, loading, getCheckpointState } = useProgress();
+  const unitTheme = useMemo(() => getUnitTheme(unidadId), [unidadId]);
+  const unitAccent = accentTokens[unitTheme.accentColor];
 
   const data = useMemo(() => {
     const { unidades } = curriculum as { unidades: Unidad[] };
@@ -68,9 +72,13 @@ export default function CheckpointPreviewPage() {
     <AppShell topBar={<TopBar title="Cierre de ciclo" backHref="/camino" />} showBottomNav={false}>
       <section className="flex flex-col gap-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase text-amber-600">Cierre de ciclo</p>
-          <div className="mt-2 flex items-center gap-3 text-2xl font-bold text-slate-900">
-            <span className="text-2xl">🧩</span>
+          <p className={`text-xs font-semibold uppercase ${unitAccent.text}`}>Cierre de ciclo</p>
+          <div className="relative mt-2 flex items-center gap-3 text-2xl font-bold text-slate-900">
+            <div
+              aria-hidden="true"
+              className={`absolute -left-3 top-1/2 h-12 w-12 -translate-y-1/2 rounded-full border ${unitAccent.border} ${unitTheme.softBackground} opacity-70`}
+            />
+            <span className="relative text-2xl">🧩</span>
             <span>Cierre de ciclo</span>
           </div>
           <p className="mt-2 text-sm text-slate-500">
@@ -80,7 +88,7 @@ export default function CheckpointPreviewPage() {
             5 preguntas de las últimas {data.checkpoint.lessonIds.length} lecciones. Necesitas 4 aciertos para avanzar.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
-            <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${unitAccent.softBg} ${unitAccent.text}`}>
               +25 XP
             </span>
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">

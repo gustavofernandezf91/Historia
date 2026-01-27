@@ -1,50 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { BlockCompletion, TrueFalseBlock } from "@/features/lesson-player/types";
-import {
-  feedbackStyles,
-  getBlockVisualStyle,
-  getVisualClasses,
-} from "@/features/lesson-player/visuals";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 import { getErrorCopy } from "@/lib/errorCopy";
 import { playSound } from "@/lib/sound";
 
 type TrueFalseProps = {
   block: TrueFalseBlock;
+  theme: LessonTheme;
   onComplete: (result: BlockCompletion) => void;
 };
 
-export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
-  const [answer, setAnswer] = useState<boolean | null>(null);
+export default function TrueFalse({ block, theme, onComplete }: TrueFalseProps) {
+  const [selected, setSelected] = useState<null | boolean>(null);
   const [showFeedback, setShowFeedback] = useState(false);
-  const [errorCopy, setErrorCopy] = useState<string | null>(null);
-  const isCorrect = answer === block.correct;
   const visual = getBlockVisualStyle(block.tipo);
-  const classes = getVisualClasses(visual);
-  const feedbackStyle = isCorrect ? feedbackStyles.correct : feedbackStyles.incorrect;
+  const classes = getVisualClasses(visual, theme);
 
-  useEffect(() => {
-    if (!showFeedback) {
-      setErrorCopy(null);
-      return;
-    }
-    if (!isCorrect) {
-      setErrorCopy((prev) => prev ?? getErrorCopy("true_false"));
-    }
-  }, [isCorrect, showFeedback]);
+  const statement = block.statement ?? block.enunciado ?? "";
+  const correct = block.correct ?? block.correcta ?? false;
+  const explanation = block.explanation ?? block.explicacion ?? "";
+  const isCorrect = selected !== null ? selected === correct : false;
 
   return (
     <BlockFrame
       eyebrow="Verdadero o falso"
-      title={block.statement}
+      title={statement}
       visual={visual}
+      theme={theme}
       footer={
         <button
-          className={answer === null ? classes.buttonDisabled : classes.buttonPrimary}
+          className={selected !== null ? classes.buttonPrimary : classes.buttonDisabled}
           onClick={() => {
-            if (answer === null) return;
+            if (selected === null) return;
             if (!showFeedback) {
               setShowFeedback(true);
               return;
@@ -55,39 +46,44 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
               earnedXp: isCorrect ? block.xp : 0,
               analyticsEvent: "true_false_answered",
               isCorrect,
+              attemptPayload: { answer: selected },
             });
           }}
-          disabled={answer === null}
+          disabled={selected === null}
         >
           Continuar
         </button>
       }
     >
       <div className={classes.optionLayout}>
-        {[true, false].map((value) => (
-          <button
-            key={String(value)}
-            className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${
-              answer === value ? classes.optionSelected : classes.optionDefault
-            }`}
-            onClick={() => {
-              if (showFeedback) return;
-              setAnswer(value);
-            }}
-          >
-            {value ? "Verdadero" : "Falso"}
-          </button>
-        ))}
+        {[true, false].map((option) => {
+          const isSelected = selected === option;
+          return (
+            <button
+              key={option ? "true" : "false"}
+              className={`w-full rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition ${
+                isSelected ? classes.optionSelected : classes.optionDefault
+              }`}
+              onClick={() => setSelected(option)}
+            >
+              {option ? "Verdadero" : "Falso"}
+            </button>
+          );
+        })}
       </div>
 
-      {showFeedback && answer !== null && (
+      {showFeedback && (
         <div
-          className={`rounded-2xl border px-4 py-3 text-sm ${feedbackStyle.border} ${feedbackStyle.bg} ${feedbackStyle.text}`}
+          className={`rounded-2xl border px-4 py-3 text-sm ${
+            isCorrect
+              ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+              : "border-rose-200 bg-rose-50 text-rose-700"
+          }`}
         >
           <p className="font-semibold">
-            {isCorrect ? "¡Bien hecho!" : errorCopy ?? "Buen intento. Miremos esto con calma."}
+            {isCorrect ? "¡Correcto!" : getErrorCopy("true_false") ?? "Aún no."}
           </p>
-          <p className="mt-2">{block.explanation ?? "Piensa en la evidencia histórica."}</p>
+          {explanation && <p className="mt-2">{explanation}</p>}
         </div>
       )}
     </BlockFrame>

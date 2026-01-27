@@ -15,7 +15,9 @@ import type { BlockCompletion, LessonBlock } from "@/features/lesson-player/type
 import type { Lesson } from "@/types/lesson";
 import { lessonToBlocks } from "@/features/lesson-player/adapters/lessonToBlocks";
 import { buildLessonXpPlan } from "@/features/lesson-player/xp";
+import { getLessonTheme } from "@/features/lesson-player/theme";
 import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
+import { accentTokens } from "@/features/lesson-player/tokens";
 import { playSound } from "@/lib/sound";
 
 type LessonPlayerProps = {
@@ -77,6 +79,8 @@ export default function LessonPlayer({
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
   const attemptPayloadsRef = useRef<Record<string, unknown>>({});
+  const lessonTheme = useMemo(() => getLessonTheme(unidadId, leccionId), [unidadId, leccionId]);
+  const progressTokens = accentTokens[lessonTheme.accentColor];
 
   const currentBlock = blocks[currentIndex] ?? blocks[0];
   const totalBlocks = blocks.length || 1;
@@ -141,18 +145,18 @@ export default function LessonPlayer({
         <div
           key={`segment-${index}`}
           className={`h-2 flex-1 rounded-full ${
-            index <= currentIndex ? "bg-emerald-500" : "bg-slate-200"
+            index <= currentIndex ? progressTokens.bg : "bg-slate-200"
           }`}
         />
       )),
-    [currentIndex, totalBlocks],
+    [currentIndex, progressTokens.bg, totalBlocks],
   );
 
   if (!blocks.length || !blockWithXp) {
     return (
       <div className="pb-10">
         <div className="mb-6 flex gap-2">{headerSegments}</div>
-        <UnderConstruction onComplete={onExit} />
+        <UnderConstruction theme={lessonTheme} onComplete={onExit} />
       </div>
     );
   }
@@ -174,60 +178,71 @@ export default function LessonPlayer({
       {blockWithXp.tipo === "intro_hero" && (
         <IntroHero
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "micro_text" && (
         <MicroText
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "mcq" && (
         <Mcq
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "story_card" && (
         <StoryCard
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "true_false" && (
         <TrueFalse
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "reflection_short" && (
         <ReflectionShort
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "summary_bullets" && (
         <SummaryBullets
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
       {blockWithXp.tipo === "outro_identity" && (
         <OutroIdentity
           block={blockWithXp}
+          theme={lessonTheme}
           onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {blockWithXp.tipo === "under_construction" && <UnderConstruction onComplete={onExit} />}
+      {blockWithXp.tipo === "under_construction" && (
+        <UnderConstruction theme={lessonTheme} onComplete={onExit} />
+      )}
       {!isKnownType && (() => {
         const visual = getBlockVisualStyle("under_construction");
-        const classes = getVisualClasses(visual);
+        const classes = getVisualClasses(visual, lessonTheme);
         return (
           <BlockFrame
             eyebrow="Contenido"
             title={blockWithXp.titulo ?? "Pantalla no disponible"}
             visual={visual}
+            theme={lessonTheme}
             footer={
               <button
                 className={classes.buttonPrimary}

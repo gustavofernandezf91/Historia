@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
+import { getSelfComparisonSignal } from "@/features/progress/selfComparison";
 import { useCurrentLesson, useProgress } from "@/features/progress/hooks";
 import { playSound } from "@/lib/sound";
 
@@ -35,6 +36,7 @@ export default function ResultsPage() {
   const xpLine = `+${xpEarned} XP — Buen ritmo 👏`;
   const emotionalCopy = "Cada sesión suma perspectiva histórica.";
   const hasPlayedSoundRef = useRef(false);
+  const selfComparison = useMemo(() => getSelfComparisonSignal(progress), [progress]);
 
   const emotionalMessage = (() => {
     if (emotionalStreak <= 1) {
@@ -70,6 +72,7 @@ export default function ResultsPage() {
           <h1 className="text-3xl font-bold">¡Bien hecho!</h1>
           <p className="mt-4 text-lg font-semibold">{xpLine}</p>
           <p className="mt-3 text-sm text-emerald-50">{emotionalMessage}</p>
+          {selfComparison && <p className="mt-2 text-sm text-emerald-50">{selfComparison}</p>}
           <p className="mt-2 text-sm text-emerald-50">{emotionalCopy}</p>
           <div className="mt-6">
             {nextLesson ? (

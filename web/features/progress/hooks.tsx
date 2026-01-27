@@ -28,6 +28,10 @@ import {
   saveLastCheckpointResult,
   saveLastResult,
 } from "@/features/progress/store";
+import {
+  updateDailyProgress,
+  updateWeeklyReflections,
+} from "@/features/progress/selfComparison";
 import type {
   CheckpointResult,
   CheckpointState,
@@ -96,6 +100,11 @@ const useProgressState = (): ProgressContextValue => {
       const completedAt = new Date();
       const next = completeLesson(progress, unidadId, leccionId, xpEarned, completedAt);
       persist(next);
+      updateDailyProgress({
+        date: completedAt,
+        xpDelta: xpEarned,
+        streakCount: next.streakCount,
+      });
       const result = {
         unidadId,
         leccionId,
@@ -124,6 +133,12 @@ const useProgressState = (): ProgressContextValue => {
     const completedAt = new Date();
     const next = recordEmotionalActivity(progress, completedAt);
     persist(next);
+    updateDailyProgress({
+      date: completedAt,
+      reflectionsDelta: 1,
+      streakCount: next.streakCount,
+    });
+    updateWeeklyReflections(completedAt);
   }, [persist, progress]);
 
   const getState = useCallback(
@@ -161,6 +176,11 @@ const useProgressState = (): ProgressContextValue => {
         badgeId,
       );
       persist(next);
+      updateDailyProgress({
+        date: completedAt,
+        xpDelta: xpEarned,
+        streakCount: next.streakCount,
+      });
       const payload: CheckpointResult = {
         ...result,
         unidadId,
