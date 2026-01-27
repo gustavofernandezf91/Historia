@@ -62,7 +62,7 @@ export default function CheckpointPreviewPage() {
 
   const state = getCheckpointState(unidadId, checkpointId);
   const locked = state === "locked";
-  const buttonLabel = state === "completed" ? "Repetir checkpoint" : "Empezar checkpoint";
+  const buttonLabel = "Empezar";
 
   return (
     <AppShell topBar={<TopBar title="Checkpoint" backHref="/camino" />} showBottomNav={false}>

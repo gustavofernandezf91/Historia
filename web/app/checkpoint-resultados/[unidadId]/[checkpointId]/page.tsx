@@ -6,6 +6,7 @@ import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
 import { useProgress } from "@/features/progress/hooks";
+import { getCheckpointById } from "@/utils/checkpoints";
 
 type Unidad = {
   id: string;
@@ -36,6 +37,13 @@ export default function CheckpointResultsPage() {
 
   const { unidades } = curriculum as { unidades: Unidad[] };
   const unidad = unidades.find((item) => item.id === unidadId);
+  const checkpoint = unidad ? getCheckpointById(unidad.lecciones, checkpointId) : null;
+  const lastLessonId = checkpoint?.lessonIds[checkpoint.lessonIds.length - 1];
+  const lastLessonIndex = lastLessonId
+    ? unidad?.lecciones.findIndex((lesson) => lesson.id === lastLessonId)
+    : -1;
+  const nextLesson =
+    lastLessonIndex !== undefined && lastLessonIndex >= 0 ? unidad?.lecciones[lastLessonIndex + 1] : null;
   const lessonsToReview =
     result?.lessonIds
       .map((lessonId) => unidad?.lecciones.find((lesson) => lesson.id === lessonId))
@@ -96,12 +104,14 @@ export default function CheckpointResultsPage() {
           >
             Volver al camino
           </Link>
-          <Link
-            href={`/checkpoint/${unidadId}/${checkpointId}`}
-            className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
-          >
-            Ver detalle
-          </Link>
+          {result?.passed && nextLesson && (
+            <Link
+              href={`/leccion/${unidadId}/${nextLesson.id}`}
+              className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+            >
+              Siguiente lección
+            </Link>
+          )}
         </div>
       </section>
     </AppShell>

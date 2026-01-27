@@ -25,31 +25,65 @@ const buildQuizQuestions = (lessons: Lesson[]): CheckpointQuestion[] => {
   return questions;
 };
 
-const buildGenericQuestions = (lessons: Lesson[], count: number): CheckpointQuestion[] => {
-  const pool = lessons.length ? lessons : [];
-  const statements = pool.length
-    ? pool.map((lesson) => ({
-        id: `generic-${lesson.id}`,
-        type: "true_false" as const,
-        statement: `Esta lección trata sobre ${lesson.titulo}.`,
-        correct: true,
-        explanation: "Recuerda el título y la idea central antes de avanzar.",
-        sourceLessonId: lesson.id,
-      }))
-    : [
-        {
-          id: "generic-checkpoint",
-          type: "true_false" as const,
-          statement: "El estudio de la historia conecta el pasado con el presente.",
-          correct: true,
-          explanation: "Cada lección busca encontrar vínculos entre tiempos y contextos.",
-        },
-      ];
-  const expanded: CheckpointQuestion[] = [];
-  while (expanded.length < count) {
-    expanded.push(...statements.map((item, index) => ({ ...item, id: `${item.id}-${index}-${expanded.length}` })));
+const buildFallbackMcqQuestions = (lessons: Lesson[], count: number): CheckpointQuestion[] => {
+  const lessonTitles = lessons.map((lesson) => lesson.titulo).filter(Boolean);
+  const staticDistractors = [
+    "Vida cotidiana y cultura",
+    "Cambios políticos y sociales",
+    "Tecnologías antiguas",
+    "Geografía histórica",
+  ];
+  const basePool = Array.from(new Set([...lessonTitles, ...staticDistractors]));
+
+  const buildOptions = (correct: string) => {
+    const candidates = basePool.filter((title) => title !== correct);
+    const shuffled = shuffle([...candidates]);
+    const options = [correct, ...shuffled.slice(0, 3)];
+    while (options.length < 4) {
+      options.push(`Opción ${options.length + 1}`);
+    }
+    return shuffle([...options]);
+  };
+
+  if (!lessonTitles.length) {
+    const options = buildOptions("Conectar hechos del pasado con el presente");
+    return Array.from({ length: count }).map((_, index) => ({
+      id: `fallback-unit-${index}`,
+      type: "mcq" as const,
+      question: "¿Cuál es el objetivo principal de esta unidad?",
+      options,
+      correctIndex: options.indexOf("Conectar hechos del pasado con el presente"),
+      explanationCorrect: "¡Exacto! La unidad busca entender los vínculos entre pasado y presente.",
+      explanationIncorrect: "Piensa en cómo la historia se conecta con nuestro presente.",
+    }));
   }
-  return expanded.slice(0, count);
+
+  // TODO: reemplazar por pool de preguntas estáticas por unidad.
+  const expanded: CheckpointQuestion[] = [];
+  lessonTitles.forEach((title, index) => {
+    const options = buildOptions(title);
+    expanded.push({
+      id: `fallback-${index}`,
+      type: "mcq",
+      question: `¿Qué lección aborda el tema "${title}"?`,
+      options,
+      correctIndex: options.indexOf(title),
+      explanationCorrect: "¡Bien hecho! Recuerda el título principal de la lección.",
+      explanationIncorrect: "Revisa los títulos de las lecciones antes de avanzar.",
+      sourceLessonId: lessons[index]?.id,
+    });
+  });
+
+  const repeated: CheckpointQuestion[] = [];
+  while (repeated.length < count) {
+    repeated.push(
+      ...expanded.map((item, index) => ({
+        ...item,
+        id: `${item.id}-${index}-${repeated.length}`,
+      })),
+    );
+  }
+  return repeated.slice(0, count);
 };
 
 export const buildCheckpointQuestions = (
@@ -74,7 +108,10 @@ export const buildCheckpointQuestions = (
   });
 
   if (combined.length < totalQuestions) {
-    const fallback = buildGenericQuestions(recentLessons.length ? recentLessons : unidadLessons, totalQuestions);
+    const fallback = buildFallbackMcqQuestions(
+      recentLessons.length ? recentLessons : unidadLessons,
+      totalQuestions,
+    );
     combined.push(...fallback);
   }
 
