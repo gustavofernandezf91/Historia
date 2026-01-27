@@ -1,27 +1,38 @@
 "use client";
 
+import type { VisualStyle } from "@/features/lesson-player/visuals";
+import { getVisualClasses } from "@/features/lesson-player/visuals";
+
 type BlockFrameProps = {
   eyebrow?: string;
   title?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  visual: VisualStyle;
 };
 
-export default function BlockFrame({ eyebrow, title, children, footer }: BlockFrameProps) {
+export default function BlockFrame({ eyebrow, title, children, footer, visual }: BlockFrameProps) {
+  const classes = getVisualClasses(visual);
+
   return (
-    <section className="mx-auto flex min-h-[70vh] w-full max-w-xl flex-col justify-between gap-8 py-6">
-      <div>
-        {eyebrow && (
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-500">
-            {eyebrow}
-          </p>
-        )}
-        {title && (
-          <h1 className="mt-3 text-2xl font-bold text-slate-900 md:text-3xl">{title}</h1>
-        )}
-        <div className="mt-4 space-y-4 text-slate-700">{children}</div>
+    <section
+      className={`mx-auto flex min-h-[70vh] w-full max-w-xl flex-col justify-between gap-8 ${
+        classes.layout
+      }`}
+    >
+      <div className={classes.container}>
+        <div>
+          {eyebrow && (
+            <p className={classes.eyebrow}>
+              <span className="mr-2">{visual.icon}</span>
+              {eyebrow}
+            </p>
+          )}
+          {title && <h1 className={`mt-3 ${classes.title}`}>{title}</h1>}
+          <div className={`mt-4 space-y-4 ${classes.bodyText}`}>{children}</div>
+        </div>
+        {footer && <div className="mt-8">{footer}</div>}
       </div>
-      {footer}
     </section>
   );
 }

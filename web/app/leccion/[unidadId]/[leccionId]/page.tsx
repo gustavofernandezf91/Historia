@@ -7,6 +7,7 @@ import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
 import { buildLessonDefinition } from "@/features/lesson-player/adapter";
 import { useProgress } from "@/features/progress/hooks";
+import { calculateLessonXp } from "@/features/lesson-player/xp";
 
 export default function LessonPreviewPage() {
   const params = useParams();
@@ -118,8 +119,8 @@ export default function LessonPreviewPage() {
   const state = getState(unidadId, leccionId);
   const isCompleted = state === "completed";
   const bloques = Array.isArray(lessonData.definition?.bloques) ? lessonData.definition.bloques : [];
-  const rewardXp = bloques.reduce((sum, block) => sum + (Number(block?.xp) || 6), 0);
-  const rewardLabel = rewardXp > 0 ? `+${rewardXp} XP` : "+10 XP";
+  const rewardXp = calculateLessonXp(bloques);
+  const rewardLabel = rewardXp > 0 ? `+${rewardXp} XP` : "+0 XP";
   const pantallas = Math.max(bloques.length, 1);
 
   return (

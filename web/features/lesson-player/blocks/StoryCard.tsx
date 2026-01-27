@@ -2,6 +2,7 @@
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, StoryCardBlock } from "@/features/lesson-player/types";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type StoryCardProps = {
   block: StoryCardBlock;
@@ -9,13 +10,17 @@ type StoryCardProps = {
 };
 
 export default function StoryCard({ block, onComplete }: StoryCardProps) {
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
+
   return (
     <BlockFrame
       eyebrow="Historia breve"
       title={block.title}
+      visual={visual}
       footer={
         <button
-          className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+          className={classes.buttonPrimary}
           onClick={() =>
             onComplete({
               canContinue: true,
@@ -28,7 +33,9 @@ export default function StoryCard({ block, onComplete }: StoryCardProps) {
         </button>
       }
     >
-      <div className="rounded-3xl border border-slate-200 bg-white p-5 text-base text-slate-700 shadow-sm">
+      <div
+        className={`rounded-3xl border p-5 text-base shadow-sm ${classes.bodyText} ${classes.accent.border} ${classes.accent.softBg}`}
+      >
         {block.story}
       </div>
     </BlockFrame>

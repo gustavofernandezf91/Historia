@@ -28,7 +28,23 @@ export default function ResultsPage() {
   const unidad = unidades.find((item) => item.id === unidadId);
   const completedCount = unidad ? progress.unidades[unidad.id]?.completedCount ?? 0 : 0;
   const totalLessons = unidad?.lecciones.length ?? 1;
-  const xpEarned = lastResult?.leccionId === leccionId ? lastResult.xpEarned : 10;
+  const xpEarned = lastResult?.leccionId === leccionId ? lastResult.xpEarned : 0;
+  const emotionalStreak = progress.emotionalStreak ?? 0;
+  const xpLine = `+${xpEarned} XP — Buen ritmo 👏`;
+  const encouragement = "Cada sesión suma perspectiva histórica.";
+
+  const emotionalMessage = (() => {
+    if (emotionalStreak <= 1) {
+      return "Hoy hiciste reflexionar tu cerebro 🧠";
+    }
+    if (emotionalStreak <= 3) {
+      return "Vas creando el hábito de pensar históricamente.";
+    }
+    if (emotionalStreak <= 6) {
+      return "Tu constancia ya es parte de tu identidad.";
+    }
+    return "Pensar históricamente ya es parte de ti.";
+  })();
 
   return (
     <AppShell
@@ -42,14 +58,28 @@ export default function ResultsPage() {
           <div className="absolute inset-0 animate-pulse opacity-20" />
           <div className="absolute right-6 top-6 text-2xl animate-celebrate">🎉</div>
           <h1 className="text-3xl font-bold">¡Bien hecho!</h1>
-          <p className="mt-2 text-sm text-emerald-50">
-            Sumaste experiencia y desbloqueaste el siguiente paso.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-semibold">+{xpEarned} XP</span>
-            <span className="rounded-full bg-white/20 px-4 py-2 text-sm font-semibold">
-              Racha: {progress.streakCount} días
-            </span>
+          <p className="mt-4 text-lg font-semibold">{xpLine}</p>
+          <p className="mt-3 text-sm text-emerald-50">{emotionalMessage}</p>
+          <p className="mt-2 text-sm text-emerald-50">{encouragement}</p>
+          <div className="mt-4 inline-flex rounded-full bg-white/20 px-4 py-2 text-xs font-semibold">
+            Racha emocional: {emotionalStreak} días
+          </div>
+          <div className="mt-6">
+            {nextLesson ? (
+              <Link
+                href={`/leccion/${nextLesson.unidadId}/${nextLesson.leccionId}`}
+                className="inline-flex w-full justify-center rounded-2xl bg-white px-6 py-4 text-center text-base font-semibold text-emerald-600"
+              >
+                Siguiente lección
+              </Link>
+            ) : (
+              <Link
+                href="/camino"
+                className="inline-flex w-full justify-center rounded-2xl bg-white px-6 py-4 text-center text-base font-semibold text-emerald-600"
+              >
+                Volver al camino
+              </Link>
+            )}
           </div>
         </div>
 
@@ -67,21 +97,6 @@ export default function ResultsPage() {
         </div>
 
         <div className="flex flex-col gap-3">
-          {nextLesson ? (
-            <Link
-              href={`/leccion/${nextLesson.unidadId}/${nextLesson.leccionId}`}
-              className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-center text-base font-semibold text-white"
-            >
-              Siguiente lección
-            </Link>
-          ) : (
-            <Link
-              href="/camino"
-              className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-center text-base font-semibold text-white"
-            >
-              Volver al camino
-            </Link>
-          )}
           <Link
             href="/camino"
             className="w-full rounded-2xl border border-slate-200 px-6 py-4 text-center text-base font-semibold text-slate-600"

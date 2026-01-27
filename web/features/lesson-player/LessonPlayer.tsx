@@ -14,8 +14,8 @@ import UnderConstruction from "@/features/lesson-player/blocks/UnderConstruction
 import type { BlockCompletion, LessonBlock } from "@/features/lesson-player/types";
 import type { Lesson } from "@/types/lesson";
 import { lessonToBlocks } from "@/features/lesson-player/adapters/lessonToBlocks";
-
-const blockXp = (block: LessonBlock) => block.xp ?? 6;
+import { buildLessonXpPlan } from "@/features/lesson-player/xp";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type LessonPlayerProps = {
   lesson: Lesson;
@@ -24,6 +24,7 @@ type LessonPlayerProps = {
   onComplete: (xpEarned: number) => void;
   onExit: () => void;
   onProgress?: (percent: number) => void;
+  onEmotionalActivity?: () => void;
 };
 
 export default function LessonPlayer({
@@ -33,6 +34,7 @@ export default function LessonPlayer({
   onComplete,
   onExit,
   onProgress,
+  onEmotionalActivity,
 }: LessonPlayerProps) {
   const hasLoggedErrorRef = useRef(false);
   const hasLoggedInfoRef = useRef(false);
@@ -78,6 +80,10 @@ export default function LessonPlayer({
   const currentBlock = blocks[currentIndex] ?? blocks[0];
   const totalBlocks = blocks.length || 1;
   const progressPercent = Math.round(((currentIndex + 1) / totalBlocks) * 100);
+  const xpPlan = useMemo(() => buildLessonXpPlan(blocks), [blocks]);
+  const lessonCap = xpPlan.cap;
+  const blockXp = currentBlock ? xpPlan.blockXp[currentBlock.id] ?? 0 : 0;
+  const blockWithXp = currentBlock ? { ...currentBlock, xp: blockXp } : currentBlock;
 
   useEffect(() => {
     onProgress?.(progressPercent);
@@ -104,12 +110,17 @@ export default function LessonPlayer({
       };
     }
     const alreadyCompleted = completedIds.includes(block.id);
-    const gainedXp = alreadyCompleted ? 0 : result.earnedXp ?? blockXp(block);
+    const blockEarned = alreadyCompleted ? 0 : result.earnedXp ?? block.xp ?? 0;
+    const remainingXp = Math.max(lessonCap - xpEarned, 0);
+    const gainedXp = Math.min(blockEarned, remainingXp);
     const nextXp = xpEarned + gainedXp;
 
     if (!alreadyCompleted) {
       setCompletedIds((prev) => [...prev, block.id]);
       setXpEarned(nextXp);
+      if (block.tipo === "reflection_short") {
+        onEmotionalActivity?.();
+      }
     }
 
     const isLast = currentIndex >= totalBlocks - 1;
@@ -133,7 +144,7 @@ export default function LessonPlayer({
     [currentIndex, totalBlocks],
   );
 
-  if (!blocks.length) {
+  if (!blocks.length || !blockWithXp) {
     return (
       <div className="pb-10">
         <div className="mb-6 flex gap-2">{headerSegments}</div>
@@ -143,87 +154,92 @@ export default function LessonPlayer({
   }
 
   const isKnownType =
-    currentBlock.tipo === "intro_hero" ||
-    currentBlock.tipo === "micro_text" ||
-    currentBlock.tipo === "mcq" ||
-    currentBlock.tipo === "story_card" ||
-    currentBlock.tipo === "true_false" ||
-    currentBlock.tipo === "reflection_short" ||
-    currentBlock.tipo === "summary_bullets" ||
-    currentBlock.tipo === "outro_identity" ||
-    currentBlock.tipo === "under_construction";
+    blockWithXp.tipo === "intro_hero" ||
+    blockWithXp.tipo === "micro_text" ||
+    blockWithXp.tipo === "mcq" ||
+    blockWithXp.tipo === "story_card" ||
+    blockWithXp.tipo === "true_false" ||
+    blockWithXp.tipo === "reflection_short" ||
+    blockWithXp.tipo === "summary_bullets" ||
+    blockWithXp.tipo === "outro_identity" ||
+    blockWithXp.tipo === "under_construction";
 
   return (
     <div className="pb-10">
       <div className="mb-6 flex gap-2">{headerSegments}</div>
-      {currentBlock.tipo === "intro_hero" && (
+      {blockWithXp.tipo === "intro_hero" && (
         <IntroHero
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "micro_text" && (
+      {blockWithXp.tipo === "micro_text" && (
         <MicroText
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "mcq" && (
+      {blockWithXp.tipo === "mcq" && (
         <Mcq
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "story_card" && (
+      {blockWithXp.tipo === "story_card" && (
         <StoryCard
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "true_false" && (
+      {blockWithXp.tipo === "true_false" && (
         <TrueFalse
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "reflection_short" && (
+      {blockWithXp.tipo === "reflection_short" && (
         <ReflectionShort
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "summary_bullets" && (
+      {blockWithXp.tipo === "summary_bullets" && (
         <SummaryBullets
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "outro_identity" && (
+      {blockWithXp.tipo === "outro_identity" && (
         <OutroIdentity
-          block={currentBlock}
-          onComplete={(result) => completeBlock(currentBlock, result)}
+          block={blockWithXp}
+          onComplete={(result) => completeBlock(blockWithXp, result)}
         />
       )}
-      {currentBlock.tipo === "under_construction" && <UnderConstruction onComplete={onExit} />}
-      {!isKnownType && (
-        <BlockFrame
-          eyebrow="Contenido"
-          title={currentBlock.titulo ?? "Pantalla no disponible"}
-          footer={
-            <button
-              className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
-              onClick={() => completeBlock(currentBlock, { canContinue: true })}
-            >
-              Continuar
-            </button>
-          }
-        >
-          <p className="text-slate-600">
-            {currentBlock.texto ??
-              "Esta pantalla aún no está disponible, pero puedes continuar con la lección."}
-          </p>
-        </BlockFrame>
-      )}
+      {blockWithXp.tipo === "under_construction" && <UnderConstruction onComplete={onExit} />}
+      {!isKnownType && (() => {
+        const visual = getBlockVisualStyle("under_construction");
+        const classes = getVisualClasses(visual);
+        return (
+          <BlockFrame
+            eyebrow="Contenido"
+            title={blockWithXp.titulo ?? "Pantalla no disponible"}
+            visual={visual}
+            footer={
+              <button
+                className={classes.buttonPrimary}
+                onClick={() => completeBlock(blockWithXp, { canContinue: true })}
+              >
+                Continuar
+              </button>
+            }
+          >
+            <p className={classes.mutedText}>
+              {blockWithXp.texto ??
+                "Esta pantalla aún no está disponible, pero puedes continuar con la lección."}
+            </p>
+          </BlockFrame>
+        );
+      })()}
       <div className="mt-6 flex justify-between text-xs text-slate-500">
         <span>
           Pantalla {currentIndex + 1} de {totalBlocks}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, ReflectionShortBlock } from "@/features/lesson-player/types";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type ReflectionShortProps = {
   block: ReflectionShortBlock;
@@ -11,52 +12,53 @@ type ReflectionShortProps = {
 
 export default function ReflectionShort({ block, onComplete }: ReflectionShortProps) {
   const [value, setValue] = useState("");
-  const trimmedValue = value.trim();
-  const hasSentence = value
-    .split(/[.!?]+/)
-    .map((segment) => segment.trim())
-    .filter(Boolean)
-    .some((segment) => {
-      const wordCount = segment.split(/\s+/).filter(Boolean).length;
-      return wordCount >= 2 || (wordCount >= 1 && /[.!?]/.test(value));
-    });
-  const canContinue = hasSentence;
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
 
   return (
     <BlockFrame
       eyebrow="Reflexión"
       title={block.prompt}
+      visual={visual}
       footer={
         <button
-          className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
-            canContinue ? "bg-emerald-500" : "bg-slate-300"
-          }`}
-          onClick={() => {
-            if (!canContinue) return;
+          className={value.trim() ? classes.buttonPrimary : classes.buttonDisabled}
+          onClick={() =>
             onComplete({
-              canContinue: true,
+              canContinue: value.trim().length > 0,
               earnedXp: block.xp,
-              analyticsEvent: "reflection_saved",
-              attemptPayload: { reflection: trimmedValue },
-            });
-          }}
-          disabled={!canContinue}
+              analyticsEvent: "reflection_short_submitted",
+              attemptPayload: { answer: value.trim() },
+            })
+          }
+          disabled={!value.trim()}
         >
           Continuar
         </button>
       }
     >
       <textarea
-        className="min-h-[120px] w-full rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700"
+        className={`${classes.input} ${classes.inputFocus}`}
+        rows={4}
         placeholder={block.placeholder ?? "Comparte tu idea"}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
       {block.examples && block.examples.length > 0 && (
-        <div className="space-y-1 text-xs text-slate-400">
-          {block.examples.map((example) => (
-            <p key={example}>Ej: {example}</p>
-          ))}
+        <div>
+          <p className={`text-xs font-semibold uppercase ${classes.mutedText}`}>Ejemplos</p>
+          <div className="mt-3 flex flex-col gap-2">
+            {block.examples.map((example) => (
+              <button
+                key={example}
+                type="button"
+                className={`rounded-2xl border px-4 py-3 text-left text-sm ${classes.optionDefault}`}
+                onClick={() => setValue(example)}
+              >
+                {example}
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </BlockFrame>
