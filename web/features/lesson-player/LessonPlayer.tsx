@@ -12,26 +12,47 @@ import OutroIdentity from "@/features/lesson-player/blocks/OutroIdentity";
 import UnderConstruction from "@/features/lesson-player/blocks/UnderConstruction";
 import type { BlockCompletion, LessonBlock } from "@/features/lesson-player/types";
 import type { Lesson } from "@/types/lesson";
-import { buildLessonDefinition } from "@/features/lesson-player/adapter";
+import { lessonToBlocks } from "@/features/lesson-player/adapters/lessonToBlocks";
 
 const blockXp = (block: LessonBlock) => block.xp ?? 6;
 
 type LessonPlayerProps = {
   lesson: Lesson;
+  unidadId: string;
+  leccionId: string;
   onComplete: (xpEarned: number) => void;
   onExit: () => void;
   onProgress?: (percent: number) => void;
 };
 
-export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }: LessonPlayerProps) {
-  const lessonDefinition = useMemo(() => buildLessonDefinition(lesson), [lesson]);
-  const blocks = lessonDefinition.bloques ?? [];
+export default function LessonPlayer({
+  lesson,
+  unidadId,
+  leccionId,
+  onComplete,
+  onExit,
+  onProgress,
+}: LessonPlayerProps) {
+  const blocks = useMemo(() => {
+    const resolved = lessonToBlocks({ unidadId, leccionId, lesson });
+    if (resolved.length === 0) {
+      return [
+        {
+          id: `${unidadId}-${leccionId}-under-construction`,
+          tipo: "under_construction",
+          titulo: "Lección en construcción",
+          texto: "Estamos preparando esta lección. Vuelve al camino y prueba otra.",
+        },
+      ];
+    }
+    return resolved;
+  }, [lesson, leccionId, unidadId]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
   const attemptPayloadsRef = useRef<Record<string, unknown>>({});
 
-  const currentBlock = blocks[currentIndex];
+  const currentBlock = blocks[currentIndex] ?? blocks[0];
   const totalBlocks = blocks.length || 1;
   const progressPercent = Math.round(((currentIndex + 1) / totalBlocks) * 100);
 

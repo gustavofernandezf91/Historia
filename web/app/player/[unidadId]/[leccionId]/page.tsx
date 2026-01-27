@@ -48,6 +48,8 @@ export default function PlayerPage() {
     >
       <LessonPlayer
         lesson={lesson}
+        unidadId={unidadId}
+        leccionId={leccionId}
         onExit={() => router.push("/camino")}
         onProgress={setProgressPercent}
         onComplete={(xpEarned) => {
