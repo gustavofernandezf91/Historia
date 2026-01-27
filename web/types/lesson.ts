@@ -1,3 +1,5 @@
+import type { LessonBlock } from "@/features/lesson-player/types";
+
 export type Lesson = {
   id: string;
   titulo: string;
@@ -7,6 +9,7 @@ export type Lesson = {
   contenidos?: string;
   descripcion?: string;
   bloques?: Bloque[];
+  bloques_ui?: LessonBlock[];
 };
 
 export type Bloque = {
