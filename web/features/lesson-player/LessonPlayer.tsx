@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import IntroHero from "@/features/lesson-player/blocks/IntroHero";
 import MicroText from "@/features/lesson-player/blocks/MicroText";
 import Mcq from "@/features/lesson-player/blocks/Mcq";
@@ -33,9 +34,32 @@ export default function LessonPlayer({
   onExit,
   onProgress,
 }: LessonPlayerProps) {
+  const hasLoggedErrorRef = useRef(false);
+  const hasLoggedInfoRef = useRef(false);
   const blocks = useMemo(() => {
-    const resolved = lessonToBlocks({ unidadId, leccionId, lesson });
-    if (resolved.length === 0) {
+    try {
+      const resolved = lessonToBlocks({ unidadId, leccionId, lesson });
+      const rawBlocks = Array.isArray(resolved) ? resolved : [];
+      if (rawBlocks.length === 0) {
+        return [
+          {
+            id: `${unidadId}-${leccionId}-under-construction`,
+            tipo: "under_construction",
+            titulo: "Lección en construcción",
+            texto: "Estamos preparando esta lección. Vuelve al camino y prueba otra.",
+          },
+        ];
+      }
+      return rawBlocks;
+    } catch (error) {
+      if (process.env.NODE_ENV === "development" && !hasLoggedErrorRef.current) {
+        console.error("[LessonPlayer] Error building blocks", {
+          unidadId,
+          leccionId,
+          error,
+        });
+        hasLoggedErrorRef.current = true;
+      }
       return [
         {
           id: `${unidadId}-${leccionId}-under-construction`,
@@ -45,7 +69,6 @@ export default function LessonPlayer({
         },
       ];
     }
-    return resolved;
   }, [lesson, leccionId, unidadId]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
@@ -59,6 +82,17 @@ export default function LessonPlayer({
   useEffect(() => {
     onProgress?.(progressPercent);
   }, [onProgress, progressPercent]);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development" || hasLoggedInfoRef.current) return;
+    hasLoggedInfoRef.current = true;
+    console.log("[LessonPlayer]", {
+      unidadId,
+      leccionId,
+      lessonFound: Boolean(lesson),
+      blocksLength: blocks.length,
+    });
+  }, [blocks.length, leccionId, lesson, unidadId]);
 
   const completeBlock = (block: LessonBlock, result: BlockCompletion) => {
     if (!result.canContinue) return;
@@ -106,6 +140,17 @@ export default function LessonPlayer({
       </div>
     );
   }
+
+  const isKnownType =
+    currentBlock.tipo === "intro_hero" ||
+    currentBlock.tipo === "micro_text" ||
+    currentBlock.tipo === "mcq" ||
+    currentBlock.tipo === "story_card" ||
+    currentBlock.tipo === "true_false" ||
+    currentBlock.tipo === "reflection_short" ||
+    currentBlock.tipo === "summary_bullets" ||
+    currentBlock.tipo === "outro_identity" ||
+    currentBlock.tipo === "under_construction";
 
   return (
     <div className="pb-10">
@@ -159,6 +204,25 @@ export default function LessonPlayer({
         />
       )}
       {currentBlock.tipo === "under_construction" && <UnderConstruction onComplete={onExit} />}
+      {!isKnownType && (
+        <BlockFrame
+          eyebrow="Contenido"
+          title={currentBlock.titulo ?? "Pantalla no disponible"}
+          footer={
+            <button
+              className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+              onClick={() => completeBlock(currentBlock, { canContinue: true })}
+            >
+              Continuar
+            </button>
+          }
+        >
+          <p className="text-slate-600">
+            {currentBlock.texto ??
+              "Esta pantalla aún no está disponible, pero puedes continuar con la lección."}
+          </p>
+        </BlockFrame>
+      )}
       <div className="mt-6 flex justify-between text-xs text-slate-500">
         <span>
           Pantalla {currentIndex + 1} de {totalBlocks}
