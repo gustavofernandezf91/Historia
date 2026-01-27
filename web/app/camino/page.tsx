@@ -35,8 +35,14 @@ export default function CaminoPage() {
       topBar={
         <TopBar
           title="Camino"
-          backHref="/"
-          backLabel="Inicio"
+          leadingAction={
+            <Link
+              href="/"
+              className="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600"
+            >
+              🏠 Inicio
+            </Link>
+          }
           streak={progress.streakCount}
           xp={progress.xpTotal}
         />

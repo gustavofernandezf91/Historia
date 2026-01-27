@@ -1,5 +1,6 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 
 type TopBarProps = {
@@ -10,6 +11,7 @@ type TopBarProps = {
   progressPercent?: number;
   streak?: number;
   xp?: number;
+  leadingAction?: ReactNode;
 };
 
 export default function TopBar({
@@ -20,11 +22,13 @@ export default function TopBar({
   progressPercent,
   streak,
   xp,
+  leadingAction,
 }: TopBarProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/70 bg-white/90 px-4 py-3 backdrop-blur">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
+          {leadingAction}
           {backHref && (
             <Link
               href={backHref}

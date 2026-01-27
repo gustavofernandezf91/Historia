@@ -12,10 +12,18 @@ export default function PerfilPage() {
     <AppShell topBar={<TopBar title="Perfil" streak={progress?.streakCount} xp={progress?.xpTotal} />}>
       <div className="space-y-4">
         <div className="rounded-3xl border border-slate-200 bg-white p-6">
-          <h1 className="text-2xl font-semibold text-slate-900">Tu progreso</h1>
+          <h1 className="text-2xl font-semibold text-slate-900">Perfil (Pronto)</h1>
           <p className="mt-2 text-sm text-slate-500">
             XP total: {progress?.xpTotal ?? 0} · Nivel {progress?.level ?? 1}
           </p>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
+            <span className="rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+              🔥 Racha {progress?.streakCount ?? 0}
+            </span>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">
+              ⚡ {progress?.xpTotal ?? 0} XP
+            </span>
+          </div>
         </div>
         {showReset && (
           <button
