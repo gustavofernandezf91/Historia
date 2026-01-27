@@ -42,10 +42,17 @@ export default function OutroIdentity({ block, onComplete }: OutroIdentityProps)
         </div>
       }
     >
+      {block.imageSrc && (
+        <div className="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+          <img src={block.imageSrc} alt="Ilustración" className="h-32 w-32 object-contain" />
+        </div>
+      )}
       <p className="text-lg text-slate-700">{block.prompt}</p>
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
-        🎯 Sigue así. Cada sesión construye tu identidad como historiador/a.
-      </div>
+      {(block.secondaryText ?? "🎯 Sigue así. Cada sesión construye tu identidad como historiador/a.") && (
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          {block.secondaryText ?? "🎯 Sigue así. Cada sesión construye tu identidad como historiador/a."}
+        </div>
+      )}
     </BlockFrame>
   );
 }

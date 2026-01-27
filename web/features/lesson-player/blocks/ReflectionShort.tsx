@@ -11,55 +11,31 @@ type ReflectionShortProps = {
 
 export default function ReflectionShort({ block, onComplete }: ReflectionShortProps) {
   const [value, setValue] = useState("");
-  const [action, setAction] = useState<"saved" | "skipped" | null>(null);
-  const [savedValue, setSavedValue] = useState("");
   const trimmedValue = value.trim();
-  const canSave = trimmedValue.length > 0;
-  const canContinue = action !== null;
+  const canContinue = trimmedValue.length > 0;
 
   return (
     <BlockFrame
       eyebrow="Reflexión"
       title={block.prompt}
       footer={
-        <div className="flex flex-col gap-3">
-          <button
-            className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
-              canSave ? "bg-emerald-500" : "bg-slate-300"
-            }`}
-            onClick={() => {
-              if (!canSave) return;
-              setSavedValue(trimmedValue);
-              setAction("saved");
-            }}
-            disabled={!canSave}
-          >
-            Guardar
-          </button>
-          <button
-            className="w-full rounded-2xl border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-600"
-            onClick={() => setAction("skipped")}
-          >
-            Omitir
-          </button>
-          <button
-            className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
-              canContinue ? "bg-emerald-500" : "bg-slate-300"
-            }`}
-            onClick={() => {
-              if (!action) return;
-              onComplete({
-                canContinue: true,
-                earnedXp: action === "saved" ? block.xp : 0,
-                analyticsEvent: action === "saved" ? "reflection_saved" : "reflection_skipped",
-                attemptPayload: action === "saved" ? { reflection: savedValue } : undefined,
-              });
-            }}
-            disabled={!canContinue}
-          >
-            Continuar
-          </button>
-        </div>
+        <button
+          className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
+            canContinue ? "bg-emerald-500" : "bg-slate-300"
+          }`}
+          onClick={() => {
+            if (!canContinue) return;
+            onComplete({
+              canContinue: true,
+              earnedXp: block.xp,
+              analyticsEvent: "reflection_saved",
+              attemptPayload: { reflection: trimmedValue },
+            });
+          }}
+          disabled={!canContinue}
+        >
+          Continuar
+        </button>
       }
     >
       <textarea
@@ -68,7 +44,13 @@ export default function ReflectionShort({ block, onComplete }: ReflectionShortPr
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
-      <p className="text-xs text-slate-500">Puedes escribir una idea breve o saltar.</p>
+      {block.examples && block.examples.length > 0 && (
+        <div className="space-y-1 text-xs text-slate-400">
+          {block.examples.map((example) => (
+            <p key={example}>Ej: {example}</p>
+          ))}
+        </div>
+      )}
     </BlockFrame>
   );
 }

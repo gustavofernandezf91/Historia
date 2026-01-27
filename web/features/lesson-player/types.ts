@@ -18,6 +18,7 @@ export type IntroHeroBlock = LessonBlockBase & {
   tipo: "intro_hero";
   title: string;
   subtitle?: string;
+  imageSrc?: string;
 };
 
 export type MicroTextBlock = LessonBlockBase & {
@@ -60,6 +61,7 @@ export type ReflectionShortBlock = LessonBlockBase & {
   tipo: "reflection_short";
   prompt: string;
   placeholder?: string;
+  examples?: string[];
 };
 
 export type SummaryBulletsBlock = LessonBlockBase & {
@@ -72,6 +74,8 @@ export type OutroIdentityBlock = LessonBlockBase & {
   tipo: "outro_identity";
   title: string;
   prompt: string;
+  imageSrc?: string;
+  secondaryText?: string;
   ctaLabel?: string;
   secondaryCtaLabel?: string;
 };

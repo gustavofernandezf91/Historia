@@ -29,9 +29,11 @@ export default function IntroHero({ block, onComplete }: IntroHeroProps) {
       }
     >
       {block.subtitle && <p className="text-lg text-slate-600">{block.subtitle}</p>}
-      <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-700">
-        💡 Tu misión es avanzar paso a paso. Pantallas cortas, foco total.
-      </div>
+      {block.imageSrc && (
+        <div className="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+          <img src={block.imageSrc} alt="Ilustración" className="h-32 w-32 object-contain" />
+        </div>
+      )}
     </BlockFrame>
   );
 }

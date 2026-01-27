@@ -11,6 +11,7 @@ type TrueFalseProps = {
 
 export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
   const [answer, setAnswer] = useState<boolean | null>(null);
+  const [showFeedback, setShowFeedback] = useState(false);
   const isCorrect = answer === block.correct;
 
   return (
@@ -22,14 +23,19 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
           className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
             answer === null ? "bg-slate-300" : "bg-emerald-500"
           }`}
-          onClick={() =>
+          onClick={() => {
+            if (answer === null) return;
+            if (!showFeedback) {
+              setShowFeedback(true);
+              return;
+            }
             onComplete({
               canContinue: true,
-              earnedXp: block.xp,
+              earnedXp: isCorrect ? block.xp : 0,
               analyticsEvent: "true_false_answered",
               isCorrect,
-            })
-          }
+            });
+          }}
           disabled={answer === null}
         >
           Continuar
@@ -45,20 +51,23 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
                 ? "border-emerald-400 bg-emerald-50 text-emerald-700"
                 : "border-slate-200 bg-white text-slate-700"
             }`}
-            onClick={() => setAnswer(value)}
+            onClick={() => {
+              if (showFeedback) return;
+              setAnswer(value);
+            }}
           >
             {value ? "Verdadero" : "Falso"}
           </button>
         ))}
       </div>
 
-      {answer !== null && (
+      {showFeedback && answer !== null && (
         <div
           className={`rounded-2xl border px-4 py-3 text-sm ${
             isCorrect ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-rose-200 bg-rose-50 text-rose-700"
           }`}
         >
-          <p className="font-semibold">{isCorrect ? "¡Correcto!" : "Incorrecto."}</p>
+          <p className="font-semibold">{isCorrect ? "¡Correcto!" : "Respuesta incorrecta."}</p>
           <p className="mt-2">{block.explanation ?? "Piensa en la evidencia histórica."}</p>
         </div>
       )}

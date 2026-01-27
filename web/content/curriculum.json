@@ -78,6 +78,7 @@
               "tipo": "intro_hero",
               "title": "Desafío inicial",
               "subtitle": "Nada de lo que haces hoy es casual.",
+              "imageSrc": "/globe.svg",
               "xp": 0
             },
             {
@@ -112,12 +113,18 @@
             {
               "tipo": "reflection_short",
               "prompt": "Elige una de las cosas que marcaste y escribe una línea: ¿por qué crees que tiene historia?",
+              "examples": [
+                "El transporte público existe porque la ciudad creció y necesitó conectarse.",
+                "Mi música favorita nació por cambios culturales y tecnológicos."
+              ],
               "xp": 8
             },
             {
               "tipo": "outro_identity",
               "title": "Cierre",
               "prompt": "Si tu día tiene historia, tú también eres parte de ella.",
+              "imageSrc": "/historiapp-logo.svg",
+              "secondaryText": "🎯 Sigue así. Cada sesión construye tu identidad como historiador/a.",
               "ctaLabel": "Volver al camino",
               "xp": 0
             }

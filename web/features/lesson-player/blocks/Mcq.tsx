@@ -14,10 +14,12 @@ export default function Mcq({ block, onComplete }: McqProps) {
   const [showFeedback, setShowFeedback] = useState(false);
   const [showCorrect, setShowCorrect] = useState(false);
   const isDiscovery = Boolean(block.discovery);
+  const isMultiDiscovery = Boolean(block.discovery && block.multiple);
   const minSelections = block.minSelections ?? 1;
-  const maxSelections = block.maxSelections ?? block.options.length;
+  const maxSelections = isMultiDiscovery ? block.options.length : block.maxSelections ?? block.options.length;
   const selectedIndex = selectedIndices[0] ?? null;
   const selectionCount = selectedIndices.length;
+  const totalOptions = block.options.length;
 
   const isCorrect = useMemo(() => {
     if (isDiscovery) return false;
@@ -26,6 +28,15 @@ export default function Mcq({ block, onComplete }: McqProps) {
   }, [block.correctIndex, isDiscovery, selectedIndex]);
 
   const handleSelect = (index: number) => {
+    if (isMultiDiscovery) {
+      if (showFeedback) return;
+      setSelectedIndices((prev) => {
+        const exists = prev.includes(index);
+        const next = exists ? prev.filter((item) => item !== index) : [...prev, index];
+        return next;
+      });
+      return;
+    }
     if (isDiscovery) {
       setSelectedIndices((prev) => {
         const exists = prev.includes(index);
@@ -58,7 +69,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
   }, [isCorrect, isDiscovery, showFeedback]);
 
   const discoveryFeedback = useMemo(() => {
-    if (!isDiscovery || selectionCount === 0) return null;
+    if (!isDiscovery || isMultiDiscovery || selectionCount === 0) return null;
     if (selectionCount >= Math.min(3, block.options.length)) {
       return {
         title: "¡Gran exploración!",
@@ -75,9 +86,29 @@ export default function Mcq({ block, onComplete }: McqProps) {
       title: "¡Buen inicio!",
       body: block.explanationCorrect ?? "Selecciona más ideas si quieres seguir explorando.",
     };
-  }, [block.explanationCorrect, block.options.length, isDiscovery, selectionCount]);
+  }, [block.explanationCorrect, block.options.length, isDiscovery, isMultiDiscovery, selectionCount]);
 
-  const canContinue = isDiscovery ? selectionCount >= minSelections : showFeedback;
+  const multiDiscoveryFeedback = useMemo(() => {
+    if (!isMultiDiscovery || !showFeedback || selectionCount === 0) return null;
+    if (selectionCount === totalOptions) {
+      return "Tal cual. Todo lo que elegiste tiene historia.";
+    }
+    if (selectionCount >= 3) {
+      return "Exacto. Muchas cosas de tu día no son casuales.";
+    }
+    return "Bien. Incluso una sola cosa ya tiene historia.";
+  }, [isMultiDiscovery, selectionCount, showFeedback, totalOptions]);
+
+  const multiDiscoveryXp = useMemo(() => {
+    if (!isMultiDiscovery) return block.xp;
+    if (selectionCount === 0) return 0;
+    if (selectionCount === totalOptions) return Math.round((block.xp ?? 0) * 1);
+    if (selectionCount >= 3) return Math.round((block.xp ?? 0) * 0.75);
+    if (selectionCount === 2) return Math.round((block.xp ?? 0) * 0.5);
+    return Math.round((block.xp ?? 0) * 0.25);
+  }, [block.xp, isMultiDiscovery, selectionCount, totalOptions]);
+
+  const canContinue = isMultiDiscovery ? selectionCount >= 1 : isDiscovery ? selectionCount >= minSelections : showFeedback;
 
   return (
     <BlockFrame
@@ -88,10 +119,14 @@ export default function Mcq({ block, onComplete }: McqProps) {
           className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
             canContinue ? "bg-emerald-500" : "bg-slate-300"
           }`}
-          onClick={() =>
+          onClick={() => {
+            if (isMultiDiscovery && !showFeedback) {
+              setShowFeedback(true);
+              return;
+            }
             onComplete({
               canContinue,
-              earnedXp: block.xp,
+              earnedXp: isMultiDiscovery ? multiDiscoveryXp : block.xp,
               analyticsEvent: "mcq_answered",
               isCorrect: isDiscovery ? undefined : isCorrect,
               attemptPayload: isDiscovery
@@ -99,14 +134,17 @@ export default function Mcq({ block, onComplete }: McqProps) {
                 : selectedIndex !== null
                   ? { selection: selectedIndex }
                   : undefined,
-            })
-          }
+            });
+          }}
           disabled={!canContinue}
         >
           Continuar
         </button>
       }
     >
+      {isMultiDiscovery && (
+        <p className="text-sm font-semibold text-slate-500">Puedes elegir más de una opción</p>
+      )}
       <div className="grid gap-3">
         {block.options.map((option, index) => {
           const isSelected = selectedIndices.includes(index);
@@ -156,6 +194,12 @@ export default function Mcq({ block, onComplete }: McqProps) {
               Elige al menos {minSelections} opción{minSelections === 1 ? "" : "es"} para continuar.
             </p>
           )}
+        </div>
+      )}
+      {multiDiscoveryFeedback && (
+        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          <p className="font-semibold">{multiDiscoveryFeedback}</p>
+          <p className="mt-2 font-semibold">+{multiDiscoveryXp} XP</p>
         </div>
       )}
     </BlockFrame>
