@@ -48,10 +48,10 @@ export default function CheckpointPreviewPage() {
 
   if (!data) {
     return (
-      <AppShell topBar={<TopBar title="Checkpoint" backHref="/camino" />} showBottomNav={false}>
+      <AppShell topBar={<TopBar title="Cierre de ciclo" backHref="/camino" />} showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">
-          <h1 className="text-2xl font-semibold text-slate-900">Checkpoint no encontrado</h1>
-          <p className="mt-2 text-sm text-slate-500">No existe este checkpoint para la unidad.</p>
+          <h1 className="text-2xl font-semibold text-slate-900">Cierre de ciclo no encontrado</h1>
+          <p className="mt-2 text-sm text-slate-500">No existe este cierre de ciclo para la unidad.</p>
           <Link href="/camino" className="mt-4 inline-flex text-sm font-semibold text-emerald-600">
             Volver al camino →
           </Link>
@@ -65,13 +65,19 @@ export default function CheckpointPreviewPage() {
   const buttonLabel = "Empezar";
 
   return (
-    <AppShell topBar={<TopBar title="Checkpoint" backHref="/camino" />} showBottomNav={false}>
+    <AppShell topBar={<TopBar title="Cierre de ciclo" backHref="/camino" />} showBottomNav={false}>
       <section className="flex flex-col gap-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-xs font-semibold uppercase text-emerald-500">Checkpoint</p>
-          <h1 className="mt-2 text-2xl font-bold text-slate-900">{data.checkpoint.label}</h1>
+          <p className="text-xs font-semibold uppercase text-amber-600">Cierre de ciclo</p>
+          <div className="mt-2 flex items-center gap-3 text-2xl font-bold text-slate-900">
+            <span className="text-2xl">🧩</span>
+            <span>Cierre de ciclo</span>
+          </div>
           <p className="mt-2 text-sm text-slate-500">
-            5 preguntas de las últimas {data.checkpoint.lessonIds.length} lecciones. Necesitas 4 aciertos para aprobar.
+            Hasta aquí recorriste una idea completa. Ahora veamos qué quedó.
+          </p>
+          <p className="mt-2 text-xs text-slate-400">
+            5 preguntas de las últimas {data.checkpoint.lessonIds.length} lecciones. Necesitas 4 aciertos para avanzar.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
@@ -106,7 +112,7 @@ export default function CheckpointPreviewPage() {
 
           {locked ? (
             <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-700">
-              Completa la última lección del bloque para desbloquear este checkpoint.
+              Completa la última lección del bloque para abrir este cierre de ciclo.
             </div>
           ) : (
             <Link

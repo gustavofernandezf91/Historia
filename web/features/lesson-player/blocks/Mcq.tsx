@@ -8,6 +8,8 @@ import {
   getBlockVisualStyle,
   getVisualClasses,
 } from "@/features/lesson-player/visuals";
+import { getErrorCopy } from "@/lib/errorCopy";
+import { playSound } from "@/lib/sound";
 
 type McqProps = {
   block: McqBlock;
@@ -18,6 +20,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showCorrect, setShowCorrect] = useState(false);
+  const [errorCopy, setErrorCopy] = useState<string | null>(null);
   const isDiscovery = Boolean(block.discovery);
   const isMultiDiscovery = Boolean(block.discovery && block.multiple);
   const minSelections = block.minSelections ?? 1;
@@ -35,6 +38,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
   }, [block.correctIndex, isDiscovery, selectedIndex]);
 
   const handleSelect = (index: number) => {
+    if (showFeedback && !isDiscovery && !isMultiDiscovery) return;
     if (isMultiDiscovery) {
       if (showFeedback) return;
       setSelectedIndices((prev) => {
@@ -57,7 +61,6 @@ export default function Mcq({ block, onComplete }: McqProps) {
       return;
     }
     setSelectedIndices([index]);
-    setShowFeedback(true);
   };
 
   useEffect(() => {
@@ -73,6 +76,16 @@ export default function Mcq({ block, onComplete }: McqProps) {
     setShowCorrect(false);
     const timer = setTimeout(() => setShowCorrect(true), 1200);
     return () => clearTimeout(timer);
+  }, [isCorrect, isDiscovery, showFeedback]);
+
+  useEffect(() => {
+    if (!showFeedback) {
+      setErrorCopy(null);
+      return;
+    }
+    if (!isDiscovery && !isCorrect) {
+      setErrorCopy((prev) => prev ?? getErrorCopy("mcq"));
+    }
   }, [isCorrect, isDiscovery, showFeedback]);
 
   const discoveryFeedback = useMemo(() => {
@@ -115,7 +128,11 @@ export default function Mcq({ block, onComplete }: McqProps) {
     return Math.round((block.xp ?? 0) * 0.25);
   }, [block.xp, isMultiDiscovery, selectionCount, totalOptions]);
 
-  const canContinue = isMultiDiscovery ? selectionCount >= 1 : isDiscovery ? selectionCount >= minSelections : showFeedback;
+  const canContinue = isMultiDiscovery
+    ? selectionCount >= 1
+    : isDiscovery
+      ? selectionCount >= minSelections
+      : selectedIndex !== null;
   const feedbackStyle = isCorrect ? feedbackStyles.correct : feedbackStyles.incorrect;
 
   return (
@@ -131,9 +148,16 @@ export default function Mcq({ block, onComplete }: McqProps) {
               setShowFeedback(true);
               return;
             }
+            if (!isDiscovery && !showFeedback) {
+              setShowFeedback(true);
+              return;
+            }
+            if (!isDiscovery) {
+              playSound(isCorrect ? "correct_answer" : "error_feedback");
+            }
             onComplete({
               canContinue,
-              earnedXp: isMultiDiscovery ? multiDiscoveryXp : block.xp,
+              earnedXp: isMultiDiscovery ? multiDiscoveryXp : isCorrect ? block.xp : 0,
               analyticsEvent: "mcq_answered",
               isCorrect: isDiscovery ? undefined : isCorrect,
               attemptPayload: isDiscovery
@@ -174,7 +198,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
           className={`rounded-2xl border px-4 py-3 text-sm ${feedbackStyle.border} ${feedbackStyle.bg} ${feedbackStyle.text}`}
         >
           <p className="font-semibold">
-            {isCorrect ? "¡Bien hecho!" : "Casi. Primero la explicación:"}
+            {isCorrect ? "¡Bien hecho!" : errorCopy ?? "Buen intento. Miremos esto con calma."}
           </p>
           <p className="mt-2">
             {isCorrect

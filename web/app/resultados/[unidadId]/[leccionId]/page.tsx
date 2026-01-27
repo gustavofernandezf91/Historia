@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
 import { useCurrentLesson, useProgress } from "@/features/progress/hooks";
+import { playSound } from "@/lib/sound";
 
 export default function ResultsPage() {
   const params = useParams();
@@ -31,7 +33,8 @@ export default function ResultsPage() {
   const xpEarned = lastResult?.leccionId === leccionId ? lastResult.xpEarned : 0;
   const emotionalStreak = progress.emotionalStreak ?? 0;
   const xpLine = `+${xpEarned} XP — Buen ritmo 👏`;
-  const encouragement = "Cada sesión suma perspectiva histórica.";
+  const emotionalCopy = "Cada sesión suma perspectiva histórica.";
+  const hasPlayedSoundRef = useRef(false);
 
   const emotionalMessage = (() => {
     if (emotionalStreak <= 1) {
@@ -45,6 +48,13 @@ export default function ResultsPage() {
     }
     return "Pensar históricamente ya es parte de ti.";
   })();
+
+  useEffect(() => {
+    if (hasPlayedSoundRef.current) return;
+    if (lastResult?.leccionId !== leccionId) return;
+    playSound("lesson_completed");
+    hasPlayedSoundRef.current = true;
+  }, [lastResult?.leccionId, leccionId]);
 
   return (
     <AppShell
@@ -60,10 +70,7 @@ export default function ResultsPage() {
           <h1 className="text-3xl font-bold">¡Bien hecho!</h1>
           <p className="mt-4 text-lg font-semibold">{xpLine}</p>
           <p className="mt-3 text-sm text-emerald-50">{emotionalMessage}</p>
-          <p className="mt-2 text-sm text-emerald-50">{encouragement}</p>
-          <div className="mt-4 inline-flex rounded-full bg-white/20 px-4 py-2 text-xs font-semibold">
-            Racha emocional: {emotionalStreak} días
-          </div>
+          <p className="mt-2 text-sm text-emerald-50">{emotionalCopy}</p>
           <div className="mt-6">
             {nextLesson ? (
               <Link
@@ -80,6 +87,9 @@ export default function ResultsPage() {
                 Volver al camino
               </Link>
             )}
+          </div>
+          <div className="mt-4 inline-flex rounded-full bg-white/20 px-4 py-2 text-xs font-semibold">
+            Racha emocional: {emotionalStreak} días
           </div>
         </div>
 

@@ -23,7 +23,7 @@ export const buildCheckpoints = (
       id,
       index,
       lessonIds,
-      label: `Checkpoint ${number}`,
+      label: `Cierre de ciclo ${number}`,
     });
   }
   return checkpoints;
