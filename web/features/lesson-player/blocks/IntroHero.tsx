@@ -1,23 +1,26 @@
 "use client";
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { BlockCompletion, IntroHeroBlock } from "@/features/lesson-player/types";
 import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type IntroHeroProps = {
   block: IntroHeroBlock;
+  theme: LessonTheme;
   onComplete: (result: BlockCompletion) => void;
 };
 
-export default function IntroHero({ block, onComplete }: IntroHeroProps) {
+export default function IntroHero({ block, theme, onComplete }: IntroHeroProps) {
   const visual = getBlockVisualStyle(block.tipo);
-  const classes = getVisualClasses(visual);
+  const classes = getVisualClasses(visual, theme);
 
   return (
     <BlockFrame
       eyebrow="Bienvenida"
       title={block.title}
       visual={visual}
+      theme={theme}
       footer={
         <button
           className={classes.buttonPrimary}

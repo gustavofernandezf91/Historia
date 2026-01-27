@@ -1,23 +1,26 @@
 "use client";
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { BlockCompletion, StoryCardBlock } from "@/features/lesson-player/types";
 import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type StoryCardProps = {
   block: StoryCardBlock;
+  theme: LessonTheme;
   onComplete: (result: BlockCompletion) => void;
 };
 
-export default function StoryCard({ block, onComplete }: StoryCardProps) {
+export default function StoryCard({ block, theme, onComplete }: StoryCardProps) {
   const visual = getBlockVisualStyle(block.tipo);
-  const classes = getVisualClasses(visual);
+  const classes = getVisualClasses(visual, theme);
 
   return (
     <BlockFrame
       eyebrow="Historia breve"
       title={block.title}
       visual={visual}
+      theme={theme}
       footer={
         <button
           className={classes.buttonPrimary}
@@ -33,11 +36,7 @@ export default function StoryCard({ block, onComplete }: StoryCardProps) {
         </button>
       }
     >
-      <div
-        className={`rounded-3xl border p-5 text-base shadow-sm ${classes.bodyText} ${classes.accent.border} ${classes.accent.softBg}`}
-      >
-        {block.story}
-      </div>
+      <p className={classes.bodyText}>{block.story}</p>
     </BlockFrame>
   );
 }

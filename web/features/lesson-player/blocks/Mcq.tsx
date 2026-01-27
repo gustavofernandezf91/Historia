@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { BlockCompletion, McqBlock } from "@/features/lesson-player/types";
 import {
   feedbackStyles,
@@ -13,10 +14,11 @@ import { playSound } from "@/lib/sound";
 
 type McqProps = {
   block: McqBlock;
+  theme: LessonTheme;
   onComplete: (result: BlockCompletion) => void;
 };
 
-export default function Mcq({ block, onComplete }: McqProps) {
+export default function Mcq({ block, theme, onComplete }: McqProps) {
   const [selectedIndices, setSelectedIndices] = useState<number[]>([]);
   const [showFeedback, setShowFeedback] = useState(false);
   const [showCorrect, setShowCorrect] = useState(false);
@@ -29,7 +31,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
   const selectionCount = selectedIndices.length;
   const totalOptions = block.options.length;
   const visual = getBlockVisualStyle(block.tipo);
-  const classes = getVisualClasses(visual);
+  const classes = getVisualClasses(visual, theme);
 
   const isCorrect = useMemo(() => {
     if (isDiscovery) return false;
@@ -140,6 +142,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
       eyebrow="Pregunta rápida"
       title={block.question}
       visual={visual}
+      theme={theme}
       footer={
         <button
           className={canContinue ? classes.buttonPrimary : classes.buttonDisabled}

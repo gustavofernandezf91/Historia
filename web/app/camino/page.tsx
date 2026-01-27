@@ -1,10 +1,13 @@
 "use client";
 
+import { useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
+import { getUnitTheme } from "@/features/lesson-player/theme";
+import { accentTokens } from "@/features/lesson-player/tokens";
 import { useProgress } from "@/features/progress/hooks";
 import { buildCheckpoints, CHECKPOINT_EVERY } from "@/utils/checkpoints";
 
@@ -20,6 +23,8 @@ export default function CaminoPage() {
   const unidadParam = searchParams.get("unidad");
   const { unidades } = curriculum as { unidades: Unidad[] };
   const unidad = unidades.find((item) => item.id === unidadParam) ?? unidades[0];
+  const unitTheme = useMemo(() => getUnitTheme(unidad?.id ?? ""), [unidad?.id]);
+  const unitAccent = accentTokens[unitTheme.accentColor];
 
   if (loading || !progress || !unidad) {
     return (
@@ -52,14 +57,24 @@ export default function CaminoPage() {
     >
       <section className="space-y-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-xs font-semibold uppercase text-emerald-500">Unidad actual</p>
+          <p className={`text-xs font-semibold uppercase ${unitAccent.text}`}>Unidad actual</p>
           <h1 className="mt-2 text-2xl font-bold text-slate-900">{unidad.titulo}</h1>
           <p className="mt-2 text-sm text-slate-500">
             Completa las lecciones en orden para desbloquear el siguiente nodo.
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-6">
+        <div className="relative flex flex-col items-center gap-6">
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute bottom-8 left-1/2 top-4 hidden w-1 -translate-x-1/2 border-l-2 border-dashed ${unitAccent.border} opacity-40 sm:block`}
+          />
+          <div
+            aria-hidden="true"
+            className={`pointer-events-none absolute bottom-2 left-1/2 hidden -translate-x-1/2 text-xs ${unitAccent.text} opacity-40 sm:block`}
+          >
+            ➜
+          </div>
           {unidad.lecciones.map((leccion, index) => {
             const state = getState(unidad.id, leccion.id);
             const isLocked = state === "locked";

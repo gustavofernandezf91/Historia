@@ -1,5 +1,6 @@
 "use client";
 
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { VisualStyle } from "@/features/lesson-player/visuals";
 import { getVisualClasses } from "@/features/lesson-player/visuals";
 
@@ -9,10 +10,11 @@ type BlockFrameProps = {
   children: React.ReactNode;
   footer?: React.ReactNode;
   visual: VisualStyle;
+  theme: LessonTheme;
 };
 
-export default function BlockFrame({ eyebrow, title, children, footer, visual }: BlockFrameProps) {
-  const classes = getVisualClasses(visual);
+export default function BlockFrame({ eyebrow, title, children, footer, visual, theme }: BlockFrameProps) {
+  const classes = getVisualClasses(visual, theme);
 
   return (
     <section

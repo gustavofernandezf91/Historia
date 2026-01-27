@@ -6,8 +6,12 @@ import { useParams } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
+import { getUnitTheme } from "@/features/lesson-player/theme";
+import { accentTokens } from "@/features/lesson-player/tokens";
+import { getUnitNarrative } from "@/features/narratives/unitNarratives";
+import { getSelfComparisonSignal } from "@/features/progress/selfComparison";
 import { useProgress } from "@/features/progress/hooks";
-import { getCheckpointById } from "@/utils/checkpoints";
+import { buildCheckpoints, CHECKPOINT_EVERY, getCheckpointById } from "@/utils/checkpoints";
 import { playSound } from "@/lib/sound";
 
 type Unidad = {
@@ -21,6 +25,9 @@ export default function CheckpointResultsPage() {
   const unidadId = params?.unidadId as string;
   const checkpointId = params?.checkpointId as string;
   const { progress, loading, lastCheckpointResult } = useProgress();
+  const unitTheme = useMemo(() => getUnitTheme(unidadId), [unidadId]);
+  const unitAccent = accentTokens[unitTheme.accentColor];
+  const narrative = getUnitNarrative(unidadId);
 
   if (loading || !progress) {
     return (
@@ -40,6 +47,9 @@ export default function CheckpointResultsPage() {
   const { unidades } = curriculum as { unidades: Unidad[] };
   const unidad = unidades.find((item) => item.id === unidadId);
   const checkpoint = unidad ? getCheckpointById(unidad.lecciones, checkpointId) : null;
+  const checkpoints = unidad ? buildCheckpoints(unidad.lecciones, CHECKPOINT_EVERY) : [];
+  const lastCheckpointId = checkpoints[checkpoints.length - 1]?.id;
+  const isFinalCheckpoint = Boolean(lastCheckpointId && lastCheckpointId === checkpointId);
   const lastLessonId = checkpoint?.lessonIds[checkpoint.lessonIds.length - 1];
   const lastLessonIndex = lastLessonId
     ? unidad?.lecciones.findIndex((lesson) => lesson.id === lastLessonId)
@@ -53,6 +63,7 @@ export default function CheckpointResultsPage() {
   const emotionalStreak = progress.emotionalStreak ?? 0;
   const hasPlayedSoundRef = useRef(false);
   const hasResult = Boolean(result);
+  const selfComparison = useMemo(() => getSelfComparisonSignal(progress), [progress]);
 
   const emotionalMessage = useMemo(() => {
     if (emotionalStreak <= 1) {
@@ -83,11 +94,20 @@ export default function CheckpointResultsPage() {
     >
       <section className="space-y-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h1 className="text-2xl font-bold text-slate-900">
+          <div className="relative">
+            <div
+              aria-hidden="true"
+              className={`absolute -left-4 top-1 h-14 w-14 rounded-full border ${unitAccent.border} ${unitTheme.softBackground} opacity-70`}
+            />
+            <h1 className="relative text-2xl font-bold text-slate-900">
             {result?.passed ? "Cerraste un ciclo" : "El ciclo sigue abierto"}
-          </h1>
-          <p className="mt-3 text-sm font-semibold text-emerald-600">+{result?.xpEarned ?? 0} XP</p>
+            </h1>
+          </div>
+          <p className={`mt-3 text-sm font-semibold ${unitAccent.text}`}>+{result?.xpEarned ?? 0} XP</p>
           <p className="mt-2 text-sm text-slate-500">{emotionalMessage}</p>
+          {selfComparison && (
+            <p className="mt-2 text-sm text-slate-600">{selfComparison}</p>
+          )}
           <p className="mt-2 text-sm text-slate-500">
             {hasResult
               ? result?.passed
@@ -101,6 +121,14 @@ export default function CheckpointResultsPage() {
               : "Completa el cierre de ciclo para ver tu resultado."}
           </p>
         </div>
+
+        {result?.passed && isFinalCheckpoint && narrative && (
+          <div className={`rounded-3xl border ${unitAccent.border} ${unitTheme.softBackground} p-6`}>
+            <p className={`text-xs font-semibold uppercase ${unitAccent.text}`}>Cierre de unidad</p>
+            <p className="mt-3 text-lg font-semibold text-slate-900">{narrative.closingCopy}</p>
+            <p className="mt-2 text-sm text-slate-600">{narrative.identityShiftCopy}</p>
+          </div>
+        )}
 
         {result && !result.passed && (
           <div className="rounded-3xl border border-slate-200 bg-white p-6">

@@ -1,0 +1,60 @@
+export type AccentColor = "slate" | "blue" | "indigo" | "violet" | "emerald" | "gray" | "amber";
+
+export const accentTokens: Record<AccentColor, Record<string, string>> = {
+  slate: {
+    text: "text-slate-600",
+    bg: "bg-slate-600",
+    softBg: "bg-slate-50",
+    border: "border-slate-200",
+    ring: "ring-slate-200",
+    shadow: "shadow-slate-200",
+  },
+  blue: {
+    text: "text-blue-600",
+    bg: "bg-blue-500",
+    softBg: "bg-blue-50",
+    border: "border-blue-200",
+    ring: "ring-blue-200",
+    shadow: "shadow-blue-200",
+  },
+  indigo: {
+    text: "text-indigo-600",
+    bg: "bg-indigo-500",
+    softBg: "bg-indigo-50",
+    border: "border-indigo-200",
+    ring: "ring-indigo-200",
+    shadow: "shadow-indigo-200",
+  },
+  violet: {
+    text: "text-violet-600",
+    bg: "bg-violet-500",
+    softBg: "bg-violet-50",
+    border: "border-violet-200",
+    ring: "ring-violet-200",
+    shadow: "shadow-violet-200",
+  },
+  emerald: {
+    text: "text-emerald-600",
+    bg: "bg-emerald-500",
+    softBg: "bg-emerald-50",
+    border: "border-emerald-200",
+    ring: "ring-emerald-200",
+    shadow: "shadow-emerald-200",
+  },
+  gray: {
+    text: "text-slate-500",
+    bg: "bg-slate-500",
+    softBg: "bg-slate-50",
+    border: "border-slate-200",
+    ring: "ring-slate-200",
+    shadow: "shadow-slate-200",
+  },
+  amber: {
+    text: "text-amber-600",
+    bg: "bg-amber-500",
+    softBg: "bg-amber-50",
+    border: "border-amber-200",
+    ring: "ring-amber-200",
+    shadow: "shadow-amber-200",
+  },
+};

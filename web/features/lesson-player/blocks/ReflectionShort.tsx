@@ -2,24 +2,27 @@
 
 import { useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import type { LessonTheme } from "@/features/lesson-player/theme";
 import type { BlockCompletion, ReflectionShortBlock } from "@/features/lesson-player/types";
 import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type ReflectionShortProps = {
   block: ReflectionShortBlock;
+  theme: LessonTheme;
   onComplete: (result: BlockCompletion) => void;
 };
 
-export default function ReflectionShort({ block, onComplete }: ReflectionShortProps) {
+export default function ReflectionShort({ block, theme, onComplete }: ReflectionShortProps) {
   const [value, setValue] = useState("");
   const visual = getBlockVisualStyle(block.tipo);
-  const classes = getVisualClasses(visual);
+  const classes = getVisualClasses(visual, theme);
 
   return (
     <BlockFrame
       eyebrow="Reflexión"
       title={block.prompt}
       visual={visual}
+      theme={theme}
       footer={
         <button
           className={value.trim() ? classes.buttonPrimary : classes.buttonDisabled}
@@ -37,6 +40,14 @@ export default function ReflectionShort({ block, onComplete }: ReflectionShortPr
         </button>
       }
     >
+      <div className="flex justify-end">
+        <span
+          aria-hidden="true"
+          className={`text-lg tracking-[0.6em] opacity-40 ${classes.accent.text}`}
+        >
+          ••
+        </span>
+      </div>
       <textarea
         className={`${classes.input} ${classes.inputFocus}`}
         rows={4}

@@ -9,6 +9,7 @@ import curriculum from "@/content/curriculum.json";
 import CheckpointPlayer from "@/features/checkpoints/CheckpointPlayer";
 import { buildCheckpointQuestions } from "@/features/checkpoints/questions";
 import type { CheckpointResultPayload } from "@/features/checkpoints/types";
+import { getUnitTheme } from "@/features/lesson-player/theme";
 import { useProgress } from "@/features/progress/hooks";
 import type { Lesson } from "@/types/lesson";
 import { getCheckpointById } from "@/utils/checkpoints";
@@ -29,6 +30,7 @@ export default function CheckpointPlayerPage() {
   const checkpointId = params?.checkpointId as string;
   const { progress, loading, finishCheckpoint, getCheckpointState } = useProgress();
   const [progressPercent, setProgressPercent] = useState(0);
+  const unitTheme = useMemo(() => getUnitTheme(unidadId), [unidadId]);
 
   const checkpointData = useMemo(() => {
     const { unidades } = curriculum as { unidades: Unidad[] };
@@ -82,6 +84,7 @@ export default function CheckpointPlayerPage() {
     >
       <CheckpointPlayer
         questions={checkpointData.questions}
+        theme={unitTheme}
         onProgress={setProgressPercent}
         onComplete={(result) => {
           const passed = result.correctCount >= PASSING_SCORE;
