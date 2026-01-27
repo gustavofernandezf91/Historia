@@ -9,37 +9,27 @@ type OutroIdentityProps = {
 };
 
 export default function OutroIdentity({ block, onComplete }: OutroIdentityProps) {
+  const prompt = block.prompt ?? "Si tu día tiene historia, tú también eres parte de ella.";
+  const secondaryText =
+    block.secondaryText ?? "🎯 Sigue así. Cada sesión construye tu identidad como historiador/a.";
+
   return (
     <BlockFrame
       eyebrow="Cierre"
-      title={block.title}
+      title={undefined}
       footer={
-        <div className="flex flex-col gap-3">
-          <button
-            className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
-            onClick={() =>
-              onComplete({
-                canContinue: true,
-                earnedXp: block.xp,
-                analyticsEvent: "outro_identity_next",
-              })
-            }
-          >
-            {block.ctaLabel ?? "Siguiente lección"}
-          </button>
-          <button
-            className="w-full rounded-2xl border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-600"
-            onClick={() =>
-              onComplete({
-                canContinue: true,
-                earnedXp: 0,
-                analyticsEvent: "outro_identity_back_path",
-              })
-            }
-          >
-            {block.secondaryCtaLabel ?? "Volver al camino"}
-          </button>
-        </div>
+        <button
+          className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+          onClick={() =>
+            onComplete({
+              canContinue: true,
+              earnedXp: block.xp,
+              analyticsEvent: "outro_identity_back_path",
+            })
+          }
+        >
+          {block.ctaLabel ?? "Volver al camino"}
+        </button>
       }
     >
       {block.imageSrc && (
@@ -47,12 +37,10 @@ export default function OutroIdentity({ block, onComplete }: OutroIdentityProps)
           <img src={block.imageSrc} alt="Ilustración" className="h-32 w-32 object-contain" />
         </div>
       )}
-      <p className="text-lg text-slate-700">{block.prompt}</p>
-      {(block.secondaryText ?? "🎯 Sigue así. Cada sesión construye tu identidad como historiador/a.") && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
-          {block.secondaryText ?? "🎯 Sigue así. Cada sesión construye tu identidad como historiador/a."}
-        </div>
-      )}
+      <p className="text-lg text-slate-700">{prompt}</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+        {secondaryText}
+      </div>
     </BlockFrame>
   );
 }

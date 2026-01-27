@@ -12,7 +12,15 @@ type ReflectionShortProps = {
 export default function ReflectionShort({ block, onComplete }: ReflectionShortProps) {
   const [value, setValue] = useState("");
   const trimmedValue = value.trim();
-  const canContinue = trimmedValue.length > 0;
+  const hasSentence = value
+    .split(/[.!?]+/)
+    .map((segment) => segment.trim())
+    .filter(Boolean)
+    .some((segment) => {
+      const wordCount = segment.split(/\s+/).filter(Boolean).length;
+      return wordCount >= 2 || (wordCount >= 1 && /[.!?]/.test(value));
+    });
+  const canContinue = hasSentence;
 
   return (
     <BlockFrame
