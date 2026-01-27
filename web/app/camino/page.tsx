@@ -32,7 +32,15 @@ export default function CaminoPage() {
 
   return (
     <AppShell
-      topBar={<TopBar title="Camino" streak={progress.streakCount} xp={progress.xpTotal} />}
+      topBar={
+        <TopBar
+          title="Camino"
+          backHref="/"
+          backLabel="Inicio"
+          streak={progress.streakCount}
+          xp={progress.xpTotal}
+        />
+      }
     >
       <section className="space-y-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
