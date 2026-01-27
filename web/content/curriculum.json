@@ -201,6 +201,62 @@
               "contenido": "¿Qué ganamos y qué perdemos cuando dividimos la historia en etapas?"
             }
           ],
+          "bloques_ui": [
+            {
+              "tipo": "intro_hero",
+              "title": "Mirar con otros ojos",
+              "subtitle": "No todos ven lo mismo cuando miran el pasado.",
+              "imageSrc": "/images/lesson-0-2-mirar.jpg",
+              "xp": 0
+            },
+            {
+              "tipo": "micro_text",
+              "title": "Idea clave",
+              "body": "Para entender por qué algo ocurrió, no basta con opinar. Necesitamos observar, preguntar y buscar pruebas.",
+              "xp": 0
+            },
+            {
+              "tipo": "mcq",
+              "question": "¿Qué hace alguien que quiere entender un hecho del pasado?",
+              "options": [
+                "Hace preguntas",
+                "Busca pruebas",
+                "Escucha distintas versiones",
+                "Da su opinión sin investigar",
+                "Compara información"
+              ],
+              "multiple": true,
+              "discovery": true,
+              "minSelections": 1,
+              "explanationCorrect": "Entender el pasado requiere observar, preguntar y contrastar información.",
+              "xp": 6
+            },
+            {
+              "tipo": "true_false",
+              "statement": "En historia, una sola versión siempre es suficiente.",
+              "correct": false,
+              "explanation": "Las personas recuerdan y viven los hechos de forma distinta, por eso se comparan versiones.",
+              "xp": 6
+            },
+            {
+              "tipo": "reflection_short",
+              "prompt": "Piensa en algo que hayas escuchado sobre el pasado (una historia familiar, una noticia o un mito). ¿Qué pregunta te gustaría hacer para entenderlo mejor?",
+              "examples": [
+                "¿Quién lo contó y por qué?",
+                "¿Qué pasó antes?",
+                "¿Hay otra versión?"
+              ],
+              "xp": 9
+            },
+            {
+              "tipo": "outro_identity",
+              "title": "Cierre",
+              "prompt": "Mirar con método cambia lo que entiendes del mundo.",
+              "imageSrc": "/images/lesson-0-2-cierre.jpg",
+              "ctaLabel": "Volver al camino",
+              "xp": 0
+            }
+          ],
           "actividades_sugeridas": [
             "Ordenar tarjetas de hitos y justificar el criterio de ordenamiento.",
             "Crear una línea de tiempo personal con eventos propios y luego compararla con hitos históricos.",
