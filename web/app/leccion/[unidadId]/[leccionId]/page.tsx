@@ -35,6 +35,8 @@ export default function LessonPreviewPage() {
 
   const state = getState(unidadId, leccionId);
   const isCompleted = state === "completed";
+  const rewardXp = lessonData.definition.bloques.reduce((sum, block) => sum + (block.xp ?? 6), 0);
+  const rewardLabel = rewardXp > 0 ? `+${rewardXp} XP` : "+10 XP";
 
   return (
     <AppShell
@@ -49,7 +51,7 @@ export default function LessonPreviewPage() {
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
-              +10 XP
+              {rewardLabel}
             </span>
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
               {lessonData.definition.bloques.length || 1} pantallas

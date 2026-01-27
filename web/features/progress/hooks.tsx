@@ -73,13 +73,14 @@ const useProgressState = (): ProgressContextValue => {
   const finishLesson = useCallback(
     (unidadId: string, leccionId: string, xpEarned: number) => {
       if (!progress) return;
-      const next = completeLesson(progress, unidadId, leccionId, xpEarned);
+      const completedAt = new Date();
+      const next = completeLesson(progress, unidadId, leccionId, xpEarned, completedAt);
       persist(next);
       const result = {
         unidadId,
         leccionId,
         xpEarned,
-        completedAt: new Date().toISOString(),
+        completedAt: completedAt.toISOString(),
       };
       saveLastResult(result);
       setLastResult(result);

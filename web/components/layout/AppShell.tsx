@@ -14,7 +14,7 @@ export default function AppShell({
   showBottomNav = true,
 }: AppShellProps) {
   return (
-    <div className="min-h-screen pb-20 md:pb-0">
+    <div className="min-h-screen pb-[calc(env(safe-area-inset-bottom)+5rem)] md:pb-0">
       {topBar}
       <main className="mx-auto w-full max-w-5xl px-4 pb-8 pt-6 md:px-8">
         {children}

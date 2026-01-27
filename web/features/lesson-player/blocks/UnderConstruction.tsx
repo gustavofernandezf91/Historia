@@ -16,7 +16,7 @@ export default function UnderConstruction({ onComplete }: UnderConstructionProps
           className="w-full rounded-2xl bg-slate-300 px-6 py-4 text-base font-semibold text-slate-700"
           onClick={onComplete}
         >
-          Volver
+          Volver al camino
         </button>
       }
     >

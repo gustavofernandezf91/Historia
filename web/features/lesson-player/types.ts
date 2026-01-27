@@ -4,6 +4,12 @@ export type LessonBlockBase = {
   xp?: number;
 };
 
+export type BlockCompletion = {
+  canContinue: boolean;
+  earnedXp?: number;
+  analyticsEvent?: string;
+};
+
 export type IntroHeroBlock = LessonBlockBase & {
   tipo: "intro_hero";
   title: string;

@@ -46,6 +46,18 @@ const mapBloque = (bloque: Bloque, index: number): LessonBlock | LessonBlock[] =
         placeholder: "Escribe tu idea en una frase.",
         xp: 6,
       };
+    case "presente":
+      return {
+        id: buildId("story", index),
+        tipo: "story_card",
+        title: bloque.titulo ?? "Conecta con hoy",
+        story: truncate(
+          normalizeText(bloque.contenido ?? bloque.texto) ||
+            "Conecta esta idea con una situación actual.",
+          220,
+        ),
+        xp: 5,
+      };
     case "evaluacion":
       if (bloque.quiz) {
         return {

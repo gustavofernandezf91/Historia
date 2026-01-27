@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
-import type { TrueFalseBlock } from "@/features/lesson-player/types";
+import type { BlockCompletion, TrueFalseBlock } from "@/features/lesson-player/types";
 
 type TrueFalseProps = {
   block: TrueFalseBlock;
-  onComplete: (isCorrect: boolean) => void;
+  onComplete: (result: BlockCompletion) => void;
 };
 
 export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
@@ -23,7 +23,13 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
           className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
             answer === null ? "bg-slate-300" : "bg-emerald-500"
           }`}
-          onClick={() => onComplete(isCorrect)}
+          onClick={() =>
+            onComplete({
+              canContinue: true,
+              earnedXp: block.xp,
+              analyticsEvent: "true_false_answered",
+            })
+          }
           disabled={answer === null}
         >
           Continuar
