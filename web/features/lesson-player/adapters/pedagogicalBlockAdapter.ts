@@ -53,11 +53,35 @@ export const adaptPedagogicalBlock = (block: any): LessonBlock => {
   }
 
   if (block?.tipo === "evaluacion") {
+    console.log("[Evaluacion adaptada]", block.formato);
+
+    if (block.formato?.includes("verdadero") || typeof block.correcta === "boolean") {
+      return {
+        id,
+        tipo: "true_false",
+        statement: block.pregunta ?? block.contenido ?? "Esta afirmación es correcta.",
+        correct: block.correcta ?? false,
+        explanation: block.explicacion ?? "",
+      };
+    }
+
+    if (block.formato?.includes("quiz") || Array.isArray(block.opciones)) {
+      return {
+        id,
+        tipo: "mcq",
+        question: block.pregunta ?? "Selecciona la alternativa correcta",
+        options: block.opciones ?? [],
+        correctIndex: block.correcta ?? 0,
+        explanationCorrect: block.explicacion ?? "¡Correcto!",
+        explanationIncorrect: block.explicacion ?? "Revisa el contenido anterior.",
+      };
+    }
+
     return {
       id,
       tipo: "under_construction",
-      titulo: block.titulo ?? "Evaluación",
-      texto: "Esta actividad evaluativa se implementará próximamente.",
+      titulo: "Evaluación",
+      texto: "Esta actividad se implementará próximamente.",
     };
   }
 
