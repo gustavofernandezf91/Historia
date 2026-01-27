@@ -73,6 +73,21 @@ body {
   }
 }
 
+@keyframes celebrate-pop {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
 .animate-float-slow {
   animation: float-slow 12s ease-in-out infinite;
 }
@@ -84,4 +99,8 @@ body {
 .animate-shimmer {
   background-size: 200% 200%;
   animation: shimmer 10s ease-in-out infinite;
+}
+
+.animate-celebrate {
+  animation: celebrate-pop 1.6s ease-in-out infinite;
 }
