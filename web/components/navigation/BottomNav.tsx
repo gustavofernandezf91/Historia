@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const tabs = [
   { href: "/", label: "Inicio", icon: "🏠" },
-  { href: "/camino", label: "Camino", icon: "🗺️" },
+  { href: "/camino", label: "Camino", icon: "🧭" },
   { href: "/ranking", label: "Ranking", icon: "🏆" },
   { href: "/perfil", label: "Perfil", icon: "👤" },
 ];
@@ -33,8 +33,10 @@ export default function BottomNav() {
             <Link
               key={tab.href}
               href={tab.href}
-              className={`flex flex-col items-center gap-1 text-xs font-semibold ${
-                isActive ? "text-emerald-600" : "text-slate-500"
+              className={`flex flex-col items-center gap-1 rounded-2xl px-3 py-2 text-xs font-semibold ${
+                isActive
+                  ? "bg-emerald-50 text-emerald-600 shadow-sm"
+                  : "text-slate-500"
               }`}
             >
               <span className="text-lg">{tab.icon}</span>
