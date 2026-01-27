@@ -27,7 +27,7 @@ export default function LessonPreviewPage() {
 
   if (loading || !progress || !lessonData) {
     return (
-      <AppShell>
+      <AppShell showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">Cargando lección...</div>
       </AppShell>
     );
@@ -41,6 +41,7 @@ export default function LessonPreviewPage() {
   return (
     <AppShell
       topBar={<TopBar title="Vista previa" backHref="/camino" />}
+      showBottomNav={false}
     >
       <section className="flex flex-col gap-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">

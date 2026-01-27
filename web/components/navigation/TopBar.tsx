@@ -5,6 +5,7 @@ import Link from "next/link";
 type TopBarProps = {
   title?: string;
   backHref?: string;
+  backLabel?: string;
   closeHref?: string;
   progressPercent?: number;
   streak?: number;
@@ -14,6 +15,7 @@ type TopBarProps = {
 export default function TopBar({
   title,
   backHref,
+  backLabel,
   closeHref,
   progressPercent,
   streak,
@@ -28,7 +30,7 @@ export default function TopBar({
               href={backHref}
               className="rounded-full border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600"
             >
-              ←
+              {backLabel ? `← ${backLabel}` : "←"}
             </Link>
           )}
           {closeHref && !backHref && (

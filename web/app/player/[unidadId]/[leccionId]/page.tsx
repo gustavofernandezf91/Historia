@@ -29,7 +29,7 @@ export default function PlayerPage() {
 
   if (loading || !progress || !lessonDefinition) {
     return (
-      <AppShell>
+      <AppShell showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">Cargando jugador...</div>
       </AppShell>
     );

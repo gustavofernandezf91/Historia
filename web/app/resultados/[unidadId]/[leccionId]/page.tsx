@@ -16,7 +16,7 @@ export default function ResultsPage() {
 
   if (loading || !progress) {
     return (
-      <AppShell>
+      <AppShell showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">Cargando resultados...</div>
       </AppShell>
     );
@@ -32,7 +32,10 @@ export default function ResultsPage() {
 
   return (
     <AppShell
-      topBar={<TopBar title="Resultados" backHref="/camino" streak={progress.streakCount} xp={progress.xpTotal} />}
+      topBar={
+        <TopBar title="Resultados" backHref="/camino" streak={progress.streakCount} xp={progress.xpTotal} />
+      }
+      showBottomNav={false}
     >
       <section className="flex flex-col gap-6">
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500 via-emerald-400 to-sky-500 p-8 text-white shadow-xl">

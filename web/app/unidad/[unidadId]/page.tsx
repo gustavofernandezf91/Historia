@@ -32,7 +32,7 @@ export default function UnidadPage() {
 
   if (loading || !progress) {
     return (
-      <AppShell>
+      <AppShell showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">Cargando unidad...</div>
       </AppShell>
     );
@@ -40,7 +40,7 @@ export default function UnidadPage() {
 
   if (!unidad) {
     return (
-      <AppShell topBar={<TopBar title="Unidad" backHref="/" />}>
+      <AppShell topBar={<TopBar title="Unidad" backHref="/" />} showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">
           <h1 className="text-2xl font-semibold text-slate-900">Unidad no encontrada</h1>
           <p className="mt-2 text-sm text-slate-500">No existe una unidad con ese id.</p>
@@ -50,7 +50,7 @@ export default function UnidadPage() {
   }
 
   return (
-    <AppShell topBar={<TopBar title={unidad.titulo} backHref="/camino" />}>
+    <AppShell topBar={<TopBar title={unidad.titulo} backHref="/camino" />} showBottomNav={false}>
       <section className="space-y-6">
         <div className="rounded-3xl border border-slate-200 bg-white p-6">
           <p className="text-xs font-semibold uppercase text-emerald-500">Unidad</p>
