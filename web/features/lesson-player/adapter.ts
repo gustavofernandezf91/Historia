@@ -16,6 +16,8 @@ const buildUnderConstructionBlock = (): LessonBlock[] => [
   {
     id: "under-construction",
     tipo: "under_construction",
+    titulo: "Lección en construcción",
+    texto: "Estamos preparando esta lección. Vuelve al camino y prueba otra.",
   },
 ];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
@@ -14,18 +14,100 @@ export default function LessonPreviewPage() {
   const unidadId = params?.unidadId as string;
   const leccionId = params?.leccionId as string;
   const { progress, loading, startLesson, getState } = useProgress();
+  const hasLoggedRef = useRef(false);
 
   const lessonData = useMemo(() => {
+    if (!unidadId || !leccionId) {
+      return { status: "invalid" as const };
+    }
     const { unidades } = curriculum as {
       unidades: { id: string; titulo: string; lecciones: { id: string; titulo: string; bloques?: unknown[] }[] }[];
     };
     const unidad = unidades.find((item) => item.id === unidadId);
     const leccion = unidad?.lecciones.find((item) => item.id === leccionId);
-    if (!unidad || !leccion) return null;
-    return { unidad, leccion, definition: buildLessonDefinition(leccion) };
+    if (!unidad || !leccion) {
+      return { status: "not_found" as const };
+    }
+
+    try {
+      return {
+        status: "ok" as const,
+        unidad,
+        leccion,
+        definition: buildLessonDefinition(leccion),
+        definitionError: false,
+      };
+    } catch (error) {
+      if (process.env.NODE_ENV === "development" && !hasLoggedRef.current) {
+        console.error("[LessonPreview] Error building lesson definition", {
+          unidadId,
+          leccionId,
+          error,
+        });
+        hasLoggedRef.current = true;
+      }
+      return {
+        status: "ok" as const,
+        unidad,
+        leccion,
+        definition: {
+          id: leccion.id,
+          titulo: leccion.titulo,
+          objetivo: leccion.habilidad_principal ?? leccion.habilidad ?? leccion.contenidos_breves?.[0],
+          bloques: [],
+        },
+        definitionError: true,
+      };
+    }
   }, [leccionId, unidadId]);
 
-  if (loading || !progress || !lessonData) {
+  useEffect(() => {
+    if (process.env.NODE_ENV !== "development" || hasLoggedRef.current) return;
+    if (!lessonData) return;
+    hasLoggedRef.current = true;
+    console.log("[LessonPreview]", {
+      unidadId,
+      leccionId,
+      lessonFound: lessonData.status === "ok",
+      blocksLength: lessonData.status === "ok" ? lessonData.definition?.bloques?.length ?? 0 : 0,
+    });
+  }, [lessonData, leccionId, unidadId]);
+
+  if (lessonData?.status === "invalid") {
+    return (
+      <AppShell showBottomNav={false}>
+        <div className="rounded-3xl border border-slate-200 bg-white p-6">
+          <h1 className="text-lg font-semibold text-slate-900">Ruta inválida</h1>
+          <p className="mt-2 text-sm text-slate-600">Vuelve al camino y selecciona otra lección.</p>
+          <button
+            className="mt-4 w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+            onClick={() => router.push("/camino")}
+          >
+            Volver al camino
+          </button>
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (lessonData?.status === "not_found") {
+    return (
+      <AppShell showBottomNav={false}>
+        <div className="rounded-3xl border border-slate-200 bg-white p-6">
+          <h1 className="text-lg font-semibold text-slate-900">Lección no encontrada</h1>
+          <p className="mt-2 text-sm text-slate-600">Busca otra lección disponible en el camino.</p>
+          <button
+            className="mt-4 w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+            onClick={() => router.push("/camino")}
+          >
+            Volver al camino
+          </button>
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (loading || !progress || !lessonData || lessonData.status !== "ok") {
     return (
       <AppShell showBottomNav={false}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">Cargando lección...</div>
@@ -35,8 +117,10 @@ export default function LessonPreviewPage() {
 
   const state = getState(unidadId, leccionId);
   const isCompleted = state === "completed";
-  const rewardXp = lessonData.definition.bloques.reduce((sum, block) => sum + (block.xp ?? 6), 0);
+  const bloques = Array.isArray(lessonData.definition?.bloques) ? lessonData.definition.bloques : [];
+  const rewardXp = bloques.reduce((sum, block) => sum + (Number(block?.xp) || 6), 0);
   const rewardLabel = rewardXp > 0 ? `+${rewardXp} XP` : "+10 XP";
+  const pantallas = Math.max(bloques.length, 1);
 
   return (
     <AppShell
@@ -55,7 +139,7 @@ export default function LessonPreviewPage() {
               {rewardLabel}
             </span>
             <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
-              {lessonData.definition.bloques.length || 1} pantallas
+              {pantallas} pantallas
             </span>
           </div>
         </div>

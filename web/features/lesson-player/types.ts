@@ -74,6 +74,8 @@ export type OutroIdentityBlock = LessonBlockBase & {
 
 export type UnderConstructionBlock = LessonBlockBase & {
   tipo: "under_construction";
+  titulo: string;
+  texto: string;
 };
 
 export type LessonBlock =
