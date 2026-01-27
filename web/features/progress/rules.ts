@@ -1,7 +1,7 @@
 import curriculum from "@/content/curriculum.json";
 import type { LessonState, UnitProgress, UserProgress } from "@/features/progress/types";
 
-const TODAY = () => new Date().toISOString().slice(0, 10);
+const TODAY = (date: Date) => date.toISOString().slice(0, 10);
 
 const isSameDay = (a?: string, b?: string) => !!a && !!b && a === b;
 
@@ -113,6 +113,7 @@ export const completeLesson = (
   unidadId: string,
   leccionId: string,
   xpEarned: number,
+  completedAt: Date,
 ): UserProgress => {
   const unit = progress.unidades[unidadId];
   if (!unit) return progress;
@@ -129,7 +130,7 @@ export const completeLesson = (
     updatedLessonStates[nextLessonId] = "available";
   }
 
-  const today = TODAY();
+  const today = TODAY(completedAt);
   const streakCount = isSameDay(progress.lastStudyDate, today)
     ? progress.streakCount
     : isYesterday(progress.lastStudyDate, today)
@@ -142,7 +143,7 @@ export const completeLesson = (
   const currentAttempt = attempts[leccionId] ?? { attemptsCount: 0, xpEarned: 0 };
   attempts[leccionId] = {
     attemptsCount: currentAttempt.attemptsCount + 1,
-    lastAttemptAt: new Date().toISOString(),
+    lastAttemptAt: completedAt.toISOString(),
     xpEarned: currentAttempt.xpEarned + xpEarned,
   };
 

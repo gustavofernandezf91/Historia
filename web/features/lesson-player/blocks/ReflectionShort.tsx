@@ -2,27 +2,52 @@
 
 import { useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
-import type { ReflectionShortBlock } from "@/features/lesson-player/types";
+import type { BlockCompletion, ReflectionShortBlock } from "@/features/lesson-player/types";
 
 type ReflectionShortProps = {
   block: ReflectionShortBlock;
-  onComplete: (answer: string) => void;
+  onComplete: (result: BlockCompletion) => void;
 };
 
 export default function ReflectionShort({ block, onComplete }: ReflectionShortProps) {
   const [value, setValue] = useState("");
+  const trimmedValue = value.trim();
+  const canContinue = trimmedValue.length > 0;
 
   return (
     <BlockFrame
       eyebrow="Reflexión"
       title={block.prompt}
       footer={
-        <button
-          className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
-          onClick={() => onComplete(value)}
-        >
-          Continuar
-        </button>
+        <div className="flex flex-col gap-3">
+          <button
+            className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
+              canContinue ? "bg-emerald-500" : "bg-slate-300"
+            }`}
+            onClick={() =>
+              onComplete({
+                canContinue: true,
+                earnedXp: block.xp,
+                analyticsEvent: "reflection_submitted",
+              })
+            }
+            disabled={!canContinue}
+          >
+            Continuar
+          </button>
+          <button
+            className="w-full rounded-2xl border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-600"
+            onClick={() =>
+              onComplete({
+                canContinue: true,
+                earnedXp: 0,
+                analyticsEvent: "reflection_skipped",
+              })
+            }
+          >
+            Omitir
+          </button>
+        </div>
       }
     >
       <textarea
@@ -31,9 +56,7 @@ export default function ReflectionShort({ block, onComplete }: ReflectionShortPr
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
-      <p className="text-xs text-slate-500">
-        Puedes dejarla en blanco si prefieres avanzar rápido.
-      </p>
+      <p className="text-xs text-slate-500">Puedes escribir una idea breve o saltar.</p>
     </BlockFrame>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
-import type { OutroIdentityBlock } from "@/features/lesson-player/types";
+import type { BlockCompletion, OutroIdentityBlock } from "@/features/lesson-player/types";
 
 type OutroIdentityProps = {
   block: OutroIdentityBlock;
-  onComplete: () => void;
+  onComplete: (result: BlockCompletion) => void;
 };
 
 export default function OutroIdentity({ block, onComplete }: OutroIdentityProps) {
@@ -16,7 +16,13 @@ export default function OutroIdentity({ block, onComplete }: OutroIdentityProps)
       footer={
         <button
           className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
-          onClick={onComplete}
+          onClick={() =>
+            onComplete({
+              canContinue: true,
+              earnedXp: block.xp,
+              analyticsEvent: "outro_identity_complete",
+            })
+          }
         >
           {block.ctaLabel ?? "Terminar"}
         </button>

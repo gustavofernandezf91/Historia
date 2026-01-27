@@ -12,12 +12,23 @@ const tabs = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const isCaminoRoute =
+    pathname.startsWith("/camino") ||
+    pathname.startsWith("/leccion") ||
+    pathname.startsWith("/player") ||
+    pathname.startsWith("/resultados") ||
+    pathname.startsWith("/unidad");
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200/70 bg-white/90 px-4 py-2 backdrop-blur md:hidden">
       <div className="mx-auto flex max-w-md items-center justify-between">
         {tabs.map((tab) => {
-          const isActive = pathname === tab.href;
+          const isActive =
+            tab.href === "/"
+              ? pathname === "/"
+              : tab.href === "/camino"
+                ? isCaminoRoute
+                : pathname.startsWith(tab.href);
           return (
             <Link
               key={tab.href}

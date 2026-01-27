@@ -6,6 +6,7 @@ import { useProgress } from "@/features/progress/hooks";
 
 export default function PerfilPage() {
   const { progress, reset } = useProgress();
+  const showReset = process.env.NODE_ENV === "development";
 
   return (
     <AppShell topBar={<TopBar title="Perfil" streak={progress?.streakCount} xp={progress?.xpTotal} />}>
@@ -16,12 +17,14 @@ export default function PerfilPage() {
             XP total: {progress?.xpTotal ?? 0} · Nivel {progress?.level ?? 1}
           </p>
         </div>
-        <button
-          className="w-full rounded-2xl border border-rose-200 bg-rose-50 px-6 py-3 text-sm font-semibold text-rose-600"
-          onClick={reset}
-        >
-          Reiniciar progreso (local)
-        </button>
+        {showReset && (
+          <button
+            className="w-full rounded-2xl border border-rose-200 bg-rose-50 px-6 py-3 text-sm font-semibold text-rose-600"
+            onClick={reset}
+          >
+            Reiniciar progreso (dev)
+          </button>
+        )}
       </div>
     </AppShell>
   );

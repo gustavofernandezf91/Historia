@@ -10,7 +10,7 @@ import ReflectionShort from "@/features/lesson-player/blocks/ReflectionShort";
 import SummaryBullets from "@/features/lesson-player/blocks/SummaryBullets";
 import OutroIdentity from "@/features/lesson-player/blocks/OutroIdentity";
 import UnderConstruction from "@/features/lesson-player/blocks/UnderConstruction";
-import type { LessonBlock, LessonDefinition } from "@/features/lesson-player/types";
+import type { BlockCompletion, LessonBlock, LessonDefinition } from "@/features/lesson-player/types";
 
 const blockXp = (block: LessonBlock) => block.xp ?? 6;
 
@@ -35,9 +35,10 @@ export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }:
     onProgress?.(progressPercent);
   }, [onProgress, progressPercent]);
 
-  const completeBlock = (block: LessonBlock) => {
+  const completeBlock = (block: LessonBlock, result: BlockCompletion) => {
+    if (!result.canContinue) return;
     const alreadyCompleted = completedIds.includes(block.id);
-    const gainedXp = alreadyCompleted ? 0 : blockXp(block);
+    const gainedXp = alreadyCompleted ? 0 : result.earnedXp ?? blockXp(block);
     const nextXp = xpEarned + gainedXp;
 
     if (!alreadyCompleted) {
@@ -79,42 +80,51 @@ export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }:
     <div className="pb-10">
       <div className="mb-6 flex gap-2">{headerSegments}</div>
       {currentBlock.tipo === "intro_hero" && (
-        <IntroHero block={currentBlock} onComplete={() => completeBlock(currentBlock)} />
+        <IntroHero
+          block={currentBlock}
+          onComplete={(result) => completeBlock(currentBlock, result)}
+        />
       )}
       {currentBlock.tipo === "micro_text" && (
-        <MicroText block={currentBlock} onComplete={() => completeBlock(currentBlock)} />
+        <MicroText
+          block={currentBlock}
+          onComplete={(result) => completeBlock(currentBlock, result)}
+        />
       )}
       {currentBlock.tipo === "mcq" && (
         <Mcq
           block={currentBlock}
-          onComplete={() => completeBlock(currentBlock)}
+          onComplete={(result) => completeBlock(currentBlock, result)}
         />
       )}
       {currentBlock.tipo === "story_card" && (
-        <StoryCard block={currentBlock} onComplete={() => completeBlock(currentBlock)} />
+        <StoryCard
+          block={currentBlock}
+          onComplete={(result) => completeBlock(currentBlock, result)}
+        />
       )}
       {currentBlock.tipo === "true_false" && (
         <TrueFalse
           block={currentBlock}
-          onComplete={() => completeBlock(currentBlock)}
+          onComplete={(result) => completeBlock(currentBlock, result)}
         />
       )}
       {currentBlock.tipo === "reflection_short" && (
         <ReflectionShort
           block={currentBlock}
-          onComplete={() => completeBlock(currentBlock)}
+          onComplete={(result) => completeBlock(currentBlock, result)}
         />
       )}
       {currentBlock.tipo === "summary_bullets" && (
         <SummaryBullets
           block={currentBlock}
-          onComplete={() => completeBlock(currentBlock)}
+          onComplete={(result) => completeBlock(currentBlock, result)}
         />
       )}
       {currentBlock.tipo === "outro_identity" && (
         <OutroIdentity
           block={currentBlock}
-          onComplete={() => completeBlock(currentBlock)}
+          onComplete={(result) => completeBlock(currentBlock, result)}
         />
       )}
       <div className="mt-6 flex justify-between text-xs text-slate-500">

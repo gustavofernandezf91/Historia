@@ -1,11 +1,11 @@
 "use client";
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
-import type { SummaryBulletsBlock } from "@/features/lesson-player/types";
+import type { BlockCompletion, SummaryBulletsBlock } from "@/features/lesson-player/types";
 
 type SummaryBulletsProps = {
   block: SummaryBulletsBlock;
-  onComplete: () => void;
+  onComplete: (result: BlockCompletion) => void;
 };
 
 export default function SummaryBullets({ block, onComplete }: SummaryBulletsProps) {
@@ -16,7 +16,13 @@ export default function SummaryBullets({ block, onComplete }: SummaryBulletsProp
       footer={
         <button
           className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
-          onClick={onComplete}
+          onClick={() =>
+            onComplete({
+              canContinue: true,
+              earnedXp: block.xp,
+              analyticsEvent: "summary_bullets_continue",
+            })
+          }
         >
           Continuar
         </button>

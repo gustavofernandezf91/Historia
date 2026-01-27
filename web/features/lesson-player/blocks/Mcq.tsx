@@ -2,11 +2,11 @@
 
 import { useMemo, useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
-import type { McqBlock } from "@/features/lesson-player/types";
+import type { BlockCompletion, McqBlock } from "@/features/lesson-player/types";
 
 type McqProps = {
   block: McqBlock;
-  onComplete: (isCorrect: boolean) => void;
+  onComplete: (result: BlockCompletion) => void;
 };
 
 export default function Mcq({ block, onComplete }: McqProps) {
@@ -32,7 +32,13 @@ export default function Mcq({ block, onComplete }: McqProps) {
           className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
             showFeedback ? "bg-emerald-500" : "bg-slate-300"
           }`}
-          onClick={() => onComplete(isCorrect)}
+          onClick={() =>
+            onComplete({
+              canContinue: true,
+              earnedXp: block.xp,
+              analyticsEvent: "mcq_answered",
+            })
+          }
           disabled={!showFeedback}
         >
           Continuar
