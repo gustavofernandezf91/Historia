@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import IntroHero from "@/features/lesson-player/blocks/IntroHero";
 import MicroText from "@/features/lesson-player/blocks/MicroText";
 import Mcq from "@/features/lesson-player/blocks/Mcq";
@@ -29,6 +29,7 @@ export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }:
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
+  const attemptPayloadsRef = useRef<Record<string, unknown>>({});
 
   const currentBlock = blocks[currentIndex];
   const totalBlocks = blocks.length || 1;
@@ -40,6 +41,12 @@ export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }:
 
   const completeBlock = (block: LessonBlock, result: BlockCompletion) => {
     if (!result.canContinue) return;
+    if (result.attemptPayload) {
+      attemptPayloadsRef.current = {
+        ...attemptPayloadsRef.current,
+        [block.id]: result.attemptPayload,
+      };
+    }
     const alreadyCompleted = completedIds.includes(block.id);
     const gainedXp = alreadyCompleted ? 0 : result.earnedXp ?? blockXp(block);
     const nextXp = xpEarned + gainedXp;
