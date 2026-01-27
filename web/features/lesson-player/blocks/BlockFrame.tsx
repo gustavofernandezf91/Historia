@@ -2,7 +2,7 @@
 
 type BlockFrameProps = {
   eyebrow?: string;
-  title: string;
+  title?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
 };
@@ -16,7 +16,9 @@ export default function BlockFrame({ eyebrow, title, children, footer }: BlockFr
             {eyebrow}
           </p>
         )}
-        <h1 className="mt-3 text-2xl font-bold text-slate-900 md:text-3xl">{title}</h1>
+        {title && (
+          <h1 className="mt-3 text-2xl font-bold text-slate-900 md:text-3xl">{title}</h1>
+        )}
         <div className="mt-4 space-y-4 text-slate-700">{children}</div>
       </div>
       {footer}
