@@ -1,5 +1,6 @@
 import type { Lesson } from "@/types/lesson";
 import type { LessonBlock } from "@/features/lesson-player/types";
+import { adaptPedagogicalBlock } from "@/features/lesson-player/adapters/pedagogicalBlockAdapter";
 
 type LessonToBlocksInput = {
   unidadId: string;
@@ -18,7 +19,8 @@ const buildUnderConstructionBlock = (unidadId: string, leccionId: string): Lesso
 
 export const lessonToBlocks = ({ unidadId, leccionId, lesson }: LessonToBlocksInput): LessonBlock[] => {
   if (Array.isArray(lesson.bloques) && lesson.bloques.length > 0) {
-    return lesson.bloques as LessonBlock[];
+    const adaptedBlocks = lesson.bloques.map(adaptPedagogicalBlock);
+    return adaptedBlocks;
   }
 
   const title = lesson.titulo?.trim();

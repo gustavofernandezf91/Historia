@@ -92,6 +92,7 @@ export default function LessonPlayer({
       lessonFound: Boolean(lesson),
       blocksLength: blocks.length,
     });
+    console.log("[Pedagogical → UI blocks]", lesson.bloques?.map((b) => b.tipo) ?? []);
   }, [blocks.length, leccionId, lesson, unidadId]);
 
   const completeBlock = (block: LessonBlock, result: BlockCompletion) => {
