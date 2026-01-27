@@ -58,7 +58,9 @@ export const buildInitialProgress = (): UserProgress => {
     xpTotal: 0,
     level: 1,
     streakCount: 0,
+    emotionalStreak: 0,
     lastStudyDate: undefined,
+    lastActiveDate: undefined,
     unidades: unidadesProgress,
     badges: [],
   };
@@ -99,6 +101,17 @@ export const ensureProgressStructure = (progress: UserProgress): UserProgress =>
 
   merged.level = calculateLevel(merged.xpTotal);
   return merged;
+};
+
+const updateEmotionalStreak = (progress: UserProgress, completedAt: Date) => {
+  const today = TODAY(completedAt);
+  const emotionalStreak = isSameDay(progress.lastActiveDate, today)
+    ? progress.emotionalStreak
+    : isYesterday(progress.lastActiveDate, today)
+      ? progress.emotionalStreak + 1
+      : 1;
+
+  return { emotionalStreak, lastActiveDate: today };
 };
 
 export const getLessonState = (
@@ -185,6 +198,7 @@ export const completeLesson = (
     : isYesterday(progress.lastStudyDate, today)
       ? progress.streakCount + 1
       : 1;
+  const emotionalUpdate = updateEmotionalStreak(progress, completedAt);
 
   const newXpTotal = progress.xpTotal + (alreadyCompleted ? 0 : xpEarned);
 
@@ -202,6 +216,8 @@ export const completeLesson = (
     level: calculateLevel(newXpTotal),
     streakCount,
     lastStudyDate: today,
+    emotionalStreak: emotionalUpdate.emotionalStreak,
+    lastActiveDate: emotionalUpdate.lastActiveDate,
     unidades: {
       ...progress.unidades,
       [unidadId]: {
@@ -212,6 +228,18 @@ export const completeLesson = (
         checkpoints: updatedCheckpoints,
       },
     },
+  };
+};
+
+export const recordEmotionalActivity = (
+  progress: UserProgress,
+  completedAt: Date,
+): UserProgress => {
+  const emotionalUpdate = updateEmotionalStreak(progress, completedAt);
+  return {
+    ...progress,
+    emotionalStreak: emotionalUpdate.emotionalStreak,
+    lastActiveDate: emotionalUpdate.lastActiveDate,
   };
 };
 

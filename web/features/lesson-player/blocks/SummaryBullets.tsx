@@ -2,6 +2,7 @@
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, SummaryBulletsBlock } from "@/features/lesson-player/types";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type SummaryBulletsProps = {
   block: SummaryBulletsBlock;
@@ -9,13 +10,17 @@ type SummaryBulletsProps = {
 };
 
 export default function SummaryBullets({ block, onComplete }: SummaryBulletsProps) {
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
+
   return (
     <BlockFrame
-      eyebrow="Resumen rápido"
+      eyebrow="Resumen"
       title={block.title ?? "Lo esencial"}
+      visual={visual}
       footer={
         <button
-          className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+          className={classes.buttonPrimary}
           onClick={() =>
             onComplete({
               canContinue: true,
@@ -28,10 +33,11 @@ export default function SummaryBullets({ block, onComplete }: SummaryBulletsProp
         </button>
       }
     >
-      <ul className="space-y-3">
+      <ul className="space-y-3 text-sm">
         {block.bullets.map((bullet) => (
-          <li key={bullet} className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700">
-            {bullet}
+          <li key={bullet} className="flex items-start gap-2">
+            <span className="mt-1 text-base">•</span>
+            <span>{bullet}</span>
           </li>
         ))}
       </ul>

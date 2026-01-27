@@ -3,6 +3,11 @@
 import { useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, TrueFalseBlock } from "@/features/lesson-player/types";
+import {
+  feedbackStyles,
+  getBlockVisualStyle,
+  getVisualClasses,
+} from "@/features/lesson-player/visuals";
 
 type TrueFalseProps = {
   block: TrueFalseBlock;
@@ -13,16 +18,18 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
   const [answer, setAnswer] = useState<boolean | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const isCorrect = answer === block.correct;
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
+  const feedbackStyle = isCorrect ? feedbackStyles.correct : feedbackStyles.incorrect;
 
   return (
     <BlockFrame
       eyebrow="Verdadero o falso"
       title={block.statement}
+      visual={visual}
       footer={
         <button
-          className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
-            answer === null ? "bg-slate-300" : "bg-emerald-500"
-          }`}
+          className={answer === null ? classes.buttonDisabled : classes.buttonPrimary}
           onClick={() => {
             if (answer === null) return;
             if (!showFeedback) {
@@ -42,14 +49,12 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
         </button>
       }
     >
-      <div className="grid grid-cols-2 gap-3">
+      <div className={classes.optionLayout}>
         {[true, false].map((value) => (
           <button
             key={String(value)}
             className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${
-              answer === value
-                ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-                : "border-slate-200 bg-white text-slate-700"
+              answer === value ? classes.optionSelected : classes.optionDefault
             }`}
             onClick={() => {
               if (showFeedback) return;
@@ -63,9 +68,7 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
 
       {showFeedback && answer !== null && (
         <div
-          className={`rounded-2xl border px-4 py-3 text-sm ${
-            isCorrect ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-rose-200 bg-rose-50 text-rose-700"
-          }`}
+          className={`rounded-2xl border px-4 py-3 text-sm ${feedbackStyle.border} ${feedbackStyle.bg} ${feedbackStyle.text}`}
         >
           <p className="font-semibold">{isCorrect ? "¡Correcto!" : "Respuesta incorrecta."}</p>
           <p className="mt-2">{block.explanation ?? "Piensa en la evidencia histórica."}</p>

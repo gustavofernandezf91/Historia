@@ -2,6 +2,7 @@
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, IntroHeroBlock } from "@/features/lesson-player/types";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type IntroHeroProps = {
   block: IntroHeroBlock;
@@ -9,13 +10,17 @@ type IntroHeroProps = {
 };
 
 export default function IntroHero({ block, onComplete }: IntroHeroProps) {
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
+
   return (
     <BlockFrame
       eyebrow="Bienvenida"
       title={block.title}
+      visual={visual}
       footer={
         <button
-          className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white shadow-lg shadow-emerald-200"
+          className={classes.buttonPrimary}
           onClick={() =>
             onComplete({
               canContinue: true,
@@ -28,9 +33,11 @@ export default function IntroHero({ block, onComplete }: IntroHeroProps) {
         </button>
       }
     >
-      {block.subtitle && <p className="text-lg text-slate-600">{block.subtitle}</p>}
+      {block.subtitle && <p className={classes.mutedText}>{block.subtitle}</p>}
       {block.imageSrc && (
-        <div className="flex justify-center rounded-2xl border border-slate-200 bg-white p-4">
+        <div
+          className={`flex justify-center rounded-2xl border p-4 ${classes.accent.border} ${classes.accent.softBg}`}
+        >
           <img src={block.imageSrc} alt="Ilustración" className="h-32 w-32 object-contain" />
         </div>
       )}

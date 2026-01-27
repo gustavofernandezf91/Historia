@@ -3,6 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, McqBlock } from "@/features/lesson-player/types";
+import {
+  feedbackStyles,
+  getBlockVisualStyle,
+  getVisualClasses,
+} from "@/features/lesson-player/visuals";
 
 type McqProps = {
   block: McqBlock;
@@ -20,6 +25,8 @@ export default function Mcq({ block, onComplete }: McqProps) {
   const selectedIndex = selectedIndices[0] ?? null;
   const selectionCount = selectedIndices.length;
   const totalOptions = block.options.length;
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
 
   const isCorrect = useMemo(() => {
     if (isDiscovery) return false;
@@ -109,16 +116,16 @@ export default function Mcq({ block, onComplete }: McqProps) {
   }, [block.xp, isMultiDiscovery, selectionCount, totalOptions]);
 
   const canContinue = isMultiDiscovery ? selectionCount >= 1 : isDiscovery ? selectionCount >= minSelections : showFeedback;
+  const feedbackStyle = isCorrect ? feedbackStyles.correct : feedbackStyles.incorrect;
 
   return (
     <BlockFrame
       eyebrow="Pregunta rápida"
       title={block.question}
+      visual={visual}
       footer={
         <button
-          className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
-            canContinue ? "bg-emerald-500" : "bg-slate-300"
-          }`}
+          className={canContinue ? classes.buttonPrimary : classes.buttonDisabled}
           onClick={() => {
             if (isMultiDiscovery && !showFeedback) {
               setShowFeedback(true);
@@ -143,18 +150,16 @@ export default function Mcq({ block, onComplete }: McqProps) {
       }
     >
       {isMultiDiscovery && (
-        <p className="text-sm font-semibold text-slate-500">Puedes elegir más de una opción</p>
+        <p className={`text-sm font-semibold ${classes.mutedText}`}>Puedes elegir más de una opción</p>
       )}
-      <div className="grid gap-3">
+      <div className={classes.optionLayout}>
         {block.options.map((option, index) => {
           const isSelected = selectedIndices.includes(index);
           return (
             <button
               key={option}
               className={`w-full rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition ${
-                isSelected
-                  ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-                  : "border-slate-200 bg-white text-slate-700"
+                isSelected ? classes.optionSelected : classes.optionDefault
               }`}
               onClick={() => handleSelect(index)}
             >
@@ -166,9 +171,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
 
       {showFeedback && !isDiscovery && (
         <div
-          className={`rounded-2xl border px-4 py-3 text-sm ${
-            isCorrect ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-rose-200 bg-rose-50 text-rose-700"
-          }`}
+          className={`rounded-2xl border px-4 py-3 text-sm ${feedbackStyle.border} ${feedbackStyle.bg} ${feedbackStyle.text}`}
         >
           <p className="font-semibold">
             {isCorrect ? "¡Bien hecho!" : "Casi. Primero la explicación:"}
@@ -186,7 +189,9 @@ export default function Mcq({ block, onComplete }: McqProps) {
         </div>
       )}
       {showFeedback && isDiscovery && discoveryFeedback && (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+        <div
+          className={`rounded-2xl border px-4 py-3 text-sm ${classes.accent.border} ${classes.accent.softBg} ${classes.accent.text}`}
+        >
           <p className="font-semibold">{discoveryFeedback.title}</p>
           <p className="mt-2">{discoveryFeedback.body}</p>
           {selectionCount < minSelections && (
@@ -197,7 +202,9 @@ export default function Mcq({ block, onComplete }: McqProps) {
         </div>
       )}
       {multiDiscoveryFeedback && (
-        <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+        <div
+          className={`rounded-2xl border px-4 py-3 text-sm ${classes.accent.border} ${classes.accent.softBg} ${classes.accent.text}`}
+        >
           <p className="font-semibold">{multiDiscoveryFeedback}</p>
           <p className="mt-2 font-semibold">+{multiDiscoveryXp} XP</p>
         </div>

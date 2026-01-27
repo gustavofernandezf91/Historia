@@ -18,7 +18,9 @@ export type UserProgress = {
   xpTotal: number;
   level: number;
   streakCount: number;
+  emotionalStreak: number;
   lastStudyDate?: string;
+  lastActiveDate?: string;
   unidades: Record<string, UnitProgress>;
   badges?: string[];
 };

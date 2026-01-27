@@ -2,6 +2,7 @@
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, MicroTextBlock } from "@/features/lesson-player/types";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type MicroTextProps = {
   block: MicroTextBlock;
@@ -9,13 +10,17 @@ type MicroTextProps = {
 };
 
 export default function MicroText({ block, onComplete }: MicroTextProps) {
+  const visual = getBlockVisualStyle(block.tipo);
+  const classes = getVisualClasses(visual);
+
   return (
     <BlockFrame
-      eyebrow="Concepto breve"
+      eyebrow="Idea rápida"
       title={block.title}
+      visual={visual}
       footer={
         <button
-          className="w-full rounded-2xl bg-emerald-500 px-6 py-4 text-base font-semibold text-white"
+          className={classes.buttonPrimary}
           onClick={() =>
             onComplete({
               canContinue: true,
@@ -28,9 +33,9 @@ export default function MicroText({ block, onComplete }: MicroTextProps) {
         </button>
       }
     >
-      <p className="text-lg text-slate-700">{block.body}</p>
+      <p className={classes.bodyText}>{block.body}</p>
       {block.highlight && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+        <div className={`rounded-2xl px-4 py-3 text-sm font-semibold ${classes.highlight}`}>
           {block.highlight}
         </div>
       )}

@@ -17,6 +17,7 @@ import {
   getCheckpointState,
   getLessonState,
   markLessonInProgress,
+  recordEmotionalActivity,
 } from "@/features/progress/rules";
 import {
   clearLastCheckpointResult,
@@ -48,6 +49,7 @@ type ProgressContextValue = {
     badgeId?: string,
   ) => void;
   reset: () => void;
+  registerEmotionalActivity: () => void;
   getState: (unidadId: string, leccionId: string) => LessonState;
   getCheckpointState: (unidadId: string, checkpointId: string) => CheckpointState;
   lastResult: LessonResult | null;
@@ -117,6 +119,13 @@ const useProgressState = (): ProgressContextValue => {
     setLastCheckpointResult(null);
   }, []);
 
+  const registerEmotionalActivity = useCallback(() => {
+    if (!progress) return;
+    const completedAt = new Date();
+    const next = recordEmotionalActivity(progress, completedAt);
+    persist(next);
+  }, [persist, progress]);
+
   const getState = useCallback(
     (unidadId: string, leccionId: string): LessonState => {
       if (!progress) return "locked";
@@ -172,6 +181,7 @@ const useProgressState = (): ProgressContextValue => {
     finishLesson,
     finishCheckpoint,
     reset,
+    registerEmotionalActivity,
     getState,
     getCheckpointState: getCheckpointStateForUnit,
     lastResult,

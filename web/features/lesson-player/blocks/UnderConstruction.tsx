@@ -1,27 +1,29 @@
 "use client";
 
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
+import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
 
 type UnderConstructionProps = {
   onComplete: () => void;
 };
 
 export default function UnderConstruction({ onComplete }: UnderConstructionProps) {
+  const visual = getBlockVisualStyle("under_construction");
+  const classes = getVisualClasses(visual);
+
   return (
     <BlockFrame
       eyebrow="En construcción"
-      title="Esta lección se está preparando"
+      title="Lección en construcción"
+      visual={visual}
       footer={
-        <button
-          className="w-full rounded-2xl bg-slate-300 px-6 py-4 text-base font-semibold text-slate-700"
-          onClick={onComplete}
-        >
+        <button className={classes.buttonPrimary} onClick={onComplete}>
           Volver al camino
         </button>
       }
     >
-      <p className="text-slate-600">
-        Pronto tendrás nuevas pantallas. Mientras tanto, vuelve al camino y sigue avanzando.
+      <p className={classes.bodyText}>
+        Estamos preparando esta lección. Vuelve al camino y prueba otra.
       </p>
     </BlockFrame>
   );

@@ -13,7 +13,7 @@ export default function PlayerPage() {
   const router = useRouter();
   const unidadId = params?.unidadId as string;
   const leccionId = params?.leccionId as string;
-  const { progress, loading, finishLesson } = useProgress();
+  const { progress, loading, finishLesson, registerEmotionalActivity } = useProgress();
   const [progressPercent, setProgressPercent] = useState(0);
   const hasLoggedRef = useRef(false);
 
@@ -98,6 +98,7 @@ export default function PlayerPage() {
         leccionId={leccionId}
         onExit={() => router.push("/camino")}
         onProgress={setProgressPercent}
+        onEmotionalActivity={registerEmotionalActivity}
         onComplete={(xpEarned) => {
           finishLesson(unidadId, leccionId, xpEarned);
           router.push(`/resultados/${unidadId}/${leccionId}`);
