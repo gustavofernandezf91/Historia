@@ -2,6 +2,8 @@ export type LessonBlockBase = {
   id: string;
   tipo: string;
   xp?: number;
+  titulo?: string;
+  texto?: string;
 };
 
 export type BlockCompletion = {
@@ -45,6 +47,9 @@ export type TrueFalseBlock = LessonBlockBase & {
   statement: string;
   correct: boolean;
   explanation?: string;
+  enunciado?: string;
+  correcta?: boolean;
+  explicacion?: string;
 };
 
 export type ReflectionShortBlock = LessonBlockBase & {
