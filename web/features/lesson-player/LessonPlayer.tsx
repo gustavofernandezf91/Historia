@@ -16,6 +16,7 @@ import type { Lesson } from "@/types/lesson";
 import { lessonToBlocks } from "@/features/lesson-player/adapters/lessonToBlocks";
 import { buildLessonXpPlan } from "@/features/lesson-player/xp";
 import { getBlockVisualStyle, getVisualClasses } from "@/features/lesson-player/visuals";
+import { playSound } from "@/lib/sound";
 
 type LessonPlayerProps = {
   lesson: Lesson;
@@ -116,6 +117,9 @@ export default function LessonPlayer({
     const nextXp = xpEarned + gainedXp;
 
     if (!alreadyCompleted) {
+      if (block.tipo === "reflection_short") {
+        playSound("reflection_completed");
+      }
       setCompletedIds((prev) => [...prev, block.id]);
       setXpEarned(nextXp);
       if (block.tipo === "reflection_short") {

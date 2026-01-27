@@ -124,7 +124,7 @@ export default function CaminoPage() {
                         <div
                           className={`flex h-14 w-14 items-center justify-center rounded-full text-lg shadow ${checkpointNodeStyles}`}
                         >
-                          {checkpointState === "completed" ? "✅" : "🏁"}
+                          🧩
                         </div>
                       </Link>
                     )}

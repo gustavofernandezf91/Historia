@@ -51,11 +51,11 @@ export default function CheckpointPlayerPage() {
   const checkpointState = getCheckpointState(unidadId, checkpointId);
   if (checkpointState === "locked") {
     return (
-      <AppShell showBottomNav={false} topBar={<TopBar title="Checkpoint" backHref="/camino" />}>
+      <AppShell showBottomNav={false} topBar={<TopBar title="Cierre de ciclo" backHref="/camino" />}>
         <div className="rounded-3xl border border-slate-200 bg-white p-6">
-          <h1 className="text-2xl font-semibold text-slate-900">Checkpoint bloqueado</h1>
+          <h1 className="text-2xl font-semibold text-slate-900">Cierre de ciclo bloqueado</h1>
           <p className="mt-2 text-sm text-slate-500">
-            Completa la última lección del bloque para desbloquear este checkpoint.
+            Completa la última lección del bloque para abrir este cierre de ciclo.
           </p>
           <Link
             href="/camino"
