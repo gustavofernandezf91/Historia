@@ -66,6 +66,10 @@ export type OutroIdentityBlock = LessonBlockBase & {
   secondaryCtaLabel?: string;
 };
 
+export type UnderConstructionBlock = LessonBlockBase & {
+  tipo: "under_construction";
+};
+
 export type LessonBlock =
   | IntroHeroBlock
   | MicroTextBlock
@@ -74,7 +78,8 @@ export type LessonBlock =
   | TrueFalseBlock
   | ReflectionShortBlock
   | SummaryBulletsBlock
-  | OutroIdentityBlock;
+  | OutroIdentityBlock
+  | UnderConstructionBlock;
 
 export type LessonDefinition = {
   id: string;

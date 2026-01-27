@@ -1,32 +1,38 @@
-import type { Bloque, Lesson } from "@/types/lesson";
+import type { Lesson } from "@/types/lesson";
 import type { LessonBlock, LessonDefinition } from "@/features/lesson-player/types";
 
 const truncate = (text: string, max = 140) =>
   text.length > max ? `${text.slice(0, max).trim()}…` : text;
 
-const buildId = (prefix: string, index: number) => `${prefix}-${index}`;
-
 const normalizeText = (text?: string) => text?.trim() ?? "";
-
-const lessonBlockTypes = [
-  "intro_hero",
-  "micro_text",
-  "mcq",
-  "story_card",
-  "true_false",
-  "reflection_short",
-  "summary_bullets",
-  "outro_identity",
-] as const;
-
-const isLessonBlock = (bloque: Bloque | LessonBlock): bloque is LessonBlock =>
-  lessonBlockTypes.includes(bloque.tipo as (typeof lessonBlockTypes)[number]);
 
 const splitSentences = (text: string) =>
   text
     .split(".")
     .map((sentence) => sentence.trim())
     .filter(Boolean);
+
+const buildUnderConstructionBlock = (): LessonBlock[] => [
+  {
+    id: "under-construction",
+    tipo: "under_construction",
+  },
+];
+
+const buildSummaryBullets = (candidates: string[]) => {
+  const defaults = [
+    "Identifica la idea principal de la lección.",
+    "Conecta el tema con un ejemplo actual.",
+    "Resume lo aprendido en una frase clara.",
+  ];
+  const bullets = candidates.filter(Boolean).slice(0, 3);
+  while (bullets.length < 3) {
+    const next = defaults[bullets.length];
+    if (next) bullets.push(next);
+    else break;
+  }
+  return bullets.slice(0, 3);
+};
 
 const buildFallbackBlocks = (lesson: Lesson): LessonBlock[] => {
   const titulo = normalizeText(lesson.titulo);
@@ -35,25 +41,17 @@ const buildFallbackBlocks = (lesson: Lesson): LessonBlock[] => {
   );
   const bulletsFromBreves = lesson.contenidos_breves?.filter(Boolean) ?? [];
   const bulletsFromDescripcion = descripcion ? splitSentences(descripcion) : [];
-  const bullets = (bulletsFromBreves.length ? bulletsFromBreves : bulletsFromDescripcion).slice(0, 3);
+  const candidates = bulletsFromBreves.length ? bulletsFromBreves : bulletsFromDescripcion;
 
-  if (!titulo && !descripcion && bullets.length === 0) {
-    return [];
+  if (!titulo && !descripcion && candidates.length === 0) {
+    return buildUnderConstructionBlock();
   }
-
-  const summaryBullets =
-    bullets.length > 0
-      ? bullets
-      : [
-          "Identifica la idea principal de la lección.",
-          "Conecta el pasado con un ejemplo actual.",
-          "Aplica lo aprendido en una mini reflexión.",
-        ];
 
   const introSubtitle =
     descripcion || "Explora un concepto clave y descubre cómo afecta a la vida cotidiana.";
   const microBody =
     descripcion || "Hoy entrenas una habilidad histórica con ejemplos cercanos y preguntas rápidas.";
+  const summaryBullets = buildSummaryBullets(candidates);
 
   return [
     {
@@ -74,9 +72,11 @@ const buildFallbackBlocks = (lesson: Lesson): LessonBlock[] => {
     {
       id: "truefalse-fallback",
       tipo: "true_false",
-      statement: `Esta lección se enfoca en ${titulo || "un tema clave de historia"}.`,
+      statement: titulo
+        ? `Esta lección se enfoca en ${titulo.toLowerCase()}.`
+        : "Esta lección se enfoca en un concepto clave de historia.",
       correct: true,
-      explanation: "Recuerda el título y el objetivo antes de continuar.",
+      explanation: "Piensa en el concepto principal antes de continuar.",
       xp: 6,
     },
     {
@@ -98,98 +98,6 @@ const buildFallbackBlocks = (lesson: Lesson): LessonBlock[] => {
   ];
 };
 
-const mapBloque = (bloque: Bloque, index: number): LessonBlock | LessonBlock[] => {
-  switch (bloque.tipo) {
-    case "enganche":
-      return {
-        id: buildId("intro", index),
-        tipo: "intro_hero",
-        title: bloque.titulo ?? "Vamos a entrar en ritmo",
-        subtitle: truncate(normalizeText(bloque.contenido ?? bloque.texto) || "Todo lo cotidiano también tiene historia."),
-        xp: 4,
-      };
-    case "habilidad":
-      return {
-        id: buildId("micro", index),
-        tipo: "micro_text",
-        title: bloque.titulo ?? "Habilidad clave",
-        body: truncate(normalizeText(bloque.contenido ?? bloque.texto) || "Entrena una habilidad para leer el pasado."),
-        highlight: "Conecta pasado y presente.",
-        xp: 5,
-      };
-    case "exploracion":
-      return {
-        id: buildId("summary", index),
-        tipo: "summary_bullets",
-        title: bloque.titulo ?? "Ideas clave",
-        bullets:
-          bloque.items && bloque.items.length > 0
-            ? bloque.items.slice(0, 3)
-            : normalizeText(bloque.contenido ?? "").split(".").filter(Boolean).slice(0, 3),
-        xp: 4,
-      };
-    case "mision":
-      return {
-        id: buildId("reflection", index),
-        tipo: "reflection_short",
-        prompt: bloque.titulo ?? "Tu misión",
-        placeholder: "Escribe tu idea en una frase.",
-        xp: 6,
-      };
-    case "presente":
-      return {
-        id: buildId("story", index),
-        tipo: "story_card",
-        title: bloque.titulo ?? "Conecta con hoy",
-        story: truncate(
-          normalizeText(bloque.contenido ?? bloque.texto) ||
-            "Conecta esta idea con una situación actual.",
-          220,
-        ),
-        xp: 5,
-      };
-    case "evaluacion":
-      if (bloque.quiz) {
-        return {
-          id: buildId("mcq", index),
-          tipo: "mcq",
-          question: bloque.quiz.pregunta,
-          options: bloque.quiz.opciones,
-          correctIndex: bloque.quiz.correcta,
-          explanationCorrect: bloque.quiz.feedbackCorrecto ?? "¡Bien! Lo resolviste.",
-          explanationIncorrect: bloque.quiz.feedbackIncorrecto ?? "Casi. Revisa la pista y sigue.",
-          xp: 8,
-        };
-      }
-      return {
-        id: buildId("truefalse", index),
-        tipo: "true_false",
-        statement: bloque.titulo ?? "Verdadero o falso",
-        correct: true,
-        explanation: "Piensa en la evidencia histórica antes de responder.",
-        xp: 6,
-      };
-    case "reflexion":
-      return {
-        id: buildId("outro", index),
-        tipo: "outro_identity",
-        title: bloque.titulo ?? "Cierre personal",
-        prompt: truncate(normalizeText(bloque.contenido ?? "¿Qué te llevas hoy?")),
-        ctaLabel: "Siguiente lección",
-        secondaryCtaLabel: "Volver al camino",
-        xp: 4,
-      };
-    default:
-      return {
-        id: buildId("micro", index),
-        tipo: "micro_text",
-        title: bloque.titulo ?? "Idea rápida",
-        body: truncate(normalizeText(bloque.contenido ?? bloque.texto) || "Contenido en construcción."),
-        xp: 3,
-      };
-  }
-};
-
 export const buildLessonDefinition = (lesson: Lesson): LessonDefinition => {
   if (!lesson.bloques || lesson.bloques.length === 0) {
     return {
@@ -200,29 +108,10 @@ export const buildLessonDefinition = (lesson: Lesson): LessonDefinition => {
     };
   }
 
-  if (lesson.bloques.every((bloque) => isLessonBlock(bloque))) {
-    return {
-      id: lesson.id,
-      titulo: lesson.titulo,
-      objetivo: lesson.habilidad_principal ?? lesson.habilidad ?? lesson.contenidos_breves?.[0],
-      bloques: lesson.bloques as LessonBlock[],
-    };
-  }
-
-  const bloques: LessonBlock[] = [];
-  lesson.bloques?.forEach((bloque, index) => {
-    const mapped = mapBloque(bloque, index);
-    if (Array.isArray(mapped)) {
-      bloques.push(...mapped);
-    } else {
-      bloques.push(mapped);
-    }
-  });
-
   return {
     id: lesson.id,
     titulo: lesson.titulo,
     objetivo: lesson.habilidad_principal ?? lesson.habilidad ?? lesson.contenidos_breves?.[0],
-    bloques,
+    bloques: lesson.bloques as LessonBlock[],
   };
 };

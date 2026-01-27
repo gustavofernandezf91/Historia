@@ -10,19 +10,22 @@ import ReflectionShort from "@/features/lesson-player/blocks/ReflectionShort";
 import SummaryBullets from "@/features/lesson-player/blocks/SummaryBullets";
 import OutroIdentity from "@/features/lesson-player/blocks/OutroIdentity";
 import UnderConstruction from "@/features/lesson-player/blocks/UnderConstruction";
-import type { BlockCompletion, LessonBlock, LessonDefinition } from "@/features/lesson-player/types";
+import type { BlockCompletion, LessonBlock } from "@/features/lesson-player/types";
+import type { Lesson } from "@/types/lesson";
+import { buildLessonDefinition } from "@/features/lesson-player/adapter";
 
 const blockXp = (block: LessonBlock) => block.xp ?? 6;
 
 type LessonPlayerProps = {
-  lesson: LessonDefinition;
+  lesson: Lesson;
   onComplete: (xpEarned: number) => void;
   onExit: () => void;
   onProgress?: (percent: number) => void;
 };
 
 export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }: LessonPlayerProps) {
-  const blocks = lesson.bloques ?? [];
+  const lessonDefinition = useMemo(() => buildLessonDefinition(lesson), [lesson]);
+  const blocks = lessonDefinition.bloques ?? [];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [xpEarned, setXpEarned] = useState(0);
@@ -127,6 +130,7 @@ export default function LessonPlayer({ lesson, onComplete, onExit, onProgress }:
           onComplete={(result) => completeBlock(currentBlock, result)}
         />
       )}
+      {currentBlock.tipo === "under_construction" && <UnderConstruction onComplete={onExit} />}
       <div className="mt-6 flex justify-between text-xs text-slate-500">
         <span>
           Pantalla {currentIndex + 1} de {totalBlocks}
