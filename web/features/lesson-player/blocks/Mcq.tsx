@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, McqBlock } from "@/features/lesson-player/types";
 
@@ -12,6 +12,7 @@ type McqProps = {
 export default function Mcq({ block, onComplete }: McqProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showCorrect, setShowCorrect] = useState(false);
 
   const isCorrect = useMemo(() => {
     if (selectedIndex === null || block.correctIndex === undefined) return false;
@@ -22,6 +23,17 @@ export default function Mcq({ block, onComplete }: McqProps) {
     setSelectedIndex(index);
     setShowFeedback(true);
   };
+
+  useEffect(() => {
+    if (!showFeedback) return;
+    if (isCorrect) {
+      setShowCorrect(true);
+      return;
+    }
+    setShowCorrect(false);
+    const timer = setTimeout(() => setShowCorrect(true), 1200);
+    return () => clearTimeout(timer);
+  }, [isCorrect, showFeedback]);
 
   return (
     <BlockFrame
@@ -37,6 +49,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
               canContinue: true,
               earnedXp: block.xp,
               analyticsEvent: "mcq_answered",
+              isCorrect,
             })
           }
           disabled={!showFeedback}
@@ -78,7 +91,7 @@ export default function Mcq({ block, onComplete }: McqProps) {
               ? block.explanationCorrect ?? "Respuesta correcta."
               : block.explanationIncorrect ?? "Piensa en el contexto histórico."}
           </p>
-          {!isCorrect && block.correctIndex !== undefined && (
+          {!isCorrect && showCorrect && block.correctIndex !== undefined && (
             <p className="mt-2 font-semibold">
               Respuesta correcta: {block.options[block.correctIndex]}
             </p>

@@ -17,7 +17,10 @@ export default function BottomNav() {
     pathname.startsWith("/leccion") ||
     pathname.startsWith("/player") ||
     pathname.startsWith("/resultados") ||
-    pathname.startsWith("/unidad");
+    pathname.startsWith("/unidad") ||
+    pathname.startsWith("/checkpoint") ||
+    pathname.startsWith("/checkpoint-player") ||
+    pathname.startsWith("/checkpoint-resultados");
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-200/70 bg-white/90 px-4 py-2 backdrop-blur md:hidden">

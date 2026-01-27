@@ -5,6 +5,7 @@ export type Lesson = {
   habilidad?: string;
   contenidos_breves?: string[];
   contenidos?: string;
+  descripcion?: string;
   bloques?: Bloque[];
 };
 

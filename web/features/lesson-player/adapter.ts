@@ -8,6 +8,96 @@ const buildId = (prefix: string, index: number) => `${prefix}-${index}`;
 
 const normalizeText = (text?: string) => text?.trim() ?? "";
 
+const lessonBlockTypes = [
+  "intro_hero",
+  "micro_text",
+  "mcq",
+  "story_card",
+  "true_false",
+  "reflection_short",
+  "summary_bullets",
+  "outro_identity",
+] as const;
+
+const isLessonBlock = (bloque: Bloque | LessonBlock): bloque is LessonBlock =>
+  lessonBlockTypes.includes(bloque.tipo as (typeof lessonBlockTypes)[number]);
+
+const splitSentences = (text: string) =>
+  text
+    .split(".")
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+
+const buildFallbackBlocks = (lesson: Lesson): LessonBlock[] => {
+  const titulo = normalizeText(lesson.titulo);
+  const descripcion = normalizeText(
+    lesson.descripcion ?? lesson.contenidos ?? lesson.habilidad_principal ?? lesson.habilidad,
+  );
+  const bulletsFromBreves = lesson.contenidos_breves?.filter(Boolean) ?? [];
+  const bulletsFromDescripcion = descripcion ? splitSentences(descripcion) : [];
+  const bullets = (bulletsFromBreves.length ? bulletsFromBreves : bulletsFromDescripcion).slice(0, 3);
+
+  if (!titulo && !descripcion && bullets.length === 0) {
+    return [];
+  }
+
+  const summaryBullets =
+    bullets.length > 0
+      ? bullets
+      : [
+          "Identifica la idea principal de la lección.",
+          "Conecta el pasado con un ejemplo actual.",
+          "Aplica lo aprendido en una mini reflexión.",
+        ];
+
+  const introSubtitle =
+    descripcion || "Explora un concepto clave y descubre cómo afecta a la vida cotidiana.";
+  const microBody =
+    descripcion || "Hoy entrenas una habilidad histórica con ejemplos cercanos y preguntas rápidas.";
+
+  return [
+    {
+      id: "intro-fallback",
+      tipo: "intro_hero",
+      title: titulo || "Nueva lección",
+      subtitle: truncate(introSubtitle),
+      xp: 4,
+    },
+    {
+      id: "micro-fallback",
+      tipo: "micro_text",
+      title: "Idea central",
+      body: truncate(microBody, 220),
+      highlight: "Conecta esta idea con algo que ya conoces.",
+      xp: 5,
+    },
+    {
+      id: "truefalse-fallback",
+      tipo: "true_false",
+      statement: `Esta lección se enfoca en ${titulo || "un tema clave de historia"}.`,
+      correct: true,
+      explanation: "Recuerda el título y el objetivo antes de continuar.",
+      xp: 6,
+    },
+    {
+      id: "summary-fallback",
+      tipo: "summary_bullets",
+      title: "Resumen en 3 ideas",
+      bullets: summaryBullets,
+      xp: 4,
+    },
+    {
+      id: "outro-fallback",
+      tipo: "outro_identity",
+      title: "Cierre",
+      prompt: "¿Qué idea o conexión te llevas de esta lección?",
+      ctaLabel: "Siguiente lección",
+      secondaryCtaLabel: "Volver al camino",
+      xp: 4,
+    },
+  ];
+};
+
 const mapBloque = (bloque: Bloque, index: number): LessonBlock | LessonBlock[] => {
   switch (bloque.tipo) {
     case "enganche":
@@ -34,8 +124,8 @@ const mapBloque = (bloque: Bloque, index: number): LessonBlock | LessonBlock[] =
         title: bloque.titulo ?? "Ideas clave",
         bullets:
           bloque.items && bloque.items.length > 0
-            ? bloque.items.slice(0, 4)
-            : normalizeText(bloque.contenido ?? "").split(".").filter(Boolean).slice(0, 4),
+            ? bloque.items.slice(0, 3)
+            : normalizeText(bloque.contenido ?? "").split(".").filter(Boolean).slice(0, 3),
         xp: 4,
       };
     case "mision":
@@ -85,7 +175,8 @@ const mapBloque = (bloque: Bloque, index: number): LessonBlock | LessonBlock[] =
         tipo: "outro_identity",
         title: bloque.titulo ?? "Cierre personal",
         prompt: truncate(normalizeText(bloque.contenido ?? "¿Qué te llevas hoy?")),
-        ctaLabel: "Cerrar",
+        ctaLabel: "Siguiente lección",
+        secondaryCtaLabel: "Volver al camino",
         xp: 4,
       };
     default:
@@ -100,6 +191,24 @@ const mapBloque = (bloque: Bloque, index: number): LessonBlock | LessonBlock[] =
 };
 
 export const buildLessonDefinition = (lesson: Lesson): LessonDefinition => {
+  if (!lesson.bloques || lesson.bloques.length === 0) {
+    return {
+      id: lesson.id,
+      titulo: lesson.titulo,
+      objetivo: lesson.habilidad_principal ?? lesson.habilidad ?? lesson.contenidos_breves?.[0],
+      bloques: buildFallbackBlocks(lesson),
+    };
+  }
+
+  if (lesson.bloques.every((bloque) => isLessonBlock(bloque))) {
+    return {
+      id: lesson.id,
+      titulo: lesson.titulo,
+      objetivo: lesson.habilidad_principal ?? lesson.habilidad ?? lesson.contenidos_breves?.[0],
+      bloques: lesson.bloques as LessonBlock[],
+    };
+  }
+
   const bloques: LessonBlock[] = [];
   lesson.bloques?.forEach((bloque, index) => {
     const mapped = mapBloque(bloque, index);

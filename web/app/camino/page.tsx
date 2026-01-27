@@ -6,8 +6,7 @@ import AppShell from "@/components/layout/AppShell";
 import TopBar from "@/components/navigation/TopBar";
 import curriculum from "@/content/curriculum.json";
 import { useProgress } from "@/features/progress/hooks";
-
-const CHECKPOINT_EVERY = 4;
+import { buildCheckpoints, CHECKPOINT_EVERY } from "@/utils/checkpoints";
 
 type Unidad = {
   id: string;
@@ -16,7 +15,7 @@ type Unidad = {
 };
 
 export default function CaminoPage() {
-  const { progress, loading, getState } = useProgress();
+  const { progress, loading, getState, getCheckpointState } = useProgress();
   const searchParams = useSearchParams();
   const unidadParam = searchParams.get("unidad");
   const { unidades } = curriculum as { unidades: Unidad[] };
@@ -29,6 +28,9 @@ export default function CaminoPage() {
       </AppShell>
     );
   }
+
+  const checkpoints = buildCheckpoints(unidad.lecciones, CHECKPOINT_EVERY);
+  const checkpointByIndex = new Map(checkpoints.map((checkpoint) => [checkpoint.index, checkpoint]));
 
   return (
     <AppShell
@@ -81,6 +83,16 @@ export default function CaminoPage() {
               </div>
             );
 
+            const checkpoint = checkpointByIndex.get(index);
+            const checkpointState = checkpoint ? getCheckpointState(unidad.id, checkpoint.id) : null;
+            const checkpointLocked = checkpointState === "locked";
+            const checkpointNodeStyles =
+              checkpointState === "completed"
+                ? "bg-emerald-500 text-white"
+                : checkpointState === "available"
+                  ? "bg-amber-400 text-white"
+                  : "bg-slate-200 text-slate-400";
+
             return (
               <div key={leccion.id} className="flex flex-col items-center gap-6">
                 {isLocked ? (
@@ -94,12 +106,31 @@ export default function CaminoPage() {
                   <Link href={`/leccion/${unidad.id}/${leccion.id}`}>{node}</Link>
                 )}
 
-                {(index + 1) % CHECKPOINT_EVERY === 0 && (
+                {checkpoint && (
                   <div className="flex flex-col items-center gap-2">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-lg text-emerald-600">
-                      🏁
-                    </div>
-                    <span className="text-xs font-semibold text-emerald-600">Checkpoint</span>
+                    {checkpointLocked ? (
+                      <div className="group relative">
+                        <div
+                          className={`flex h-14 w-14 items-center justify-center rounded-full text-lg shadow ${checkpointNodeStyles}`}
+                        >
+                          🔒
+                        </div>
+                        <span className="absolute -bottom-6 left-1/2 hidden -translate-x-1/2 rounded-full bg-slate-900 px-3 py-1 text-[11px] text-white group-hover:block">
+                          Completa la lección anterior
+                        </span>
+                      </div>
+                    ) : (
+                      <Link href={`/checkpoint/${unidad.id}/${checkpoint.id}`}>
+                        <div
+                          className={`flex h-14 w-14 items-center justify-center rounded-full text-lg shadow ${checkpointNodeStyles}`}
+                        >
+                          {checkpointState === "completed" ? "✅" : "🏁"}
+                        </div>
+                      </Link>
+                    )}
+                    <span className="text-xs font-semibold text-emerald-600">
+                      {checkpoint.label}
+                    </span>
                   </div>
                 )}
               </div>

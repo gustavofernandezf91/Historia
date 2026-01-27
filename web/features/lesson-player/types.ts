@@ -8,6 +8,7 @@ export type BlockCompletion = {
   canContinue: boolean;
   earnedXp?: number;
   analyticsEvent?: string;
+  isCorrect?: boolean;
 };
 
 export type IntroHeroBlock = LessonBlockBase & {
@@ -62,6 +63,7 @@ export type OutroIdentityBlock = LessonBlockBase & {
   title: string;
   prompt: string;
   ctaLabel?: string;
+  secondaryCtaLabel?: string;
 };
 
 export type LessonBlock =

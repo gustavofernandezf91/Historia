@@ -12,7 +12,7 @@ type ReflectionShortProps = {
 export default function ReflectionShort({ block, onComplete }: ReflectionShortProps) {
   const [value, setValue] = useState("");
   const trimmedValue = value.trim();
-  const canContinue = trimmedValue.length > 0;
+  const canSave = trimmedValue.length > 0;
 
   return (
     <BlockFrame
@@ -22,18 +22,18 @@ export default function ReflectionShort({ block, onComplete }: ReflectionShortPr
         <div className="flex flex-col gap-3">
           <button
             className={`w-full rounded-2xl px-6 py-4 text-base font-semibold text-white ${
-              canContinue ? "bg-emerald-500" : "bg-slate-300"
+              canSave ? "bg-emerald-500" : "bg-slate-300"
             }`}
             onClick={() =>
               onComplete({
                 canContinue: true,
                 earnedXp: block.xp,
-                analyticsEvent: "reflection_submitted",
+                analyticsEvent: "reflection_saved",
               })
             }
-            disabled={!canContinue}
+            disabled={!canSave}
           >
-            Continuar
+            Guardar
           </button>
           <button
             className="w-full rounded-2xl border border-slate-200 bg-white px-6 py-4 text-base font-semibold text-slate-600"

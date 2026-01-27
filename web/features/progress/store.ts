@@ -1,7 +1,13 @@
-import type { ProgressStore, LessonResult, UserProgress } from "@/features/progress/types";
+import type {
+  CheckpointResult,
+  LessonResult,
+  ProgressStore,
+  UserProgress,
+} from "@/features/progress/types";
 
 const PROGRESS_KEY = "historiapp:progress";
 const RESULT_KEY = "historiapp:last-result";
+const CHECKPOINT_RESULT_KEY = "historiapp:last-checkpoint-result";
 
 const isBrowser = () => typeof window !== "undefined";
 
@@ -45,6 +51,27 @@ export const loadLastResult = (): LessonResult | null => {
 export const clearLastResult = () => {
   if (!isBrowser()) return;
   window.localStorage.removeItem(RESULT_KEY);
+};
+
+export const saveLastCheckpointResult = (result: CheckpointResult) => {
+  if (!isBrowser()) return;
+  window.localStorage.setItem(CHECKPOINT_RESULT_KEY, JSON.stringify(result));
+};
+
+export const loadLastCheckpointResult = (): CheckpointResult | null => {
+  if (!isBrowser()) return null;
+  const raw = window.localStorage.getItem(CHECKPOINT_RESULT_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as CheckpointResult;
+  } catch {
+    return null;
+  }
+};
+
+export const clearLastCheckpointResult = () => {
+  if (!isBrowser()) return;
+  window.localStorage.removeItem(CHECKPOINT_RESULT_KEY);
 };
 
 export const FirestoreProgressStore = {

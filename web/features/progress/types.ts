@@ -1,4 +1,5 @@
 export type LessonState = "locked" | "available" | "in_progress" | "completed";
+export type CheckpointState = "locked" | "available" | "completed";
 
 export type LessonAttempt = {
   attemptsCount: number;
@@ -10,6 +11,7 @@ export type UnitProgress = {
   lessonStates: Record<string, LessonState>;
   completedCount: number;
   attempts: Record<string, LessonAttempt>;
+  checkpoints: Record<string, CheckpointState>;
 };
 
 export type UserProgress = {
@@ -18,6 +20,7 @@ export type UserProgress = {
   streakCount: number;
   lastStudyDate?: string;
   unidades: Record<string, UnitProgress>;
+  badges?: string[];
 };
 
 export type ProgressStore = {
@@ -30,5 +33,16 @@ export type LessonResult = {
   unidadId: string;
   leccionId: string;
   xpEarned: number;
+  completedAt: string;
+};
+
+export type CheckpointResult = {
+  unidadId: string;
+  checkpointId: string;
+  correctCount: number;
+  totalQuestions: number;
+  xpEarned: number;
+  passed: boolean;
+  lessonIds: string[];
   completedAt: string;
 };

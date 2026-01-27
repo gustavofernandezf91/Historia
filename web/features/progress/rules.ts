@@ -1,5 +1,11 @@
 import curriculum from "@/content/curriculum.json";
-import type { LessonState, UnitProgress, UserProgress } from "@/features/progress/types";
+import type {
+  CheckpointState,
+  LessonState,
+  UnitProgress,
+  UserProgress,
+} from "@/features/progress/types";
+import { buildCheckpoints, CHECKPOINT_EVERY } from "@/utils/checkpoints";
 
 const TODAY = (date: Date) => date.toISOString().slice(0, 10);
 
@@ -32,10 +38,19 @@ export const buildInitialProgress = (): UserProgress => {
       }
     });
 
+    const checkpoints = buildCheckpoints(unidad.lecciones, CHECKPOINT_EVERY).reduce(
+      (acc, checkpoint) => {
+        acc[checkpoint.id] = "locked";
+        return acc;
+      },
+      {} as Record<string, CheckpointState>,
+    );
+
     unidadesProgress[unidad.id] = {
       lessonStates,
       completedCount: 0,
       attempts: {},
+      checkpoints,
     };
   });
 
@@ -45,6 +60,7 @@ export const buildInitialProgress = (): UserProgress => {
     streakCount: 0,
     lastStudyDate: undefined,
     unidades: unidadesProgress,
+    badges: [],
   };
 };
 
@@ -54,17 +70,30 @@ export const ensureProgressStructure = (progress: UserProgress): UserProgress =>
     ...initial,
     ...progress,
     unidades: { ...initial.unidades, ...progress.unidades },
+    badges: progress.badges ?? initial.badges,
   };
 
   Object.entries(initial.unidades).forEach(([unidadId, unitProgress]) => {
     const currentUnit = merged.unidades[unidadId] ?? unitProgress;
     const lessonStates = { ...unitProgress.lessonStates, ...currentUnit.lessonStates };
+    const checkpoints = { ...unitProgress.checkpoints, ...currentUnit.checkpoints };
+    const checkpointMeta = buildCheckpoints(
+      Object.keys(unitProgress.lessonStates).map((id) => ({ id })),
+      CHECKPOINT_EVERY,
+    );
+    checkpointMeta.forEach((checkpoint) => {
+      const lastLessonId = checkpoint.lessonIds[checkpoint.lessonIds.length - 1];
+      if (lessonStates[lastLessonId] === "completed" && checkpoints[checkpoint.id] === "locked") {
+        checkpoints[checkpoint.id] = "available";
+      }
+    });
     merged.unidades[unidadId] = {
       ...unitProgress,
       ...currentUnit,
       lessonStates,
       attempts: { ...unitProgress.attempts, ...currentUnit.attempts },
       completedCount: currentUnit.completedCount ?? unitProgress.completedCount,
+      checkpoints,
     };
   });
 
@@ -78,6 +107,14 @@ export const getLessonState = (
   leccionId: string,
 ): LessonState => {
   return progress.unidades[unidadId]?.lessonStates?.[leccionId] ?? "locked";
+};
+
+export const getCheckpointState = (
+  progress: UserProgress,
+  unidadId: string,
+  checkpointId: string,
+): CheckpointState => {
+  return progress.unidades[unidadId]?.checkpoints?.[checkpointId] ?? "locked";
 };
 
 export const markLessonInProgress = (
@@ -122,12 +159,24 @@ export const completeLesson = (
   const alreadyCompleted = currentState === "completed";
 
   const updatedLessonStates = { ...unit.lessonStates, [leccionId]: "completed" as LessonState };
+  const updatedCheckpoints = { ...unit.checkpoints };
 
   const lessonIds = Object.keys(unit.lessonStates);
   const currentIndex = lessonIds.indexOf(leccionId);
   const nextLessonId = lessonIds[currentIndex + 1];
   if (nextLessonId && updatedLessonStates[nextLessonId] === "locked") {
     updatedLessonStates[nextLessonId] = "available";
+  }
+
+  const checkpointMeta = buildCheckpoints(
+    lessonIds.map((id) => ({ id })),
+    CHECKPOINT_EVERY,
+  );
+  const checkpointForLesson = checkpointMeta.find(
+    (checkpoint) => checkpoint.lessonIds[checkpoint.lessonIds.length - 1] === leccionId,
+  );
+  if (checkpointForLesson && updatedCheckpoints[checkpointForLesson.id] === "locked") {
+    updatedCheckpoints[checkpointForLesson.id] = "available";
   }
 
   const today = TODAY(completedAt);
@@ -160,6 +209,55 @@ export const completeLesson = (
         lessonStates: updatedLessonStates,
         completedCount: alreadyCompleted ? unit.completedCount : unit.completedCount + 1,
         attempts,
+        checkpoints: updatedCheckpoints,
+      },
+    },
+  };
+};
+
+export const completeCheckpoint = (
+  progress: UserProgress,
+  unidadId: string,
+  checkpointId: string,
+  xpEarned: number,
+  completedAt: Date,
+  badgeId?: string,
+): UserProgress => {
+  const unit = progress.unidades[unidadId];
+  if (!unit) return progress;
+
+  const currentState = unit.checkpoints[checkpointId];
+  const alreadyCompleted = currentState === "completed";
+  const updatedCheckpoints = {
+    ...unit.checkpoints,
+    [checkpointId]: "completed" as CheckpointState,
+  };
+
+  const today = TODAY(completedAt);
+  const streakCount = isSameDay(progress.lastStudyDate, today)
+    ? progress.streakCount
+    : isYesterday(progress.lastStudyDate, today)
+      ? progress.streakCount + 1
+      : 1;
+
+  const newXpTotal = progress.xpTotal + (alreadyCompleted ? 0 : xpEarned);
+  const badges = progress.badges ? [...progress.badges] : [];
+  if (badgeId && !badges.includes(badgeId)) {
+    badges.push(badgeId);
+  }
+
+  return {
+    ...progress,
+    xpTotal: newXpTotal,
+    level: calculateLevel(newXpTotal),
+    streakCount,
+    lastStudyDate: today,
+    badges,
+    unidades: {
+      ...progress.unidades,
+      [unidadId]: {
+        ...unit,
+        checkpoints: updatedCheckpoints,
       },
     },
   };
