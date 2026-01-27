@@ -11,18 +11,25 @@ import {
 import curriculum from "@/content/curriculum.json";
 import {
   buildInitialProgress,
+  completeCheckpoint,
   completeLesson,
   ensureProgressStructure,
+  getCheckpointState,
   getLessonState,
   markLessonInProgress,
 } from "@/features/progress/rules";
 import {
+  clearLastCheckpointResult,
   clearLastResult,
+  loadLastCheckpointResult,
   loadLastResult,
   LocalStorageProgressStore,
+  saveLastCheckpointResult,
   saveLastResult,
 } from "@/features/progress/store";
 import type {
+  CheckpointResult,
+  CheckpointState,
   LessonResult,
   LessonState,
   UserProgress,
@@ -33,9 +40,18 @@ type ProgressContextValue = {
   loading: boolean;
   startLesson: (unidadId: string, leccionId: string) => void;
   finishLesson: (unidadId: string, leccionId: string, xpEarned: number) => void;
+  finishCheckpoint: (
+    unidadId: string,
+    checkpointId: string,
+    xpEarned: number,
+    result: Omit<CheckpointResult, "completedAt" | "xpEarned">,
+    badgeId?: string,
+  ) => void;
   reset: () => void;
   getState: (unidadId: string, leccionId: string) => LessonState;
+  getCheckpointState: (unidadId: string, checkpointId: string) => CheckpointState;
   lastResult: LessonResult | null;
+  lastCheckpointResult: CheckpointResult | null;
 };
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
@@ -43,6 +59,7 @@ const ProgressContext = createContext<ProgressContextValue | null>(null);
 const useProgressState = (): ProgressContextValue => {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [lastResult, setLastResult] = useState<LessonResult | null>(null);
+  const [lastCheckpointResult, setLastCheckpointResult] = useState<CheckpointResult | null>(null);
 
   useEffect(() => {
     const stored = LocalStorageProgressStore.load();
@@ -54,6 +71,7 @@ const useProgressState = (): ProgressContextValue => {
       LocalStorageProgressStore.save(initial);
     }
     setLastResult(loadLastResult());
+    setLastCheckpointResult(loadLastCheckpointResult());
   }, []);
 
   const persist = useCallback((next: UserProgress) => {
@@ -93,8 +111,10 @@ const useProgressState = (): ProgressContextValue => {
     LocalStorageProgressStore.reset();
     LocalStorageProgressStore.save(initial);
     clearLastResult();
+    clearLastCheckpointResult();
     setProgress(initial);
     setLastResult(null);
+    setLastCheckpointResult(null);
   }, []);
 
   const getState = useCallback(
@@ -105,14 +125,57 @@ const useProgressState = (): ProgressContextValue => {
     [progress],
   );
 
+  const getCheckpointStateForUnit = useCallback(
+    (unidadId: string, checkpointId: string): CheckpointState => {
+      if (!progress) return "locked";
+      return getCheckpointState(progress, unidadId, checkpointId);
+    },
+    [progress],
+  );
+
+  const finishCheckpoint = useCallback(
+    (
+      unidadId: string,
+      checkpointId: string,
+      xpEarned: number,
+      result: Omit<CheckpointResult, "completedAt" | "xpEarned">,
+      badgeId?: string,
+    ) => {
+      if (!progress) return;
+      const completedAt = new Date();
+      const next = completeCheckpoint(
+        progress,
+        unidadId,
+        checkpointId,
+        xpEarned,
+        completedAt,
+        badgeId,
+      );
+      persist(next);
+      const payload: CheckpointResult = {
+        ...result,
+        unidadId,
+        checkpointId,
+        xpEarned,
+        completedAt: completedAt.toISOString(),
+      };
+      saveLastCheckpointResult(payload);
+      setLastCheckpointResult(payload);
+    },
+    [persist, progress],
+  );
+
   return {
     progress,
     loading: progress === null,
     startLesson,
     finishLesson,
+    finishCheckpoint,
     reset,
     getState,
+    getCheckpointState: getCheckpointStateForUnit,
     lastResult,
+    lastCheckpointResult,
   };
 };
 

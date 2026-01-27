@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BlockFrame from "@/features/lesson-player/blocks/BlockFrame";
 import type { BlockCompletion, TrueFalseBlock } from "@/features/lesson-player/types";
 
@@ -11,8 +11,20 @@ type TrueFalseProps = {
 
 export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
   const [answer, setAnswer] = useState<boolean | null>(null);
+  const [showCorrect, setShowCorrect] = useState(false);
 
   const isCorrect = answer === block.correct;
+
+  useEffect(() => {
+    if (answer === null) return;
+    if (isCorrect) {
+      setShowCorrect(true);
+      return;
+    }
+    setShowCorrect(false);
+    const timer = setTimeout(() => setShowCorrect(true), 1200);
+    return () => clearTimeout(timer);
+  }, [answer, isCorrect]);
 
   return (
     <BlockFrame
@@ -28,6 +40,7 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
               canContinue: true,
               earnedXp: block.xp,
               analyticsEvent: "true_false_answered",
+              isCorrect,
             })
           }
           disabled={answer === null}
@@ -60,7 +73,7 @@ export default function TrueFalse({ block, onComplete }: TrueFalseProps) {
         >
           <p className="font-semibold">{isCorrect ? "¡Bien!" : "Casi. Primero la explicación:"}</p>
           <p className="mt-2">{block.explanation ?? "Piensa en la evidencia histórica."}</p>
-          {!isCorrect && (
+          {!isCorrect && showCorrect && (
             <p className="mt-2 font-semibold">La respuesta correcta es {block.correct ? "Verdadero" : "Falso"}.</p>
           )}
         </div>
