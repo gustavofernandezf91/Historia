@@ -73,6 +73,55 @@
               "contenido": "¿Qué cosa de tu vida diaria entendiste distinto después de esta lección?"
             }
           ],
+          "bloques_ui": [
+            {
+              "tipo": "intro_hero",
+              "title": "Desafío inicial",
+              "subtitle": "Nada de lo que haces hoy es casual.",
+              "xp": 0
+            },
+            {
+              "tipo": "micro_text",
+              "title": "Idea clave",
+              "body": "La historia no es solo lo antiguo: también explica cómo llegamos a vivir como vivimos.",
+              "xp": 0
+            },
+            {
+              "tipo": "mcq",
+              "question": "¿Qué cosas de tu día tienen historia detrás?",
+              "options": [
+                "Transporte",
+                "Colegio",
+                "Redes sociales",
+                "Tu barrio",
+                "Tu música"
+              ],
+              "multiple": true,
+              "discovery": true,
+              "minSelections": 1,
+              "explanationCorrect": "Todo lo que elegiste existe por decisiones y cambios en el tiempo.",
+              "xp": 6
+            },
+            {
+              "tipo": "true_false",
+              "statement": "La historia solo habla del pasado lejano.",
+              "correct": false,
+              "explanation": "También estudia procesos recientes y la vida cotidiana.",
+              "xp": 6
+            },
+            {
+              "tipo": "reflection_short",
+              "prompt": "Elige una de las cosas que marcaste y escribe una línea: ¿por qué crees que tiene historia?",
+              "xp": 8
+            },
+            {
+              "tipo": "outro_identity",
+              "title": "Cierre",
+              "prompt": "Si tu día tiene historia, tú también eres parte de ella.",
+              "ctaLabel": "Volver al camino",
+              "xp": 0
+            }
+          ],
           "actividades_sugeridas": [
             "Mapa de objetos con historia: estudiantes traen una foto de un objeto cotidiano y explican su origen histórico en un mural colaborativo.",
             "Entrevista breve en casa: preguntar a un adulto por un cambio social vivido (tecnología, trabajo, migración) y registrarlo en una ficha.",

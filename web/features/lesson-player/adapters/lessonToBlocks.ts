@@ -18,6 +18,10 @@ const buildUnderConstructionBlock = (unidadId: string, leccionId: string): Lesso
 ];
 
 export const lessonToBlocks = ({ unidadId, leccionId, lesson }: LessonToBlocksInput): LessonBlock[] => {
+  if (Array.isArray(lesson.bloques_ui) && lesson.bloques_ui.length > 0) {
+    return lesson.bloques_ui as LessonBlock[];
+  }
+
   if (Array.isArray(lesson.bloques) && lesson.bloques.length > 0) {
     const adaptedBlocks = lesson.bloques.map(adaptPedagogicalBlock);
     return adaptedBlocks;

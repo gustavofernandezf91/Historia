@@ -101,6 +101,15 @@ const buildFallbackBlocks = (lesson: Lesson): LessonBlock[] => {
 };
 
 export const buildLessonDefinition = (lesson: Lesson): LessonDefinition => {
+  if (Array.isArray(lesson.bloques_ui) && lesson.bloques_ui.length > 0) {
+    return {
+      id: lesson.id,
+      titulo: lesson.titulo,
+      objetivo: lesson.habilidad_principal ?? lesson.habilidad ?? lesson.contenidos_breves?.[0],
+      bloques: lesson.bloques_ui as LessonBlock[],
+    };
+  }
+
   if (!lesson.bloques || lesson.bloques.length === 0) {
     return {
       id: lesson.id,

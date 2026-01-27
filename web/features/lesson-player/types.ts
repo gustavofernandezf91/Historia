@@ -34,6 +34,10 @@ export type McqBlock = LessonBlockBase & {
   correctIndex?: number;
   explanationCorrect?: string;
   explanationIncorrect?: string;
+  multiple?: boolean;
+  minSelections?: number;
+  maxSelections?: number;
+  discovery?: boolean;
 };
 
 export type StoryCardBlock = LessonBlockBase & {
