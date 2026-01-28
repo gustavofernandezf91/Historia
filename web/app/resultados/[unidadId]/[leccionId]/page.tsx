@@ -16,6 +16,19 @@ export default function ResultsPage() {
   const leccionId = params?.leccionId as string;
   const { progress, loading, lastResult } = useProgress();
   const { nextLesson } = useCurrentLesson();
+  const hasPlayedSoundRef = useRef(false);
+  const selfComparison = useMemo(
+    () => (progress ? getSelfComparisonSignal(progress) : null),
+    [progress],
+  );
+
+  useEffect(() => {
+    if (!progress) return;
+    if (hasPlayedSoundRef.current) return;
+    if (lastResult?.leccionId !== leccionId) return;
+    playSound("lesson_completed");
+    hasPlayedSoundRef.current = true;
+  }, [lastResult?.leccionId, leccionId, progress]);
 
   if (loading || !progress) {
     return (
@@ -35,8 +48,6 @@ export default function ResultsPage() {
   const emotionalStreak = progress.emotionalStreak ?? 0;
   const xpLine = `+${xpEarned} XP — Buen ritmo 👏`;
   const emotionalCopy = "Cada sesión suma perspectiva histórica.";
-  const hasPlayedSoundRef = useRef(false);
-  const selfComparison = useMemo(() => getSelfComparisonSignal(progress), [progress]);
 
   const emotionalMessage = (() => {
     if (emotionalStreak <= 1) {
@@ -50,13 +61,6 @@ export default function ResultsPage() {
     }
     return "Pensar históricamente ya es parte de ti.";
   })();
-
-  useEffect(() => {
-    if (hasPlayedSoundRef.current) return;
-    if (lastResult?.leccionId !== leccionId) return;
-    playSound("lesson_completed");
-    hasPlayedSoundRef.current = true;
-  }, [lastResult?.leccionId, leccionId]);
 
   return (
     <AppShell
